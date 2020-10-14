@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Zanzibar:war exploded2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Zanzibar_war_exploded2</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Zanzibar" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.annotation.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.jms.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.mail.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.persistence.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.resource.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.servlet.jsp.jstl.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.transaction.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/org.json.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-8.0.20.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/json-20180813.jar" />
+        </element>
+      </element>
+      <element id="library" level="project" name="jdk-11.01" />
+      <element id="javaee-facet-resources" facet="Zanzibar/web/Web" />
+    </root>
+  </artifact>
+</component>

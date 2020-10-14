@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Zanzibar:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Zanzibar_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Zanzibar/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Zanzibar" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-8.0.20" />
+          <element id="library" level="project" name="json-20180813" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/json-20180813.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-8.0.20.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/org.json.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.transaction.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.servlet.jsp.jstl.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.resource.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.persistence.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.mail.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.jms.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.annotation.jar" />
+        </element>
+      </element>
+      <element id="library" level="project" name="jdk-11.01" />
+    </root>
+  </artifact>
+</component>
