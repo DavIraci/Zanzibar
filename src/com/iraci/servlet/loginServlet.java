@@ -21,9 +21,11 @@ public class loginServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("");
 
         if(username==null || pass==null) {
-            request.setAttribute("ErrorMessage", "Operazione non concessa!");
+            System.out.println("No User and Pass");
+            request.setAttribute("Login", "TRUE");
+
+            //request.setAttribute("ErrorMessage", "Operazione non concessa!");
         }else{
-            DataBase.Conn();
             User user= null;
 
             try {
