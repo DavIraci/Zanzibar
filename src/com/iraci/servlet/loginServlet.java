@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "loginServlet", urlPatterns={"/login"})
 public class loginServlet extends HttpServlet {
@@ -21,7 +23,15 @@ public class loginServlet extends HttpServlet {
         if(username==null || pass==null) {
             request.setAttribute("ErrorMessage", "Operazione non concessa!");
         }else{
-            User user= DataBase.login(username, pass);
+            DataBase.Conn();
+            User user= null;
+
+            try {
+                user = DataBase.login(username, pass);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
             if(user == null){
                 request.setAttribute("ErrorMessage", "Username o password errati!");
             }else{

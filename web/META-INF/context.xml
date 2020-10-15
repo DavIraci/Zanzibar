@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/iraci">
+<Resource auth="Container"
+		  driverClassName="com.mysql.cj.jdbc.Driver"
+		  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		  maxActive="20"
+		  minIdle="2"
+		  maxIdle="6"
+		  maxWait="-1"
+		  name="jdbc/iraci"
+		  username="root"
+		  password="root"
+		  type="javax.sql.DataSource"
+		  url="jdbc:mysql://localhost:3306/iraci?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Rome"
+		  testOnBorrow="true"
+		  validationQuery="SELECT 1" />
+</Context>

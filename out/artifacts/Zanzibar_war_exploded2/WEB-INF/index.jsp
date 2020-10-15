@@ -52,7 +52,7 @@
                                     <i class="fas fa-user-circle"></i>
                                 </span>
                             </a>
-                            <ul class="dropdown-menu extended" style="float: right; left: auto;right: 0" id="dropDownMenu">
+                            <ul class="dropdown-menu extended" style="left: auto;right: 0" id="dropDownMenu">
                                 <li class="eborder-top">
                                     <a href="#"><i class="icon_profile"></i> My Profile</a>
                                 </li>
@@ -94,6 +94,8 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
+                    <!-- Login Form -->
+
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="${pageContext.request.contextPath}/login" method="post" class="was-validated">
@@ -110,14 +112,14 @@
                                 <div class="valid-feedback">Valid.</div>
                                 <div class="invalid-feedback">Please fill out this field.</div>
                             </div>
-
                             <button type="submit" class="btn btn-primary">Accedi</button>
                         </form>
                     </div>
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Accedi</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                     </div>
 
                 </div>
@@ -166,10 +168,9 @@
                         pageContext.getOut().print(request.getAttribute("ErrorMessage"));
                     }
                     if(request.getSession().getAttribute("USER") != null) {
-                        pageContext.getOut().print("Ciao");
+                        pageContext.getOut().print("Benvenuto");
                         pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail());
                     }
-                    pageContext.getOut().print("Ciao2");
                 %>
 
                 <!-- Services -->
