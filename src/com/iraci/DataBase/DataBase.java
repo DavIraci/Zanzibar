@@ -49,7 +49,6 @@ public class DataBase {
 
     public static User login(String email, String password) throws SQLException{
         String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone FROM iraci.user AS U WHERE U.email=? AND U.password=MD5(?)";
-        System.out.println(query1);
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, email);

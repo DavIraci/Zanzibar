@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/iraci">
-<Resource auth="Container"
+	<Resource auth="Container"
 		  driverClassName="com.mysql.cj.jdbc.Driver"
 		  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		  maxActive="20"
@@ -14,4 +14,15 @@
 		  url="jdbc:mysql://localhost:3306/iraci?useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Rome"
 		  testOnBorrow="true"
 		  validationQuery="SELECT 1" />
+
+	<Realm className="org.apache.catalina.realm.DataSourceRealm"
+		   dataSourceName="jdbc/iraci"
+		   localDataSource="true"
+		   userTable="user"
+		   userNameCol="email"
+		   userCredCol="password"
+		   userRoleTable="user"
+		   roleNameCol="role" />
 </Context>
+
+

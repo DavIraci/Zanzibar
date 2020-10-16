@@ -16,15 +16,14 @@ import java.sql.SQLException;
 @WebServlet(name = "loginServlet", urlPatterns={"/login"})
 public class loginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username=request.getParameter("user");
-        String pass=request.getParameter("password");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("");
+        /*String username=request.getParameter("j_username");
+        String pass=request.getParameter("j_password");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
+
+        //Reindirizzare alla home!
 
         if(username==null || pass==null) {
-            System.out.println("No User and Pass");
             request.setAttribute("Login", "TRUE");
-
-            //request.setAttribute("ErrorMessage", "Operazione non concessa!");
         }else{
             User user= null;
 
@@ -40,7 +39,9 @@ public class loginServlet extends HttpServlet {
                 request.getSession().setAttribute("USER", user);
             }
         }
-        dispatcher.forward(request, response);
+        dispatcher.forward(request, response);*/
+        request.getSession().setAttribute("Login", "TRUE");
+        response.sendRedirect(request.getContextPath());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
