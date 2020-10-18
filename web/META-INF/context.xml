@@ -21,7 +21,9 @@
 		   userTable="user" userNameCol="email" userCredCol="password"
 		   userRoleTable="user" roleNameCol="role">
 		<CredentialHandler className="org.apache.catalina.realm.MessageDigestCredentialHandler"
-						   algorithm="MD5"
+						   algorithm="SHA-256"
+						   iterations="1"
+						   saltlenght="0"
 		/>
 	</Realm>
 </Context>
