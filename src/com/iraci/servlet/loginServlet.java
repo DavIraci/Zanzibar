@@ -40,8 +40,23 @@ public class loginServlet extends HttpServlet {
             }
         }
         dispatcher.forward(request, response);*/
-        request.getSession().setAttribute("Login", "TRUE");
-        response.sendRedirect(request.getContextPath());
+        if (request.getUserPrincipal() != null){
+            System.out.println("Utente loggato: "+ request.getUserPrincipal().getName());
+            try {
+                User user=DataBase.takeUser(request.getUserPrincipal().getName());
+                if(user == null){
+                    //ERROR 400
+                    response.sendError(400);
+                }
+                request.getSession().setAttribute("USER", user);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } else{
+            System.out.println("Nessun utente loggato!");
+            request.getSession().setAttribute("Login", "TRUE");
+        }
+        response.sendRedirect(request.getContextPath()+ "/");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

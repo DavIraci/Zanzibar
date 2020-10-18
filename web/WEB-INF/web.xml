@@ -14,11 +14,35 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Protected Area</web-resource-name>
+            <web-resource-name>Login</web-resource-name>
+            <url-pattern>/login</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>User</role-name>
+            <role-name>Admin</role-name>
+            <role-name>Banco</role-name>
+            <role-name>Bagnino</role-name>
+            <role-name>Cucina</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>User</web-resource-name>
             <url-pattern>/user/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>User</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -27,6 +51,15 @@
     </security-role>
     <security-role>
         <role-name>User</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Banco</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Bagnino</role-name>
+    </security-role>
+    <security-role>
+        <role-name>Cucina</role-name>
     </security-role>
 
 </web-app>

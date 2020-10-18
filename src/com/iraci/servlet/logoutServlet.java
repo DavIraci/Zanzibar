@@ -16,7 +16,6 @@ public class logoutServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        RequestDispatcher dispatcher = request.getRequestDispatcher("");
-        dispatcher.forward(request, response);
+        response.sendRedirect(request.getContextPath());
     }
 }

@@ -18,11 +18,12 @@
 	<Realm className="org.apache.catalina.realm.DataSourceRealm"
 		   dataSourceName="jdbc/iraci"
 		   localDataSource="true"
-		   userTable="user"
-		   userNameCol="email"
-		   userCredCol="password"
-		   userRoleTable="user"
-		   roleNameCol="role" />
+		   userTable="user" userNameCol="email" userCredCol="password"
+		   userRoleTable="user" roleNameCol="role">
+		<CredentialHandler className="org.apache.catalina.realm.MessageDigestCredentialHandler"
+						   algorithm="MD5"
+		/>
+	</Realm>
 </Context>
 
 

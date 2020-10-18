@@ -47,12 +47,11 @@ public class DataBase {
         }
     }
 
-    public static User login(String email, String password) throws SQLException{
-        String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone FROM iraci.user AS U WHERE U.email=? AND U.password=MD5(?)";
+    public static User takeUser(String email) throws SQLException{
+        String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone FROM iraci.user AS U WHERE U.email=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, email);
-            statement.setString(2, password);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 return new User(result.getInt("id_User"), result.getString("name"), result.getString("surname"), result.getString("email"), result.getString("telephone"), result.getString("role"));

@@ -8,15 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <script>
-            $("#formLogin").onsubmit(hashPassword)
-            function hashPassword() {
-                $("#pwd").val(md5( $("#pwd").val()))
-            }
-            function md5(input) {
-                return "f5888d0bb58d611107e11f7cbc41c97a"
-            }
-        </script>
     </head>
     <body>
         <!-- NavBar -->
@@ -43,7 +34,8 @@
                                     <a href="#"><i class="icon_profile"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a>
+                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
+                                    <!--a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a-->
                                 </li>
                                 <li>
                                     <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
@@ -84,7 +76,7 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <form action="j_security_check" method="POST" class="was-validated" id="formLogin">
+                        <form action="j_security_check" method="POST" class="was-validated">
                             <div class="form-group">
                                 <label for="uname">Username:</label>
                                 <input type="text" class="form-control" id="uname" placeholder="Enter username" name="j_username" required>
@@ -101,7 +93,7 @@
 
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="submit" name="j_security_check"  class="btn btn-primary">Accedi</button>
+                                <button type="submit"  class="btn btn-primary">Accedi</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                             </div>
                         </form>
