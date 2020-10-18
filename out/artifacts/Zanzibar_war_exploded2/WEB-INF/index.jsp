@@ -84,7 +84,7 @@
                     }
                     if(request.getSession().getAttribute("USER") != null) {
                         pageContext.getOut().print("Benvenuto: ");
-                        pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail());
+                        pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail() + ((User) request.getSession().getAttribute("USER")).getRuolo());
                     }
                 %>
 

@@ -16,36 +16,11 @@ import java.sql.SQLException;
 @WebServlet(name = "loginServlet", urlPatterns={"/login"})
 public class loginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*String username=request.getParameter("j_username");
-        String pass=request.getParameter("j_password");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
-
-        //Reindirizzare alla home!
-
-        if(username==null || pass==null) {
-            request.setAttribute("Login", "TRUE");
-        }else{
-            User user= null;
-
-            try {
-                user = DataBase.login(username, pass);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-            if(user == null){
-                request.setAttribute("ErrorMessage", "Username o password errati!");
-            }else{
-                request.getSession().setAttribute("USER", user);
-            }
-        }
-        dispatcher.forward(request, response);*/
         if (request.getUserPrincipal() != null){
             System.out.println("Utente loggato: "+ request.getUserPrincipal().getName());
             try {
                 User user=DataBase.takeUser(request.getUserPrincipal().getName());
                 if(user == null){
-                    //ERROR 400
                     response.sendError(400);
                 }
                 request.getSession().setAttribute("USER", user);

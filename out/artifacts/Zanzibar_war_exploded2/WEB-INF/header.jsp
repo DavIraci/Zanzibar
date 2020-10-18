@@ -30,8 +30,17 @@
                                     </span>
                             </a>
                             <ul class="dropdown-menu extended" style="left: auto;right: 0" id="dropDownMenu">
+                                <% if(request.getSession().getAttribute("USER") == null){ %>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
+                                    <!--a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a-->
+                                </li>
+                                 <li>
+                                    <a href="${pageContext.request.contextPath}/registrazione"><i class="icon_key_alt"></i>Registrati</a>
+                                </li>
+                                <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
                                 <li class="eborder-top">
-                                    <a href="#"><i class="icon_profile"></i> My Profile</a>
+                                    <a ><i class="icon_profile">Admin</i> Admin <% pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getCognome()); %></a>
                                 </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
@@ -49,9 +58,27 @@
                                 <li>
                                     <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
                                 </li>
+                                <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("User") ){ %>
+                                <li class="eborder-top">
+                                    <a ><i class="icon_profile">User</i> User <% pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getCognome()); %></a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
+                                    <!--a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a-->
+                                </li>
+                                <li>
+                                    <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/logout"><i class="icon_key_alt"></i> Log Out</a>
+                                </li>
                                 <li>
                                     <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
                                 </li>
+                                <% } %>
                             </ul>
                         </li>
                     </ul>
