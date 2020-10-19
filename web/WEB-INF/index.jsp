@@ -14,17 +14,18 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Zanzibar Lido - Summer 2020</title>
-        <link rel="shortcut icon" href="image/favicon.ico" />
+
+        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
 
         <!-- CSS, includes Bootstrap (off-line)-->
-        <link href="css/styles.css" rel="stylesheet">
-        <link href="css/heading.css" rel="stylesheet">
-        <link href="css/body.css" rel="stylesheet">
-        <link href="css/carousel.css" rel="stylesheet">
+        <link href="/Zanzibar/css/styles.css" rel="stylesheet">
+        <link href="/Zanzibar/css/heading.css" rel="stylesheet">
+        <link href="/Zanzibar/css/body.css" rel="stylesheet">
+        <link href="/Zanzibar/css/carousel.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
-        <script src="js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
 
         <style>
@@ -43,7 +44,7 @@
         <main role="main">
 
             <!-- Carousel -->
-            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="2000">
+            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000" style="padding-top: 6%;">
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#myCarousel" data-slide-to="1" class=""></li>
@@ -75,9 +76,9 @@
 
             <div class="container marketing">
 
-                <% if(request.getSession().getAttribute("Login")!=null && request.getSession().getAttribute("Login").equals("TRUE")){ %>
+                <% if(request.getSession().getAttribute("Login")!=null && ( request.getSession().getAttribute("Login").equals("TRUE") || request.getSession().getAttribute("Login").equals("ERROR")) ){ %>
                         <script> $('#loginModal').modal('show') </script>
-                <%      request.getSession().removeAttribute("Login");
+                <%      pageContext.getOut().print( request.getSession().getAttribute("Login") );
                     }
                     if(request.getAttribute("ErrorMessage")!= null){
                         pageContext.getOut().print(request.getAttribute("ErrorMessage"));
@@ -85,8 +86,7 @@
                     if(request.getSession().getAttribute("USER") != null) {
                         pageContext.getOut().print("Benvenuto: ");
                         pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail() + ((User) request.getSession().getAttribute("USER")).getRuolo());
-                    }
-                %>
+                    } %>
 
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
@@ -137,7 +137,7 @@
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
         <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
         <!-- Script -->
-        <script src="js/scripts.js" crossorigin="anonymous"></script>
+        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
     </body>
 </html>
 

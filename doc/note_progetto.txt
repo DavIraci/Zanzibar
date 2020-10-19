@@ -1,0 +1,29 @@
+--------------------------------------------------
+Argomento tesina APSW: Gestione lido balneare
+Potete pensare tutte le funzionalità che volete per la gestione di un lido (a titolo di esempio ve ne indico qualcuna).
+Una volta definita l'architettura e le funzionalità del sistema scrivete le specifiche del vostro sistema, compilate come da modello allegato, inviatemele e aspettate l'accettazione. Le specifiche vanno consegnate almeno una settimana prima della data prevista dell'esame in modo da avere il tempo di implementare le eventuali modifiche che vi chiederò.
+
+Il progetto può essere sviluppato singolarmente o in coppia.
+
+--------------------------------------------------
+
+Funzionalità base
+	Vista biglietteria
+	Vista bagnino (rappresentazione grafica stato occupazioni)
+
+Funzionalità prenotazioni
+	Registrazione utenti
+	Vista utente (prenotazione/cancellazione)
+	Vista varco controllo
+
+Funzionalità bar
+	Vista utente (possibilità di fare ordini)
+	Vista cucina (preparazione ordini)
+
+Funzionalità amministrative
+	Vista utente (visualizzazione/pagamento conto da remoto)
+	Vista cassiere (visualizzazione/pagamento conti)
+
+Altre funzionalità
+	Display informativi contestualizzati da mettere in vari punti del lido
+	(biglietteria, bar, ombrellone, etc...)

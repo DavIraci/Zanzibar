@@ -27,14 +27,17 @@ public class loginServlet extends HttpServlet {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        } else{
-            System.out.println("Nessun utente loggato!");
+        } else if(request.getParameter("Authentication") != null && request.getParameter("Authentication").equals("Error")) {
+            System.out.println("Errore nel login!");
+            request.getSession().setAttribute("Login", "ERROR");
+        } else {
+            System.out.println("Nessun utente loggato! ");
             request.getSession().setAttribute("Login", "TRUE");
         }
         response.sendRedirect(request.getContextPath()+ "/");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+            doPost(request, response);
     }
 }
