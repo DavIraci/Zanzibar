@@ -76,17 +76,6 @@
 
             <div class="container marketing">
 
-                <% if(request.getSession().getAttribute("Login")!=null && ( request.getSession().getAttribute("Login").equals("TRUE") || request.getSession().getAttribute("Login").equals("ERROR")) ){ %>
-                        <script> $('#loginModal').modal('show') </script>
-                <%      pageContext.getOut().print( request.getSession().getAttribute("Login") );
-                    }
-                    if(request.getAttribute("ErrorMessage")!= null){
-                        pageContext.getOut().print(request.getAttribute("ErrorMessage"));
-                    }
-                    if(request.getSession().getAttribute("USER") != null) {
-                        pageContext.getOut().print("Benvenuto: ");
-                        pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail() + ((User) request.getSession().getAttribute("USER")).getRuolo());
-                    } %>
 
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
