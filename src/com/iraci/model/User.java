@@ -1,11 +1,14 @@
 package com.iraci.model;
 
+import java.time.LocalDate;
+
 public class User {
     private int idUtente;
     private String nome;
     private String cognome;
     private String cellulare;
     private String email;
+    private LocalDate birthday;
 
     public String getRuolo() {
         return ruolo;
@@ -57,11 +60,22 @@ public class User {
         this.cellulare = cellulare;
     }
 
-    public User(int idUtente, String nome, String cognome, String email, String cellulare, String ruolo) {
+    public User(int idUtente, String nome, String cognome, String email, String cellulare, String ruolo, LocalDate birthday) {
         this.email = email;
         this.cognome = cognome;
         this.idUtente = idUtente;
         this.cellulare = cellulare;
         this.ruolo = ruolo;
+        this.birthday = birthday;
+    }
+
+    public User(String nome, String cognome, String email, String cellulare, String ruolo, LocalDate birthday) {
+        this.nome=nome;
+        this.cognome=cognome;
+        this.email = email;
+        this.cognome = cognome;
+        this.cellulare = cellulare;
+        this.ruolo = ruolo;
+        this.birthday = birthday;
     }
 }

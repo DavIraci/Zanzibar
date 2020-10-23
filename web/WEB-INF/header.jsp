@@ -28,16 +28,6 @@
                 }
             }
         </script>
-        <!--style>
-            .field-icon {
-                float: right;
-                margin-left: -50px;
-                margin-top: -25px;
-                margin-right: 2rem;
-                position: relative;
-                z-index: 4;
-            }
-        </style-->
     </head>
     <body>
         <!-- NavBar -->
@@ -187,7 +177,7 @@
 
                     <!-- Register Modal body -->
                     <div class="modal-body">
-                        <form action="j_security_check" method="POST" class="was-validated">
+                        <form action="${pageContext.request.contextPath}/signin" method="POST" class="was-validated">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -204,13 +194,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Cellulare</label>
-                                        <input type="tel" class="form-control" id="phone" placeholder="Inserisci numero cellulare" name="j_phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="phone" placeholder="Inserisci numero cellulare" name="j_phone" pattern="[0-9]{3}-[0-9]{7}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tel">Telefono</label>
-                                        <input type="tel" class="form-control" id="tel" placeholder="Inserisci numero cellulare" name="j_tele" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="tel" placeholder="Inserisci numero cellulare" name="j_tele" pattern="[0-9]{3}-[0-9]{7}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>

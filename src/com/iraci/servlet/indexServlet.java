@@ -1,5 +1,7 @@
 package com.iraci.servlet;
 
+import com.iraci.utils.Mailer;
+
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

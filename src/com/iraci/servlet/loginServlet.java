@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class loginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getUserPrincipal() != null){
-            System.out.println("Utente loggato: "+ request.getUserPrincipal().getName());
+            //System.out.println("Utente loggato: "+ request.getUserPrincipal().getName());
             try {
                 User user=DataBase.takeUser(request.getUserPrincipal().getName());
                 if(user == null){
@@ -28,10 +28,10 @@ public class loginServlet extends HttpServlet {
                 throwables.printStackTrace();
             }
         } else if(request.getParameter("Authentication") != null && request.getParameter("Authentication").equals("Error")) {
-            System.out.println("Errore nel login!");
+            //System.out.println("Errore nel login!");
             request.getSession().setAttribute("Login", "ERROR");
         } else {
-            System.out.println("Nessun utente loggato! ");
+            //System.out.println("Nessun utente loggato! ");
             request.getSession().setAttribute("Login", "TRUE");
         }
         response.sendRedirect(request.getContextPath()+ "/");
