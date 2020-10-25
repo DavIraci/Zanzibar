@@ -2,6 +2,10 @@ package com.iraci.model;
 
 import java.time.LocalDate;
 
+/**
+ *
+ * @author Davide Iraci
+ */
 public class User {
     private int idUtente;
     private String nome;

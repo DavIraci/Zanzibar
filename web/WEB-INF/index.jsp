@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Cuchi
+  User: Davide Iraci
   Date: 11/10/2020
   Time: 22:18
   To change this template use File | Settings | File Templates.
@@ -24,9 +24,11 @@
         <link href="/Zanzibar/css/carousel.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
+        <!-- Script -->
         <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
 
         <style>
             @media (max-width: 992px){
@@ -124,9 +126,7 @@
 
 
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
-        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
-        <!-- Script -->
-        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
+        <div class="scroll-to-top position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
     </body>
 </html>
 

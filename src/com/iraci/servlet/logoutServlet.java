@@ -8,10 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Questa classe gestisce la chiusura della sessione
+ * @author Davide Iraci
+ */
 @WebServlet(name = "logoutServlet", urlPatterns={"/logout"})
 public class logoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        response.sendRedirect(request.getContextPath());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

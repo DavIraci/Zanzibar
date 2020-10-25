@@ -8,14 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "errorServlet", urlPatterns={"/error"})
+/**
+ * Questa classe gestisce i possibili errori creati dall'applicativo, come il 400 o il 404
+ * @author Davide Iraci
+ */
+@WebServlet(name = "error", urlPatterns={"/error"})
 public class errorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/error.jsp");
-        dispatcher.forward(request, response);
+        doGet(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        int errorCode = (int) request.getAttribute("javax.servlet.error.status_code");
+        request.setAttribute("errorCode", errorCode);
+        response.setStatus(errorCode);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/error.jsp");
+        dispatcher.forward(request, response);
     }
 }

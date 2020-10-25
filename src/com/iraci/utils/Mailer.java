@@ -68,7 +68,7 @@ public class Mailer implements Runnable {
 		
 		// Compone il messaggio della mail.
 		MimeMessage msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress(indirizzoEmail));
+		msg.setFrom(new InternetAddress("Lido Zanzibar <"+indirizzoEmail+">"));
 		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(indirizzoDestinazione));
 		msg.setSubject(oggetto);
 		msg.setContent(messaggio, "text/html");

@@ -7,17 +7,16 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +47,12 @@ public class DataBase {
         }
     }
 
+    /**
+     *
+     * @param email
+     * @return
+     * @throws SQLException
+     */
     public static User takeUser(String email) throws SQLException{
         String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, u.birthday FROM iraci.user AS U WHERE U.email=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
@@ -71,10 +76,11 @@ public class DataBase {
      * @param cellulare
      * @param datanascita
      * @param password
+     * @throws SQLException
      */
     public static void userSignIn(String nome, String cognome, String email, String cellulare, LocalDate datanascita, String password) throws SQLException{
         String query1 = "INSERT INTO iraci.user (name, surname, email, password, telephone, birthday, role) " +
-                "VALUES (?, ?, ?, MD5(?), ?, ?, ?)";
+                "VALUES (?, ?, ?, SHA2(?, 256), ?, ?, ?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, nome);
@@ -86,17 +92,18 @@ public class DataBase {
             statement.setString(7, "User");
             statement.executeUpdate();
         }
-
     }
 
     /**
-     * Ritorna l'IDUtente a partire dall'indirizzo email
+     * Ritorna TRUE se esiste un account con la stessa email, viceversa FALSE
      * @param email
+     * @return
+     * @throws SQLException
      */
     public static boolean checkAlreadyReg(String email) throws SQLException{
-        String query1 = "SELECT U.email FROM iraci.user AS U WHERE u.email=?";
+        String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=?";
         boolean res=false;
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
@@ -105,5 +112,47 @@ public class DataBase {
             result.close();
             return res;
         }
+    }
+
+    /**
+     * Metodo che genera una stringa di 10 caratteri con almeno un carattare minuscolo, uno maiuscolo e un numero
+     * @param length
+     * @return
+     */
+    public static String generateRandomPassword(int length) {
+        String character = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String password="";
+        Random random = new Random();
+        String regex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
+
+        while (!password.matches(regex)){
+            password = "";
+            for (int i = 0; i < length; i++) {
+                password+=character.charAt(random.nextInt(character.length()));
+            }
+        }
+        return password;
+    }
+
+    /**
+     * Ritorna la stringa contenente la nuova password o ritorna null se non trova corrispondenza
+     * @param email
+     * @return
+     * @throws SQLException
+     */
+    public static String resetPassword(String email) throws SQLException{
+        String newpwd=generateRandomPassword(8);
+        String query = "UPDATE iraci.user SET password=SHA2(?, 256) WHERE email=? ";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newpwd);
+            statement.setString(2, email);
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                return  newpwd;
+            }else{
+                return null;
+            }
+        }
+
     }
 }

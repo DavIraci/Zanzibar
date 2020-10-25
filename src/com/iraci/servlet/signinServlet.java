@@ -1,8 +1,6 @@
 package com.iraci.servlet;
 
 import com.iraci.DataBase.DataBase;
-import com.iraci.model.Notify;
-import com.iraci.model.User;
 import com.iraci.utils.Mailer;
 
 import javax.servlet.ServletException;
@@ -12,54 +10,73 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Questa classe gestisce la creazione di un nuovo account User da parte di un utente
+ * @author Davide Iraci
+ */
 @WebServlet(name = "signinServlet", urlPatterns={"/signin"})
 public class signinServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getUserPrincipal() == null)
+            request.getSession().setAttribute("SignIn","");
+        response.sendRedirect(request.getContextPath());
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String nome, cognome, email, password, confPassword, cellulare, nascita, errore;
-            nome = request.getParameter("j_username");
-            cognome = request.getParameter("j_surname");
-            email = request.getParameter("j_email");
-            password = request.getParameter("j_password");
-            confPassword = request.getParameter("j_passwordrep");
-            cellulare = request.getParameter("j_phone");
-            nascita = request.getParameter("j_birth");
-            LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-            errore = verificaDatiRegistrazione(nome, cognome, email, password, confPassword, cellulare, nascita);
-
-            if(errore!=null) { //sono stati inseriti dati scorretti
-                request.getSession().setAttribute("SignInError", errore);
-                response.sendRedirect(request.getContextPath());
-                return;
-            }
-
-            if(DataBase.checkAlreadyReg(email)) { // l'indirizzo email già esiste
-                request.getSession().setAttribute("SignInError","L'indirizzo email inserito è già associato ad un altro account");
-                response.sendRedirect(request.getContextPath()+"/Signin");
-                return;
-            }
-            DataBase.userSignIn(nome, cognome, email, cellulare, datanascita, password);
-
-            String messaggio = "<h1>Il Lido Zanzibar ti d&agrave; il benvenuto!</h1> <p>Ciao " + nome + " " + cognome + ", <br>"
-                    + "ti comunichiamo che la registrazione del tuo account &egrave; avvenuta con successo, "
-                    + "<a href='"+ Mailer.getAddress() + request.getContextPath() + "'> visita il nostro sito</a> per usufruire dei nostri servizi."
-                    + "<br>Ti auguriamo una buona permanenza nel nostro lido e speriamo di vederti presto! <br><br>"
-                    + "Lo staff del lido</p>";
-            Mailer mailer = new Mailer( email, "Lido Zanzibar - Benvenuto", messaggio);
-            Thread thread = new Thread(mailer);
-            thread.start();
-
-
-            request.getSession().setAttribute("SignIn","Registrazione completata con successo");
+        if(request.getUserPrincipal() != null)
             response.sendRedirect(request.getContextPath());
+        else {
+            try {
+                String nome, cognome, email, password, confPassword, cellulare, nascita, errore;
+                nome = request.getParameter("username");
+                cognome = request.getParameter("surname");
+                email = request.getParameter("email");
+                password = request.getParameter("password");
+                confPassword = request.getParameter("passwordrep");
+                cellulare = request.getParameter("phone");
+                nascita = request.getParameter("birth");
+                LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        }catch(Exception e) {
-            e.printStackTrace();
-            response.sendError(400);
+                errore = verificaDatiRegistrazione(nome, cognome, email, password, confPassword, cellulare, nascita);
+
+                if (errore != null) { //sono stati inseriti dati scorretti
+                    request.getSession().setAttribute("SignInError", errore);
+                    response.sendRedirect(request.getContextPath());
+                    return;
+                }
+
+                if (DataBase.checkAlreadyReg(email)) { // l'indirizzo email già esiste
+                    request.getSession().setAttribute("name", nome);
+                    request.getSession().setAttribute("surname", cognome);
+                    request.getSession().setAttribute("email", email);
+                    request.getSession().setAttribute("phone", cellulare);
+                    request.getSession().setAttribute("birth", nascita);
+                    request.getSession().setAttribute("tel", request.getParameter("tel"));
+                    request.getSession().setAttribute("SignInError", "L'indirizzo email inserito è già associato ad un altro account");
+                    response.sendRedirect(request.getContextPath());
+                    return;
+                }
+                DataBase.userSignIn(nome, cognome, email, cellulare, datanascita, password);
+
+                String messaggio = "<p><h1>Il Lido Zanzibar ti d&agrave; il benvenuto!</h1> <p>Ciao " + nome + " " + cognome + ", <br>"
+                        + "ti comunichiamo che la registrazione del tuo account &egrave; avvenuta con successo, "
+                        + "<a href='" + Mailer.getAddress() + request.getContextPath() + "'> visita il nostro sito</a> per usufruire dei nostri servizi."
+                        + "<br>Ti auguriamo una buona permanenza nel nostro lido e speriamo di vederti presto! <br><br>"
+                        + "Lo staff del lido</p>";
+                Mailer mailer = new Mailer(email, "Lido Zanzibar - Benvenuto", messaggio);
+                Thread thread = new Thread(mailer);
+                thread.start();
+
+
+                request.getSession().setAttribute("SignIn", "Registrazione completata con successo");
+                response.sendRedirect(request.getContextPath());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendError(400);
+            }
         }
     }
 
@@ -93,10 +110,5 @@ public class signinServlet extends HttpServlet {
             return "La data di nascita non rispetta il formato richiesto.";
 
         return null;
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("SignIn","Effettua la registrazione");
-        response.sendRedirect(request.getContextPath());
     }
 }

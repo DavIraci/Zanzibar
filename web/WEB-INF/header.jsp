@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Cuchi
+  User: Davide Iraci
   Date: 16/10/2020
   Time: 10:46
   To change this template use File | Settings | File Templates.
@@ -9,25 +9,6 @@
 <%@ page import="com.iraci.model.User" %>
 <html>
     <head>
-        <script>
-            function validatePasswordConf() {
-                var messaggio = "Le password non corrispondono";
-
-                // Variabili che contengono i dati inseriti dall'utente nel form di registrazione.
-                var password= document.getElementById("pwd1");
-                var password_conf = document.getElementById("pwd2");
-
-                // Controlli sui pattern richiesti per tutti i campi.
-                if( password.value != password_conf.value) {
-                    password_conf.setCustomValidity(messaggio);
-                    return false;
-                }
-                else {
-                    password_conf.setCustomValidity('');
-                    return true;
-                }
-            }
-        </script>
     </head>
     <body>
         <!-- NavBar -->
@@ -63,7 +44,7 @@
                                 </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
                                 <li class="eborder-top">
-                                    <a ><i class="icon_profile">Admin</i> Admin <% pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getCognome()); %></a>
+                                    <a ><i class="icon_profile">Admin</i> Admin <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                 </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
@@ -83,7 +64,7 @@
                                 </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("User") ){ %>
                                 <li class="eborder-top">
-                                    <a ><i class="icon_profile">User</i> User <% pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getCognome()); %></a>
+                                    <a ><i class="icon_profile">User</i> User <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                 </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
@@ -121,14 +102,13 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
-
-
                     <!-- Login Modal body -->
                     <div class="modal-body">
                         <% if(request.getSession().getAttribute("Login")!=null && ( request.getSession().getAttribute("Login").equals("TRUE") || request.getSession().getAttribute("Login").equals("ERROR")) ){ %>
                                 <script> $('#loginModal').modal('show') </script>
                         <%      if(request.getSession().getAttribute("Login").equals("ERROR")){ %>
-                                    <div class="alert alert-danger" role="alert">
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                                         Username e password errati! Riprovare
                                     </div>
                                 <% }
@@ -136,7 +116,7 @@
                             } %>
                         <form action="j_security_check" method="POST" class="was-validated">
                             <div class="form-group">
-                                <label for="uname">Username:</label>
+                                <label for="uname">Email:</label>
                                 <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="uname" placeholder="Inserisci username" name="j_username" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
                                 <div class="valid-feedback">Valido</div>
                                 <div class="invalid-feedback">Per favore riempi questo campo</div>
@@ -149,11 +129,13 @@
                                 <div class="valid-feedback">Valido</div>
                                 <div class="invalid-feedback">Per favore riempi questo campo</div>
                             </div>
+                            <div class="form-group links">
+                                <a onclick="showResetPwd()" style="text-decoration: underline;color: #1abc9c;cursor:pointer;"><small>Password dimenticata? Reimpostala!</small></a>
+                            </div>
 
-                            <!-- Modal footer -->
+                            <!-- Login Modal footer -->
                             <div class="modal-footer">
                                 <button type="submit"  class="btn btn-primary">Accedi</button>
-                                <button type="button" class="btn btn-secondary" href="#">Reimposta Password</button>
                             </div>
                         </form>
                     </div>
@@ -173,34 +155,53 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
-
-
-                    <!-- Register Modal body -->
+                     <!-- Register Modal body -->
                     <div class="modal-body">
+                        <% if(request.getSession().getAttribute("SignInError")!=null ){ %>
+                                <script> $('#registerModal').modal('show') </script>
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                   <%= request.getSession().getAttribute("SignInError") %>
+                                </div>
+                        <%      request.getSession().removeAttribute("SignInError");
+                            }
+                            if(request.getSession().getAttribute("SignIn")!=null ){ %>
+                                <script> $('#registerModal').modal('show') </script>
+                        <%      if(! request.getSession().getAttribute("SignIn").equals("")){ %>
+                                    <div class="alert alert-success alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <%=             request.getSession().getAttribute("SignIn") %>
+                                    </div>
+                        <%      }
+                                request.getSession().removeAttribute("SignIn");
+                            } %>
+
+
+
                         <form action="${pageContext.request.contextPath}/signin" method="POST" class="was-validated">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="name">Nome</label>
-                                        <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="name" placeholder="Inserisci nome" name="j_username" required>
+                                        <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="name" placeholder="Inserisci nome" name="username" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="birth">Data di Nascita</label><br>
-                                        <input type="date" class="form-control" id="birth" name="j_birth" min="1900-01-01" max="2020-12-31" pattern="\d{2}/\d{2}/\d{4}" required>
+                                        <input type="date" class="form-control" id="birth" name="birth" min="1900-01-01" max="2020-12-31" pattern="\d{2}/\d{2}/\d{4}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Cellulare</label>
-                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="phone" placeholder="Inserisci numero cellulare" name="j_phone" pattern="[0-9]{3}-[0-9]{7}" required>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="phone" placeholder="Inserisci numero cellulare" name="phone" pattern="[0-9]{3}-[0-9]{7}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="tel">Telefono</label>
-                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="tel" placeholder="Inserisci numero cellulare" name="j_tele" pattern="[0-9]{3}-[0-9]{7}" required>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="tel" placeholder="Inserisci numero cellulare" name="tele" pattern="[0-9]{3}-[0-9]{7}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
@@ -209,26 +210,26 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="surname">Cognome</label>
-                                        <input  type="text" class="form-control" id="surname" placeholder="Inserisci cognome" name="j_surname" required>
+                                        <input  type="text" class="form-control" id="surname" placeholder="Inserisci cognome" name="surname" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Indirizzo e-mail</label>
-                                        <input type="email" class="form-control" id="email" placeholder="Inserisci indirizzo e-mail" name="j_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                                        <input type="email" class="form-control" id="email" placeholder="Inserisci indirizzo e-mail" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="pwd1">Password</label>
-                                        <input  class="form-control" id="pwd1" name="j_password" oninput="validatePasswordConf()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Inserisci password" required type="password">
+                                        <input  class="form-control" id="pwd1" name="password" oninput="validatePasswordConf()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Inserisci password" required type="password">
                                         <span toggle="#pwd1" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
                                         <label for="pwd2">Ripeti password</label>
-                                        <input  class="form-control" id="pwd2" name="j_passwordrep" oninput="validatePasswordConf()" placeholder="Ripeti password" required type="password">
+                                        <input  class="form-control" id="pwd2" name="passwordrep" oninput="validatePasswordConf()" placeholder="Ripeti password" required type="password">
                                         <span toggle="#pwd2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
@@ -246,20 +247,84 @@
                 </div>
             </div>
         </div>
+
+        <% if(session.getAttribute("name")!=null){ %>
+                <script>$("#name").val("<%= session.getAttribute("name").toString()%>")</script>
+        <% 	    session.removeAttribute("name");
+            } %>
+
+        <% if(session.getAttribute("surname")!=null){ %>
+                <script>$("#surname").val("<%= session.getAttribute("surname").toString()%>")</script>
+        <% 	    session.removeAttribute("surname");
+            } %>
+
+        <% if(session.getAttribute("email")!=null){ %>
+                <script>$("#email").val("<%= session.getAttribute("email").toString()%>")</script>
+        <% 	    session.removeAttribute("email");
+            } %>
+
+        <% if(session.getAttribute("phone")!=null){ %>
+                <script>$("#phone").val("<%= session.getAttribute("phone").toString()%>")</script>
+        <% 	    session.removeAttribute("phone");
+            } %>
+
+        <% if(session.getAttribute("birth")!=null){ %>
+                <script>$("#birth").val("<%= session.getAttribute("birth").toString()%>")</script>
+        <% 	    session.removeAttribute("birth");
+            } %>
+
+        <% if(session.getAttribute("tel")!=null){ %>
+                <script>$("#tel").val("<%= session.getAttribute("tel").toString()%>")</script>
+        <% 	    session.removeAttribute("tel");
+            } %>
         <!-- Register Modal -->
 
+        <!-- ResetPassword Modal -->
+        <div class="modal fade" id="resetPasswordModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reimposta Password</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- ResetPassword Modal body -->
+                    <div class="modal-body">
+                        <% if(request.getSession().getAttribute("ResetPwd")!=null ){ %>
+                                <script> $('#resetPasswordModal').modal('show') </script>
+                        <%      if(request.getSession().getAttribute("ResetPwd").equals("ERROR")){ %>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        Nessun account associato a questo indirizzo email!
+                                    </div>
+                        <%      }else if(request.getSession().getAttribute("ResetPwd").equals("SUCCESS")){ %>
+                                    <div class="alert alert-success alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        E' stata inviata una mail contenete le indicazioni su come procedere!
+                                    </div>
+                        <%      }
+                                request.getSession().removeAttribute("ResetPwd");
+                        } %>
+                        <form action="${pageContext.request.contextPath}/resetpwd" method="POST" class="was-validated">
+                            <div class="form-group">
+                                <label for="resetmail">Indirizzo email associato:</label>
+                                <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="resetmail" placeholder="Inserisci username" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                                <div class="valid-feedback">Valido</div>
+                                <div class="invalid-feedback">Per favore riempi questo campo</div>
+                            </div>
+
+                            <!-- ResetPassword Modal footer -->
+                            <div class="modal-footer">
+                                <button type="submit"  class="btn btn-primary">Reimposta Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ResetPassword Modal -->
 
     </body>
-    <script>
-        $(".toggle-password").click(function() {
-
-            $(this).toggleClass("fa-eye fa-eye-slash");
-            var input = $($(this).attr("toggle"));
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-            } else {
-                input.attr("type", "password");
-            }
-        });
-    </script>
 </html>
