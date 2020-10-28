@@ -36,52 +36,41 @@
                             </a>
                             <ul class="dropdown-menu extended" style="left: auto;right: 0" id="dropDownMenu">
                                 <% if(request.getSession().getAttribute("USER") == null){ %>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
-                                </li>
-                                 <li>
-                                     <a href="#" data-toggle="modal" data-target="#registerModal"><i class="icon_mail_alt" ></i> Registrati</a>
-                                </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/login"><i class="fas fa-sign-in-alt" ></i> Accedi</a>
+                                        </li>
+                                         <li>
+                                             <a href="#" data-toggle="modal" data-target="#registerModal"><i class="fas fa-pencil-alt" ></i> Registrati</a>
+                                        </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
-                                <li class="eborder-top">
-                                    <a ><i class="icon_profile">Admin</i> Admin <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
-                                    <!--a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a-->
-                                </li>
-                                <li>
-                                    <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="icon_chat_alt"></i> Chats</a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/logout"><i class="icon_key_alt"></i> Log Out</a>
-                                </li>
-                                <li>
-                                    <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-                                </li>
+                                        <li class="eborder-top">
+                                            <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                                        </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("User") ){ %>
-                                <li class="eborder-top">
-                                    <a ><i class="icon_profile">User</i> User <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/login"><i class="icon_mail_alt" ></i> Accedi</a>
-                                    <!--a href="#" data-toggle="modal" data-target="#loginModal"><i class="icon_mail_alt" ></i> Accedi</a-->
-                                </li>
-                                <li>
-                                    <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="icon_chat_alt"></i> Chats</a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/logout"><i class="icon_key_alt"></i> Log Out</a>
-                                </li>
-                                <li>
-                                    <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-                                </li>
+                                        <li class="eborder-top">
+                                            <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                                        </li>
                                 <% } %>
                             </ul>
                         </li>
@@ -183,7 +172,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="name">Nome</label>
-                                        <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="name" placeholder="Inserisci nome" name="username" required>
+                                        <input type="text" class="form-control" id="name" placeholder="Inserisci nome" name="username" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
@@ -194,14 +183,14 @@
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="phone">Cellulare</label>
-                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="phone" placeholder="Inserisci numero cellulare" name="phone" pattern="[0-9]{3}-[0-9]{7}" required>
+                                        <label for="mobile">Cellulare</label>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="mobile" placeholder="Inserisci numero cellulare" name="mobile" pattern="[0-9]{10}" required>
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tel">Telefono</label>
-                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="tel" placeholder="Inserisci numero cellulare" name="tele" pattern="[0-9]{3}-[0-9]{7}" required>
+                                        <label for="telephone">Telefono</label>
+                                        <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="telephone" placeholder="Inserisci numero cellulare" name="telephone" pattern="[0-9]{10}">
                                         <div class="valid-feedback">Valido</div>
                                         <div class="invalid-feedback">Per favore riempi questo campo</div>
                                     </div>
@@ -263,8 +252,8 @@
         <% 	    session.removeAttribute("email");
             } %>
 
-        <% if(session.getAttribute("phone")!=null){ %>
-                <script>$("#phone").val("<%= session.getAttribute("phone").toString()%>")</script>
+        <% if(session.getAttribute("mobile")!=null){ %>
+                <script>$("#mobile").val("<%= session.getAttribute("mobile").toString()%>")</script>
         <% 	    session.removeAttribute("phone");
             } %>
 
@@ -273,8 +262,8 @@
         <% 	    session.removeAttribute("birth");
             } %>
 
-        <% if(session.getAttribute("tel")!=null){ %>
-                <script>$("#tel").val("<%= session.getAttribute("tel").toString()%>")</script>
+        <% if(session.getAttribute("telephone")!=null){ %>
+                <script>$("#telephone").val("<%= session.getAttribute("telephone").toString()%>")</script>
         <% 	    session.removeAttribute("tel");
             } %>
         <!-- Register Modal -->

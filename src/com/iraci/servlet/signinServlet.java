@@ -29,19 +29,27 @@ public class signinServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath());
         else {
             try {
-                String nome, cognome, email, password, confPassword, cellulare, nascita, errore;
+                String nome, cognome, email, password, confPassword, cellulare, telefono, nascita, errore;
                 nome = request.getParameter("username");
                 cognome = request.getParameter("surname");
                 email = request.getParameter("email");
                 password = request.getParameter("password");
                 confPassword = request.getParameter("passwordrep");
-                cellulare = request.getParameter("phone");
+                cellulare = request.getParameter("mobile");
+                telefono = request.getParameter("telephone");
                 nascita = request.getParameter("birth");
                 LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                errore = verificaDatiRegistrazione(nome, cognome, email, password, confPassword, cellulare, nascita);
+                errore = verificaDatiRegistrazione(nome, cognome, email, password, confPassword, cellulare, telefono, nascita);
 
                 if (errore != null) { //sono stati inseriti dati scorretti
+                    request.getSession().setAttribute("name", nome);
+                    request.getSession().setAttribute("surname", cognome);
+                    request.getSession().setAttribute("email", email);
+                    request.getSession().setAttribute("mobile", cellulare);
+                    request.getSession().setAttribute("telephone", telefono);
+                    request.getSession().setAttribute("birth", nascita);
+                    request.getSession().setAttribute("tel", request.getParameter("tel"));
                     request.getSession().setAttribute("SignInError", errore);
                     response.sendRedirect(request.getContextPath());
                     return;
@@ -51,14 +59,14 @@ public class signinServlet extends HttpServlet {
                     request.getSession().setAttribute("name", nome);
                     request.getSession().setAttribute("surname", cognome);
                     request.getSession().setAttribute("email", email);
-                    request.getSession().setAttribute("phone", cellulare);
+                    request.getSession().setAttribute("mobile", cellulare);
+                    request.getSession().setAttribute("telephone", telefono);
                     request.getSession().setAttribute("birth", nascita);
-                    request.getSession().setAttribute("tel", request.getParameter("tel"));
                     request.getSession().setAttribute("SignInError", "L'indirizzo email inserito è già associato ad un altro account");
                     response.sendRedirect(request.getContextPath());
                     return;
                 }
-                DataBase.userSignIn(nome, cognome, email, cellulare, datanascita, password);
+                DataBase.userSignIn(nome, cognome, email, cellulare, telefono, datanascita, password);
 
                 String messaggio = "<p><h1>Il Lido Zanzibar ti d&agrave; il benvenuto!</h1> <p>Ciao " + nome + " " + cognome + ", <br>"
                         + "ti comunichiamo che la registrazione del tuo account &egrave; avvenuta con successo, "
@@ -80,7 +88,7 @@ public class signinServlet extends HttpServlet {
         }
     }
 
-    public static String verificaDatiRegistrazione(String nome, String cognome, String email, String password, String confPassword, String cellulare, String nascita) {
+    public static String verificaDatiRegistrazione(String nome, String cognome, String email, String password, String confPassword, String cellulare, String telefono, String nascita) {
 
         if( (nome == null || cognome == null || email == null || password == null || confPassword == null || cellulare == null || nascita == null) || (nome.replaceAll("\\s+","").contentEquals("") || cellulare.replaceAll("\\s+","").contentEquals("") || cognome.replaceAll("\\s+","").contentEquals("") ||
                 email.replaceAll("\\s+","").contentEquals("") || password.replaceAll("\\s+","").contentEquals("") || nascita.replaceAll("\\s+","").contentEquals("")) )
@@ -108,6 +116,10 @@ public class signinServlet extends HttpServlet {
         regex = "\\d{4}-\\d{2}-\\d{2}";
         if(!nascita.matches(regex))
             return "La data di nascita non rispetta il formato richiesto.";
+
+        regex = "[0-9]{10}";
+        if( (!telefono.replaceAll("\\s+","").contentEquals("") && !telefono.matches(regex)) || !cellulare.matches(regex))
+            return "Il telefono non rispetta il formato richiesto.";
 
         return null;
     }

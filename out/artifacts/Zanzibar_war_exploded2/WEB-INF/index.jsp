@@ -43,10 +43,10 @@
     </head>
 
     <body id="page-top">
-        <main role="main">
+        <main role="main" style="padding-top: calc(74px);padding-bottom: 6rem;">
 
             <!-- Carousel -->
-            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000" style="padding-top: 6%;">
+            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000">
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#myCarousel" data-slide-to="1" class=""></li>
@@ -121,9 +121,9 @@
 
             </div>
 
-            <%@ include file="/WEB-INF/footer.jsp"%>
-        </main>
 
+        </main>
+        <%@ include file="/WEB-INF/footer.jsp"%>
 
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
         <div class="scroll-to-top position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>

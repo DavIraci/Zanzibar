@@ -54,13 +54,13 @@ public class DataBase {
      * @throws SQLException
      */
     public static User takeUser(String email) throws SQLException{
-        String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, u.birthday FROM iraci.user AS U WHERE U.email=?";
+        String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.email=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, email);
             ResultSet result = statement.executeQuery();
             if (result.next()) {
-                return new User(result.getInt("id_User"), result.getString("name"), result.getString("surname"), result.getString("email"), result.getString("telephone"), result.getString("role"), LocalDate.parse(result.getDate("birthday").toString()));
+                return new User(result.getInt("id_User"), result.getString("name"), result.getString("surname"), result.getString("email"), result.getString("mobile"), result.getString("telephone"), result.getString("role"), LocalDate.parse(result.getDate("birthday").toString()));
             } else {
                 return null;
             }
@@ -78,9 +78,9 @@ public class DataBase {
      * @param password
      * @throws SQLException
      */
-    public static void userSignIn(String nome, String cognome, String email, String cellulare, LocalDate datanascita, String password) throws SQLException{
-        String query1 = "INSERT INTO iraci.user (name, surname, email, password, telephone, birthday, role) " +
-                "VALUES (?, ?, ?, SHA2(?, 256), ?, ?, ?)";
+    public static void userSignIn(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password) throws SQLException{
+        String query1 = "INSERT INTO iraci.user (name, surname, email, password, mobile, telephone, birthday, role) " +
+                "VALUES (?, ?, ?, SHA2(?, 256), ?, ?, ?, ?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, nome);
@@ -88,8 +88,9 @@ public class DataBase {
             statement.setString(3, email);
             statement.setString(4, password);
             statement.setString(5, cellulare);
-            statement.setDate(6, Date.valueOf(datanascita));
-            statement.setString(7, "User");
+            statement.setString(6, telefono);
+            statement.setDate(7, Date.valueOf(datanascita));
+            statement.setString(8, "User");
             statement.executeUpdate();
         }
     }
