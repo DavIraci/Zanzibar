@@ -2,6 +2,7 @@ package com.iraci.servlet;
 
 import com.iraci.DataBase.DataBase;
 import com.iraci.utils.Mailer;
+import com.iraci.utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,7 +41,7 @@ public class signinServlet extends HttpServlet {
                 nascita = request.getParameter("birth");
                 LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                errore = verificaDatiRegistrazione(nome, cognome, email, password, confPassword, cellulare, telefono, nascita);
+                errore = Utils.verificaDatiForm(nome, cognome, email, password, confPassword, cellulare, telefono, nascita);
 
                 if (errore != null) { //sono stati inseriti dati scorretti
                     request.getSession().setAttribute("name", nome);
@@ -88,7 +89,7 @@ public class signinServlet extends HttpServlet {
         }
     }
 
-    public static String verificaDatiRegistrazione(String nome, String cognome, String email, String password, String confPassword, String cellulare, String telefono, String nascita) {
+    /*public static String verificaDatiRegistrazione(String nome, String cognome, String email, String password, String confPassword, String cellulare, String telefono, String nascita) {
 
         if( (nome == null || cognome == null || email == null || password == null || confPassword == null || cellulare == null || nascita == null) || (nome.replaceAll("\\s+","").contentEquals("") || cellulare.replaceAll("\\s+","").contentEquals("") || cognome.replaceAll("\\s+","").contentEquals("") ||
                 email.replaceAll("\\s+","").contentEquals("") || password.replaceAll("\\s+","").contentEquals("") || nascita.replaceAll("\\s+","").contentEquals("")) )
@@ -122,5 +123,5 @@ public class signinServlet extends HttpServlet {
             return "Il telefono non rispetta il formato richiesto.";
 
         return null;
-    }
+    }*/
 }

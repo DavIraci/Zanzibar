@@ -84,24 +84,31 @@
                                     <div class="invalid-feedback">Per favore riempi questo campo</div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pwd1">Password</label>
-                                    <input  class="form-control" id="pwd1" name="password" oninput="validatePasswordConf()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Inserisci password" required type="password">
+                                    <label for="pwd1">Nuova Password</label>
+                                    <input  class="form-control" id="pwd1" name="password" oninput="validatePasswordConf()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Inserisci password" type="password">
                                     <span toggle="#pwd1" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                     <div class="valid-feedback">Valido</div>
-                                    <div class="invalid-feedback">Per favore riempi questo campo</div>
+                                    <div class="invalid-feedback">Inserisci 8 caratteri,di cui almeno 1 maiuscolo, 1 miniscuolo e 1 numero</div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pwd2">Ripeti password</label>
-                                    <input  class="form-control" id="pwd2" name="passwordrep" oninput="validatePasswordConf()" placeholder="Ripeti password" required type="password">
+                                    <label for="pwd2">Ripeti nuova password</label>
+                                    <input  class="form-control" id="pwd2" name="passwordrep" oninput="validatePasswordConf()" placeholder="Ripeti password" type="password">
                                     <span toggle="#pwd2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                     <div class="valid-feedback">Valido</div>
-                                    <div class="invalid-feedback">Per favore riempi questo campo</div>
+                                    <div class="invalid-feedback">Inserisci la stessa password inserita precedentemente</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Register Modal footer -->
                         <div class="modal-footer">
+                            <div class="form-group">
+                                <label for="pwd3">Password attuale</label>
+                                <input  class="form-control" id="pwd3" name="passwordcheck" oninput="validatePasswordConf()" placeholder="Inserisci l'attuale password" required type="password">
+                                <span toggle="#pwd2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                <div class="valid-feedback">Valido</div>
+                                <div class="invalid-feedback">Inserire la password per autorizzare l'operazione</div>
+                            </div>
                             <button type="submit" class="btn btn-primary">Aggiorna</button>
                         </div>
                     </form>

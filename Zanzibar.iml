@@ -124,5 +124,6 @@
     <orderEntry type="library" name="mysql-connector-java-8.0.20" level="project" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="activation-2.2.1" level="project" />
+    <orderEntry type="library" name="javax.mail" level="project" />
   </component>
 </module>

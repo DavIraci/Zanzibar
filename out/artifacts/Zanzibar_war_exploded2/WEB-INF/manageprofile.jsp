@@ -35,9 +35,11 @@
     <body id="page-top">
         <main role="main" class="masthead">
             <div class="container col-lg-6 marketing">
+
                 <div class="text-center">
                     <h2 class="page-section-heading">Modifica dati profilo</h2>
                 </div>
+
                 <div class="modal-body">
                     <form action="${pageContext.request.contextPath}/manageprofile" method="POST" class="was-validated">
                         <div class="row">
