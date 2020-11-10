@@ -1,11 +1,28 @@
 package com.iraci.model;
 
+import java.time.LocalDate;
+
+/**
+ *
+ * @author Davide Iraci
+ */
 public class User {
     private int idUtente;
     private String nome;
     private String cognome;
     private String cellulare;
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    private String telefono;
     private String email;
+    private LocalDate birthday;
 
     public String getRuolo() {
         return ruolo;
@@ -57,11 +74,32 @@ public class User {
         this.cellulare = cellulare;
     }
 
-    public User(int idUtente, String nome, String cognome, String email, String cellulare, String ruolo) {
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public User(int idUtente, String nome, String cognome, String email, String cellulare, String telefono, String ruolo, LocalDate birthday) {
         this.email = email;
         this.cognome = cognome;
+        this.nome=nome;
+        this.telefono=telefono;
         this.idUtente = idUtente;
         this.cellulare = cellulare;
         this.ruolo = ruolo;
+        this.birthday = birthday;
+    }
+
+    public User(String nome, String cognome, String email, String cellulare, String ruolo, LocalDate birthday) {
+        this.nome=nome;
+        this.cognome=cognome;
+        this.email = email;
+        this.cognome = cognome;
+        this.cellulare = cellulare;
+        this.ruolo = ruolo;
+        this.birthday = birthday;
     }
 }

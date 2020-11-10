@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Cuchi
+  User: Davide Iraci
   Date: 11/10/2020
   Time: 22:18
   To change this template use File | Settings | File Templates.
@@ -24,9 +24,11 @@
         <link href="/Zanzibar/css/carousel.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
+        <!-- Script -->
         <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
+        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
 
         <style>
             @media (max-width: 992px){
@@ -41,10 +43,10 @@
     </head>
 
     <body id="page-top">
-        <main role="main">
+        <main role="main" style="padding-top: calc(74px);padding-bottom: 6rem;">
 
             <!-- Carousel -->
-            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000" style="padding-top: 6%;">
+            <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000">
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#myCarousel" data-slide-to="1" class=""></li>
@@ -76,17 +78,6 @@
 
             <div class="container marketing">
 
-                <% if(request.getSession().getAttribute("Login")!=null && ( request.getSession().getAttribute("Login").equals("TRUE") || request.getSession().getAttribute("Login").equals("ERROR")) ){ %>
-                        <script> $('#loginModal').modal('show') </script>
-                <%      pageContext.getOut().print( request.getSession().getAttribute("Login") );
-                    }
-                    if(request.getAttribute("ErrorMessage")!= null){
-                        pageContext.getOut().print(request.getAttribute("ErrorMessage"));
-                    }
-                    if(request.getSession().getAttribute("USER") != null) {
-                        pageContext.getOut().print("Benvenuto: ");
-                        pageContext.getOut().print( ((User) request.getSession().getAttribute("USER")).getEmail() + ((User) request.getSession().getAttribute("USER")).getRuolo());
-                    } %>
 
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
@@ -130,14 +121,12 @@
 
             </div>
 
-            <%@ include file="/WEB-INF/footer.jsp"%>
-        </main>
 
+        </main>
+        <%@ include file="/WEB-INF/footer.jsp"%>
 
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
-        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
-        <!-- Script -->
-        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
+        <div class="scroll-to-top position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
     </body>
 </html>
 

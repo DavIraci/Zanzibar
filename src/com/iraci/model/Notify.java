@@ -1,10 +1,10 @@
-package model;
+package com.iraci.model;
 
 import java.io.Serializable;
 
 /**
  * Classe che contiene i dati di una notifica.
- * @author Marco La Martina
+ * @author Davide Iraci
  */
 public class Notify implements Serializable{
 	

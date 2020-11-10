@@ -24,15 +24,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/javax.annotation.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/javax.ejb.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -43,15 +34,6 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/javax.jms.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/javax.mail.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -140,5 +122,7 @@
     </orderEntry>
     <orderEntry type="library" name="json-20180813" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.20" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="activation-2.2.1" level="project" />
   </component>
 </module>
