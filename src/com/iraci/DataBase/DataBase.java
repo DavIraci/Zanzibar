@@ -156,4 +156,39 @@ public class DataBase {
         }
 
     }
+
+    public static boolean checkPassword(String email, String checkPassword) throws SQLException {
+        String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=? AND u.password=?";
+        boolean res=false;
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, email);
+            statement.setString(2, checkPassword);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                res = true;
+            }
+            result.close();
+            return res;
+        }
+    }
+
+    public static boolean alterDate(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password, User user) throws SQLException{
+        String query = "UPDATE iraci.user SET name=?, surname=?, birthday=?, telephone=?, email=?, password=SHA2(?, 256), mobile=?  WHERE email=?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, nome);
+            statement.setString(2, cognome);
+            statement.setDate(3, Date.valueOf(datanascita));
+            statement.setString(4, telefono);
+            statement.setString(5, email);
+            statement.setString(6, password);
+            statement.setString(7, cellulare);
+            statement.setString(8, user.getEmail());
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
 }

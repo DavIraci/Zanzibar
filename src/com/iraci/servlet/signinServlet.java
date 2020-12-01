@@ -33,7 +33,7 @@ public class signinServlet extends HttpServlet {
                 String nome, cognome, email, password, confPassword, cellulare, telefono, nascita, errore;
                 nome = request.getParameter("username");
                 cognome = request.getParameter("surname");
-                email = request.getParameter("email");
+                email = request.getParameter("email").toLowerCase();
                 password = request.getParameter("password");
                 confPassword = request.getParameter("passwordrep");
                 cellulare = request.getParameter("mobile");

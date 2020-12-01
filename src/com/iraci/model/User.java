@@ -11,6 +11,10 @@ public class User {
     private String nome;
     private String cognome;
     private String cellulare;
+    private String telefono;
+    private String email;
+    private LocalDate birthday;
+    private String ruolo;
 
     public String getTelefono() {
         return telefono;
@@ -19,11 +23,6 @@ public class User {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
-    private String telefono;
-    private String email;
-    private LocalDate birthday;
-
     public String getRuolo() {
         return ruolo;
     }
@@ -32,7 +31,6 @@ public class User {
         this.ruolo = ruolo;
     }
 
-    private String ruolo;
 
     public String getEmail() {
         return email;
@@ -101,5 +99,25 @@ public class User {
         this.cellulare = cellulare;
         this.ruolo = ruolo;
         this.birthday = birthday;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User){
+            User user2=(User) obj;
+            if( this.email.equals(user2.getEmail()) && this.nome.equals(user2.getNome()) && this.cognome.equals(user2.getCognome()) && this.telefono.equals(user2.getTelefono()) && this.idUtente == user2.getIdUtente() && this.cellulare.equals(user2.getCellulare()) && this.email.equals(user2.getEmail()) && this.birthday.equals(user2.getBirthday())){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            System.out.println("Errore nel tipo di confronto!");
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.getNome() +" "+ this.getCognome() +" "+ this.getEmail() +" "+ this.getRuolo() +" "+ this.getIdUtente() +" "+ this.getCellulare() +" "+ this.getTelefono() +" "+ this.getBirthday();
     }
 }

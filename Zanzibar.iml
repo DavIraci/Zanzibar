@@ -125,5 +125,6 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="activation-2.2.1" level="project" />
     <orderEntry type="library" name="javax.mail" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
   </component>
 </module>

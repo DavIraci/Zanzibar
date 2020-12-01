@@ -33,7 +33,7 @@
     </head>
 
     <body id="page-top">
-        <main role="main">
+        <main role="main" class="masthead">
             <div class="container marketing">
                 <h1>Error ${errorCode}</h1>
 

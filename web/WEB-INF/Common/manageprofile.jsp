@@ -27,12 +27,15 @@
         <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
-        <script src="/Zanzibar/js/scripts.js" crossorigin="anonymous"></script>
+        <script src="/Zanzibar/js/scripts.js"></script>
+        <script src="/Zanzibar/js/Common/ManageProfile.js"></script>
 
         <%@ include file="/WEB-INF/header.jsp"%>
     </head>
 
     <body id="page-top">
+
+
         <main role="main" class="masthead">
             <div class="container col-lg-6 marketing">
 
@@ -41,7 +44,10 @@
                 </div>
 
                 <div class="modal-body">
-                    <form action="${pageContext.request.contextPath}/manageprofile" method="POST" class="was-validated">
+                    <div id="response">
+
+                    </div>
+                    <form method="POST" class="was-validated" id="formManageProfile">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -104,8 +110,8 @@
                         <div class="modal-footer">
                             <div class="form-group">
                                 <label for="pwd3">Password attuale</label>
-                                <input  class="form-control" id="pwd3" name="passwordcheck" oninput="validatePasswordConf()" placeholder="Inserisci l'attuale password" required type="password">
-                                <span toggle="#pwd2" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                <input  class="form-control" id="pwd3" name="passwordcheck" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Inserisci l'attuale password" required type="password">
+                                <span toggle="#pwd3" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 <div class="valid-feedback">Valido</div>
                                 <div class="invalid-feedback">Inserire la password per autorizzare l'operazione</div>
                             </div>

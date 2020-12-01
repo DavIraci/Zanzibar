@@ -14,8 +14,10 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Login</web-resource-name>
+            <web-resource-name>Common</web-resource-name>
+            <url-pattern>/common/*</url-pattern>
             <url-pattern>/login</url-pattern>
+            <url-pattern>/manageprofile</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>User</role-name>
