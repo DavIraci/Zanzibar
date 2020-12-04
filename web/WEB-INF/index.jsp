@@ -81,18 +81,9 @@
 
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
-                    <div class="row" style="text-align: center">
-                        <div class="col-lg-6">
-                            <img class="rounded-circle" src="image/umbrella-chairs.png" alt="Generic placeholder image" style="background-color: lightblue; width: 160px; height: 160px;">
-                            <h2>Ombrellone e Sdraio</h2>
-                            <p>Goditi il tuo momento di relax sdraiato all'ombra a due passi dalla riva.</p>
-                        </div><!-- /.col-lg-4 -->
-                        <div class="col-lg-6">
-                            <img class="rounded-circle" src="image/food.png" alt="Generic placeholder image" style="background-color: lightblue; width: 160px; height: 160px;">
-                            <h2>Food and Drinks</h2>
-                            <p>Vieni a gustare i piatti unici e sorseggiare i meravigliosi cocktail preparati dalla nostra cucina!</p>
-                        </div><!-- /.col-lg-4 -->
-                    </div>
+                        <div class="col-lg-1">
+                            <iframe src="image/Umbrella.svg" frameborder="0"></iframe>
+                        </div>
                 </section>
                 <!-- Services -->
 
