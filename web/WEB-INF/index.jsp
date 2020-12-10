@@ -43,7 +43,7 @@
     </head>
 
     <body id="page-top">
-        <main role="main" style="padding-top: calc(74px);padding-bottom: 6rem;">
+        <main role="main" style="padding-top: calc(74px);">
 
             <!-- Carousel -->
             <div id="myCarousel" class="carousel container slide" data-ride="carousel" data-interval="3000">
@@ -81,14 +81,6 @@
 
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
-                        <div class="col-lg-1">
-                            <iframe src="image/Umbrella.svg" frameborder="0"></iframe>
-                        </div>
-                </section>
-                <!-- Services -->
-
-                <!-- Services -->
-                <section class="page-section portfolio" id="beach">
                     <div class="row" style="text-align: center">
                         <div class="col-lg-6">
                             <img class="rounded-circle" src="image/umbrella-chairs.png" alt="Generic placeholder image" style="background-color: lightblue; width: 160px; height: 160px;">
@@ -104,14 +96,46 @@
                 </section>
                 <!-- Services -->
 
-                <!-- About -->
-                <section id="about">
-                    Chi siamo
+                <!-- Beach >
+                <section class="page-section portfolio" id="beach">
+                    <iframe src="/Zanzibar/image/mapALL.svg" frameborder="0" style="width: 100%;height: 100%;"></iframe>
                 </section>
-                <!-- About -->
-
+                 Beach -->
             </div>
 
+            <!-- Beach -->
+            <section class="page-section portfolio" id="beach">
+                <a href="${pageContext.request.contextPath}/common/book">
+                    <img alt="Beach" src="/Zanzibar/image/mapALL.svg" style="width: 100%;height: 70%;">
+                </a>
+            </section>
+            <!-- Beach -->
+
+            <!-- About -->
+            <section class="page-section bg-primary text-white mb-0" id="about">
+                <div class="container">
+                    <!-- About Section Heading-->
+                    <div class="text-center">
+                        <h2 class="page-section-heading d-inline-block text-white">ABOUT</h2>
+                    </div>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom divider-light">
+                        <div class="divider-custom-line"></div>
+                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                        <div class="divider-custom-line"></div>
+                    </div>
+                    <!-- About Section Content-->
+                    <div class="row">
+                        <div class="col-lg-4 ml-auto">
+                            <p class="pre-wrap lead">Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional SASS stylesheets for easy customization.</p>
+                        </div>
+                        <div class="col-lg-4 mr-auto">
+                            <p class="pre-wrap lead">You can create your own custom avatar for the masthead, change the icon in the dividers, and add your email address to the contact form to make it fully functional!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- About -->
 
         </main>
         <%@ include file="/WEB-INF/footer.jsp"%>

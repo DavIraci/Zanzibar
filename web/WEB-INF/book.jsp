@@ -121,7 +121,7 @@
                 </div>
             </div>
         </main>
-        <%@ include file="/WEB-INF/footer.jsp"%>
+        <jsp:include page="/WEB-INF/footer.jsp" />
 
         <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
         <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>

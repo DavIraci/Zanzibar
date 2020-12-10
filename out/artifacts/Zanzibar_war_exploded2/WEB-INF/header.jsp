@@ -23,12 +23,21 @@
                 <button class="navbar-toggler navbar-toggler-right font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#service">SERVIZI</a>
-                        </li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#beach">SPIAGGIA</a>
-                        </li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">CHI SIAMO</a>
-                        </li>
+                        <% if(request.getRequestURI().equals("/Zanzibar/WEB-INF/index.jsp")){ %>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#service">SERVIZI</a>
+                            </li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#beach">SPIAGGIA</a>
+                            </li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">CHI SIAMO</a>
+                            </li>
+                        <% } else{ %>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="${pageContext.request.contextPath}#service">SERVIZI</a>
+                            </li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="${pageContext.request.contextPath}#beach">SPIAGGIA</a>
+                            </li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="${pageContext.request.contextPath}#about">CHI SIAMO</a>
+                            </li>
+                        <% } %>
                         <li class="nav-item mx-0 mx-lg-1 dropdown">
                             <a class="nav-link py-3 px-0 px-lg-3 rounded dropdown-toggle" data-toggle="dropdown" href="#">
                                     <span class="profile-ava">
@@ -51,6 +60,9 @@
                                             <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
                                         </li>
                                         <li>
+                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-day"></i> Prenota</a>
+                                        </li>
+                                        <li>
                                             <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
                                         </li>
                                         <li>
@@ -65,6 +77,9 @@
                                         </li>
                                         <li>
                                             <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-day"></i> Prenota</a>
                                         </li>
                                         <li>
                                             <a href="#"><i class="icon_chat_alt"></i> Chats</a>

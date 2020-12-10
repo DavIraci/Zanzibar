@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="sit" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
+	.st2{fill:#231F20;}
+	.st3{fill:#010101;stroke:#010101;stroke-miterlimit:10;}
+	.st4{fill:#FFFFFF;stroke:#010101;stroke-miterlimit:10;}
+	.st5{fill:none;}
+</style>
+<g id="chair">
+	<g id="cw_x5F_DX">
+		<rect id="StrisciaBiancaDX_1_" x="180.3" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaCentraleDX_1_" x="165.3" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaCentraleSX_1_" x="150.3" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaSX_1_" x="135.3" y="14" class="st0" width="5" height="169"/>
+	</g>
+	<g id="cw_x5F_SX">
+		<rect id="StrisciaBiancaDX" x="59.75" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaCentraleDX" x="44.75" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaCentraleSX" x="29.75" y="14" class="st0" width="5" height="169"/>
+		<rect id="StrisciaBiancaSX" x="14.75" y="14" class="st0" width="5" height="169"/>
+	</g>
+	<g id="c_x5F_black">
+		<g id="cb_x5F_DX">
+			<ellipse id="RuotaPosterioreDX_1_" class="st1" cx="197.55" cy="140" rx="0.08" ry="13"/>
+			<ellipse id="RuotaPosterioreSX_1_" class="st1" cx="123.05" cy="140" rx="0.08" ry="13"/>
+			<ellipse id="RuotaAnterioreDX_1_" class="st1" cx="197.55" cy="20" rx="0.08" ry="6"/>
+			<ellipse id="RuotaAnterioreSX_1_" class="st1" cx="123.05" cy="20" rx="0.08" ry="6"/>
+			<rect id="BarraBottom_1_" x="131.05" y="183" class="st2" width="58.5" height="4"/>
+			<rect id="BarraSeduta_1_" x="130.8" y="119.5" class="st2" width="58.5" height="1"/>
+			<rect id="BarraTop_1_" x="131.05" y="10" class="st2" width="58.5" height="4"/>
+			<ellipse id="LatoDX_1_" class="st1" cx="192.07" cy="100" rx="0.08" ry="97.5"/>
+			<rect id="SpallinaDX_1_" x="185.3" y="14" class="st2" width="1.5" height="169"/>
+			<rect id="StrisciaDX_1_" x="170.3" y="14" class="st2" width="10" height="169"/>
+			<rect id="StrisciaCentrale_1_" x="155.3" y="14" class="st2" width="10" height="169"/>
+			<rect id="StrisciaSX_1_" x="140.3" y="14" class="st2" width="10" height="169"/>
+			<rect id="SpallinaSX_1_" x="133.8" y="14" class="st2" width="1.5" height="169"/>
+			<ellipse id="LatoSX_1_" class="st1" cx="128.55" cy="100" rx="0.08" ry="97.5"/>
+		</g>
+		<g id="cb_x5F_SX">
+			<ellipse id="RuotaPosterioreDX" class="st1" cx="77" cy="140" rx="0.08" ry="13"/>
+			<ellipse id="RuotaPosterioreSX" class="st1" cx="2.5" cy="140" rx="0.08" ry="13"/>
+			<ellipse id="RuotaAnterioreDX" class="st1" cx="77" cy="20" rx="0.08" ry="6"/>
+			<ellipse id="RuotaAnterioreSX" class="st1" cx="2.5" cy="20" rx="0.08" ry="6"/>
+			<rect id="BarraBottom" x="10.5" y="183" class="st2" width="58.5" height="4"/>
+			<rect id="BarraSeduta" x="10.25" y="119.5" class="st2" width="58.5" height="1"/>
+			<rect id="BarraTop" x="10.5" y="10" class="st2" width="58.5" height="4"/>
+			<ellipse id="LatoDX" class="st1" cx="71.52" cy="100" rx="0.08" ry="97.5"/>
+			<rect id="SpallinaDX" x="64.75" y="14" class="st2" width="1.5" height="169"/>
+			<rect id="StrisciaDX" x="49.75" y="14" class="st2" width="10" height="169"/>
+			<rect id="StrisciaCentrale" x="34.75" y="14" class="st2" width="10" height="169"/>
+			<rect id="StrisciaSX" x="19.75" y="14" class="st2" width="10" height="169"/>
+			<rect id="SpallinaSX" x="13.25" y="14" class="st2" width="1.5" height="169"/>
+			<ellipse id="LatoSX" class="st1" cx="8" cy="100" rx="0.08" ry="97.5"/>
+		</g>
+	</g>
+</g>
+<g id="umbrella">
+	<g id="u_x5F_black">
+		<path class="st3" d="M40,105.15l119.86,49.7c-1.93-5.48-4.23-14.06-4.25-24.73c-0.02-10.79,2.3-19.45,4.25-24.97L40,154.85
+			c1.8-6.21,3.64-15.12,3.53-25.9C43.39,119.17,41.68,111.04,40,105.15z"/>
+		<path class="st3" d="M124.9,70.02L75.26,190c5.48-1.93,14.05-4.24,24.7-4.26c10.78-0.02,19.43,2.31,24.94,4.26L75.26,70.02
+			c6.2,1.8,15.1,3.65,25.87,3.53C110.89,73.42,119.02,71.72,124.9,70.02z"/>
+	</g>
+	<path class="st4" d="M40.14,154.83L160,105.14c-5.26-2.51-12.92-6.95-20.47-14.48c-7.63-7.62-12.1-15.38-14.63-20.66L75.26,189.98
+		c-3.12-5.67-8.09-13.26-15.79-20.79C52.47,162.34,45.51,157.79,40.14,154.83z"/>
+	<path class="st4" d="M75.26,70l49.65,119.98c2.51-5.26,6.94-12.93,14.46-20.49c7.61-7.63,15.36-12.11,20.64-14.64L40.14,105.13
+		c5.66-3.13,13.25-8.1,20.77-15.81C67.76,82.32,72.31,75.35,75.26,70z"/>
+</g>
+<g id="rect">
+	<rect id="rect_1_" class="st5" width="200" height="200"/>
+</g>
+</svg>
