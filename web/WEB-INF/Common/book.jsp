@@ -188,6 +188,13 @@
     <body id="page-top">
         <main role="main" class="masthead">
             <section class="page-section portfolio">
+                <!-- Date picker -->
+                <div class="form-group row" style="font-style: normal">
+                    <div class="col-5">
+                        <input class="form-control" type="date" id="date" name="date" pattern="\d{2}/\d{2}/\d{4}" onchange="load()">
+                    </div>
+                </div>
+                <!-- Map -->
                 <div id="map">
                 </div>
             </section>
