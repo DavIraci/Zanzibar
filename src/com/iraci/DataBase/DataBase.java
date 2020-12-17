@@ -191,4 +191,34 @@ public class DataBase {
             }
         }
     }
+
+    public static List<Double> takePrice(String season, int half) throws SQLException {
+        List<Double> price = new ArrayList<>();
+        String query = "SELECT * FROM iraci.price ORDER BY price.row ASC";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                price.add( rs.getDouble(season)/( (rs.getInt("row")==0)?1:half ) );
+            }
+            rs.close();
+
+            return price;
+        }
+    }
+
+    public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
+        List<Postation> postazioni = new ArrayList<>();
+        String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND (book.bookingPeriod='Full' OR book.bookingPeriod=?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(date));
+            statement.setString(2, period);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                postazioni.add(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+            }
+            rs.close();
+
+            return postazioni;
+        }
+    }
 }

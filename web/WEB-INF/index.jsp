@@ -37,6 +37,32 @@
                     max-width:none;
                 }
             }
+
+            .prenota{
+                text-align: center;
+                margin-bottom: 20px;
+                background: #000;
+                position: relative;
+            }
+
+            .prenota-info{
+                visibility: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                bottom: 0;
+                top: 0;
+                left: 0;
+                right: 0;
+                transition: 0.2s;
+            }
+
+            .prenota:hover .prenota-info {
+                background: rgba(0, 0, 0, 0.7);
+                visibility: visible;
+                transition: 0.4s;
+            }
         </style>
 
         <%@ include file="/WEB-INF/header.jsp"%>
@@ -109,6 +135,7 @@
                     <img alt="Beach" src="/Zanzibar/image/mapALL.svg" style="width: 100%;height: 70%;">
                 </a>
             </section>
+
             <!-- Beach -->
 
             <!-- About -->

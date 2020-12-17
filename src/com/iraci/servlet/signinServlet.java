@@ -38,10 +38,11 @@ public class signinServlet extends HttpServlet {
                 confPassword = request.getParameter("passwordrep");
                 cellulare = request.getParameter("mobile");
                 telefono = request.getParameter("telephone");
-                nascita = request.getParameter("birth");
-                LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                /*nascita = request.getParameter("birth");
+                LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));*/
+                LocalDate datanascita = LocalDate.parse(request.getParameter("birth"));
 
-                errore = Utils.verificaDatiForm(nome, cognome, email, password, confPassword, cellulare, telefono, nascita);
+                errore = Utils.verificaDatiForm(nome, cognome, email, password, confPassword, cellulare, telefono, datanascita.toString());
 
                 if (errore != null) { //sono stati inseriti dati scorretti
                     request.getSession().setAttribute("name", nome);
@@ -49,7 +50,7 @@ public class signinServlet extends HttpServlet {
                     request.getSession().setAttribute("email", email);
                     request.getSession().setAttribute("mobile", cellulare);
                     request.getSession().setAttribute("telephone", telefono);
-                    request.getSession().setAttribute("birth", nascita);
+                    request.getSession().setAttribute("birth", datanascita.toString());
                     request.getSession().setAttribute("tel", request.getParameter("tel"));
                     request.getSession().setAttribute("SignInError", errore);
                     response.sendRedirect(request.getContextPath());
@@ -62,7 +63,7 @@ public class signinServlet extends HttpServlet {
                     request.getSession().setAttribute("email", email);
                     request.getSession().setAttribute("mobile", cellulare);
                     request.getSession().setAttribute("telephone", telefono);
-                    request.getSession().setAttribute("birth", nascita);
+                    request.getSession().setAttribute("birth", datanascita.toString());
                     request.getSession().setAttribute("SignInError", "L'indirizzo email inserito è già associato ad un altro account");
                     response.sendRedirect(request.getContextPath());
                     return;
