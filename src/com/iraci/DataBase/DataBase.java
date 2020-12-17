@@ -192,8 +192,17 @@ public class DataBase {
         }
     }
 
-    public static List<Double> takePrice(String season, int half) throws SQLException {
+    public static List<Double> takePrice(LocalDate date, String period) throws SQLException {
         List<Double> price = new ArrayList<>();
+        String season;
+        if(date.getMonthValue() == 8){
+            season="highSeason";
+        }else if(date.getMonthValue() == 7){
+            season="midSeason";
+        }else {
+            season="lowSeason";
+        }
+        int half=period.equals("Full")?1:2;
         String query = "SELECT * FROM iraci.price ORDER BY price.row ASC";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
@@ -208,13 +217,14 @@ public class DataBase {
 
     public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
         List<Postation> postazioni = new ArrayList<>();
+        List<Double> prices = takePrice(date, period);
         String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND (book.bookingPeriod='Full' OR book.bookingPeriod=?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDate(1, Date.valueOf(date));
             statement.setString(2, period);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
-                postazioni.add(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                postazioni.add(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation"), prices));
             }
             rs.close();
 

@@ -4,30 +4,23 @@ $(document).ready(function () {
     var s = Snap('#map');
 
     $('.qtyplus').click(function(){
-        if($('.qty').val()<2) {
+        if($('.qty').val()<(2*posSelected.length)) {
             $('.qty').val(parseInt($('.qty').val()) + 1);
-            var testo="<p>Sdraio extra "+parseInt($('.qty').val())+" <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
-            $('#sdraio').html(testo);
-            updateTotal(parseInt($('#extra-chair').val()), "+");
+            updateChair();
         }
     });
 
     $('.qtyminus').click(function(){
         if($('.qty').val()>0) {
             $('.qty').val(parseInt($('.qty').val()) - 1);
-            var testo="<p>Sdraio extra "+parseInt($('.qty').val())+" <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
-            $('#sdraio').html(testo);
-            updateTotal(parseInt($('#extra-chair').val()), "-");
-            if(parseInt($('.qty').val())==0){
-                $('#sdraio').html("");
-            }
+            updateChair();
         }
 
     });
 
-    $('#placeBook').click(function () {
-        if(postazioniSelezionate.length>0){
-            placeBook();
+    $('#checkBook').click(function () {
+        if(posSelected.length>0){
+            checkBook();
         }
     });
 
@@ -50,21 +43,27 @@ $(document).ready(function () {
                     // The seat is already selected, the user wants to deselect it
                     //check('D', ev.target.id);
                     setFree(id, elem);
-                    postazioniSelezionate.splice(postazioniSelezionate.indexOf(id), 1);
+                    posSelected.splice(posSelected.indexOf(id), 1);
                     $('#postazioni .part_'+id.split("#")[1]).remove();
-                    if(postazioniSelezionate.length==0){
-                        $('#placeBook').removeClass("active").addClass("disabled");
+                    if(posSelected.length==0){
+                        $('#checkBook').removeClass("active").addClass("disabled");
                     }
-                    updateTotal(elem.data('row3'), "-");
+                    if($('.qty').val()>=(2*posSelected.length)){
+                        $('.qty').val(2*posSelected.length);
+                        updateChair();
+                    }
+                    updateTotal();
                 } else {
                     // the seat is free, the user wants to select it
                     //check('S', ev.target.id);
                     setSelected(id, elem);
-                    postazioniSelezionate.push(id);
-                    var testo = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
-                    $('#postazioni').append(testo);
-                    $('#placeBook').removeClass("disabled").addClass("active");
-                    updateTotal(elem.data('row3'), "+");
+                    posSelected.push(id);
+                    var text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
+                    $('#postazioni').append(text);
+                    $('#checkBook').removeClass("disabled").addClass("active");
+                    $('.part_'+id.split("#")[1]).val(elem.data('row3'));
+                    updateTotal();
+                    //updateTotal(elem.data('row3'), "+");
                 }
             });
 
@@ -74,12 +73,12 @@ $(document).ready(function () {
                 var id = '#'+ elem.node.id;
 
                 if( elem.data('status')!='O' ){
-                    var testo = '<p class="row1">'+elem.data('row1')+'</p>'
+                    var text = '<p class="row1">'+elem.data('row1')+'</p>'
                         + '<p class="row2">'+elem.data('row2')+'</p>'
                         + '<p class="row3">Prezzo €'+elem.data('row3')+'</p>';
 
                     $('#tooltip')
-                        .html(testo)
+                        .html(text)
                         .css("opacity", "1")
                         .css("left", ev.clientX + 15 + "px")
                         .css("top", ev.clientY + 15 + "px");
@@ -97,15 +96,37 @@ $(document).ready(function () {
     });
 });
 
+var order;
+var posNotAvailable = [];
+var posSelected = [];
 //var prenotazioni = {};
-//var ordini = {};
-var postazioniNonPrenotabili = [];
-var postazioniSelezionate = [];
 //var prodottiSelezionati = {};
 //var totaleOrdini = 0;
 //var totalePrenotazioni = 0;
 
-function updateTotal(price, action){
+function updateTotal(){
+    let total=parseInt(($('#extra-chair').val())*(parseInt($('.qty').val())).toFixed(2));
+    $.each($('#postazioni p'), function(key, val){
+        total+=parseInt(val.value);
+    });
+
+    if(total==0)
+        $('#totale').html("");
+    else
+        $('#totale').html("<h1>Totale    " + total.toFixed(2) + "€</h1>");
+    $('#totale').val(total);
+}
+
+function updateChair(){
+    var text="<p>Sdraio extra "+parseInt($('.qty').val())+" <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
+    $('#sdraio').html(text);
+    if(parseInt($('.qty').val())==0){
+        $('#sdraio').html("");
+    }
+    updateTotal();
+}
+
+/*function updateTotal(price, action){
     let value=$('#totale').val();
     if(value=="")
         value = 0;
@@ -121,7 +142,7 @@ function updateTotal(price, action){
     else
         $('#totale').html("<h1>Totale    " + value + "€</h1>");
 
-}
+}*/
 
 function setDate(data){
     var month = data.getMonth() + 1;
@@ -140,7 +161,6 @@ function setDate(data){
 function fixDate(data){
     $('#period option').removeAttr("disabled");
     $('#period option').removeAttr("selected");
-    //$('#op_full').attr('selected','selected');
 
     var today = new Date();
     if(today.getDay()==data.getDay() && today.getMonth()==data.getMonth() && today.getFullYear()==data.getFullYear()) {
@@ -184,24 +204,31 @@ function load(){
     }
 }
 
-function placeBook(){
+function checkBook(){
     let date = $('#date').val();
     let period = $('#period').val();
     let extra_chiar=$('.qty').val();
     if (checkInput(date) && checkInput(period)) {
         $.ajax({
-            url: './checkBooking',
+            url: './checkBook',
             dataType: 'json',
             type: 'post',
             data: {
                 'Date': date,
                 'Period': period,
-                'Sit': postazioniSelezionate.sort().toString(),
+                'Sit': posSelected.sort().toString(),
                 'ExtraChair': extra_chiar
             },
             success: function (data) {
                 if(data.RESPONSE == 'Confirm'){ //Dati ok
-
+                    checkout(data);
+                }else {
+                    reset();
+                    load();
+                    let text='<div class="row" style="justify-content: center">' +
+                        '<div class="alert alert-danger alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
+                    $('#message-alert').append(text);
                 }
             },
             error: function (errorThrown) {
@@ -211,6 +238,11 @@ function placeBook(){
     }else{
         console.log("Error!");
     }
+}
+
+function checkout(data){
+    $('#checkoutModal').modal('show');
+    console.log(data);
 }
 
 function reset(){
@@ -225,14 +257,14 @@ function reset(){
     $('#postazioni').html("");
     $('#totale').html("");
     $('#sdraio').html("");
-    postazioniSelezionate=[];
-    postazioniNonPrenotabili=[];
+    posSelected=[];
+    posNotAvailable=[];
 }
 
 function setPostazioni(booked){
     $.each(booked, function (key, val) {
         let id="#pos_"+ val.id;
-        postazioniNonPrenotabili.push(id);
+        posNotAvailable.push(id);
         setOccupied(id, Snap.select(id));
     });
 }

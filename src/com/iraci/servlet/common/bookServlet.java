@@ -34,15 +34,7 @@ public class bookServlet extends HttpServlet {
 
             if(period.equals("Full") || period.equals("AM") || period.equals("PM")){
                 List<Postation> booked= DataBase.takeBooking(date, period);
-                String season;
-                if(date.getMonthValue() == 8){
-                    season="highSeason";
-                }else if(date.getMonthValue() == 7){
-                    season="midSeason";
-                }else {
-                    season="lowSeason";
-                }
-                List<Double> price=DataBase.takePrice(season, period.equals("Full")?1:2);
+                List<Double> price=DataBase.takePrice(date, period);
                 Double extra = price.remove(0);
 
                 status = "{\"RESPONSE\" : \"Confirm\", \"BOOKED\" : "+ mapper.writeValueAsString(booked) +" , \"PRICE\" : "+ mapper.writeValueAsString(price)+" , \"EXTRA_CHAIR_PRICE\" : \"" + extra + "\"}";

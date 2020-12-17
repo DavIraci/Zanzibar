@@ -131,7 +131,9 @@
         <div id="map"></div>
         <div id="tooltip"></div>
         <div class="container mt-4">
-            <div class="row">
+            <div class="row" style="justify-content: center" id="message-alert">
+            </div>
+            <div class="row" style="place-content: center;">
                 <div class="col-sm-3 col-sm-offset-3">
                     <div class="input-group mb-3">
                         <label id="extra-chair" for="myform"></label><br>
@@ -150,7 +152,7 @@
                     <div id="totale">
                     </div>
                     <div>
-                        <input type="button" class="btn-lg btn-primary disabled" id="placeBook" value="Conferma e paga">
+                        <input type="button" class="btn-lg btn-primary disabled" id="checkBook" value="Conferma e paga">
                     </div>
                 </div>
             </div>

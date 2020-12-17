@@ -14,8 +14,8 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet(name = "bookingServlet", urlPatterns={"/common/booking"})
-public class bookingServlet extends HttpServlet {
+@WebServlet(name = "bookingServlet", urlPatterns={"/common/placeBook"})
+public class placeBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             LocalDate date = LocalDate.parse(request.getParameter("Date"));
@@ -27,15 +27,7 @@ public class bookingServlet extends HttpServlet {
 
             if(period.equals("Full") || period.equals("AM") || period.equals("PM")){
                 List<Postation> booked= DataBase.takeBooking(date, period);
-                String season;
-                if(date.getMonthValue() == 8){
-                    season="highSeason";
-                }else if(date.getMonthValue() == 7){
-                    season="midSeason";
-                }else {
-                    season="lowSeason";
-                }
-                List<Double> price=DataBase.takePrice(season, period.equals("Full")?1:2);
+                List<Double> price=DataBase.takePrice(date, period);
                 Double extra = price.remove(0);
 
                 status = "{\"RESPONSE\" : \"Confirm\", \"BOOKED\" : "+ mapper.writeValueAsString(booked) +" , \"PRICE\" : "+ mapper.writeValueAsString(price)+" , \"EXTRA_CHAIR_PRICE\" : \"" + extra + "\"}";
