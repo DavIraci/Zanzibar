@@ -25,6 +25,15 @@ public class Order {
         this.postations = postations;
     }
 
+    public Order(String period, int user_id, double price, boolean canceled, int extra_chair, Postation[] postations) {
+        this.period = period;
+        this.user_id = user_id;
+        this.price = price;
+        this.canceled = canceled;
+        this.extra_chair = extra_chair;
+        this.postations = postations;
+    }
+
     public String getPeriod() {
         return period;
     }

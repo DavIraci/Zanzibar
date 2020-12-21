@@ -1,5 +1,12 @@
 package com.iraci.utils;
 
+import com.iraci.DataBase.DataBase;
+import com.iraci.model.Postation;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+
 public class Utils {
 
 
@@ -36,5 +43,18 @@ public class Utils {
             return "Il telefono non rispetta il formato richiesto.";
 
         return null;
+    }
+
+    public static boolean occupiedCheck(List<Postation> posts, LocalDate date, String period) throws SQLException {
+        boolean occupied = false;
+        List<Postation> post_occupied= DataBase.takeBooking(date, period);
+
+        for(int i=0; i<posts.size(); i++){
+            if(post_occupied.contains(posts.get(i))){
+                occupied=true;
+                break;
+            }
+        }
+        return occupied;
     }
 }

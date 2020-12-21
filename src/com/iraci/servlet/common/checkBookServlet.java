@@ -5,6 +5,7 @@ import com.iraci.DataBase.DataBase;
 import com.iraci.model.Order;
 import com.iraci.model.Postation;
 import com.iraci.model.User;
+import com.iraci.utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +33,7 @@ public class checkBookServlet extends HttpServlet {
             boolean error=false;
             List<Double> prices= DataBase.takePrice(date, period);
             Double extra = prices.remove(0);
-            Double total= Double.valueOf(0);
+            Double total= extra_chair*extra;
 
             PrintWriter pr = response.getWriter();
             response.setContentType("application/json");
@@ -43,20 +44,13 @@ public class checkBookServlet extends HttpServlet {
                 idPostazioni.add(new Postation(Integer.parseInt(ids[i].substring(ids[i].length()- 2)), prices));
             }
 
-            List<Postation> occupied=DataBase.takeBooking(date, period);
-            idPostazioni.add(new Postation(12, prices));
-
             for(i=0; i<idPostazioni.size(); i++){
-                if(occupied.contains(idPostazioni.get(i))){
-                    error=true;
-                }
                 total+=idPostazioni.get(i).getPrice();
             }
 
-            if(error) {
+            if(Utils.occupiedCheck(idPostazioni, date, period)) {
                 status = "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"E' stato riscontrato un errore nella prenotazione, una postazione risulta già prenotata! Per favore riprovare!\"}";
             }else {
-                total+=extra_chair*extra;
 
                 status = "{\"RESPONSE\" : \"Confirm\", \"POSTATION\" : "+ mapper.writeValueAsString(idPostazioni) +" , \"EXTRA_CHAIR\" : "+ extra_chair +" , \"TOTAL_PRICE\" : "+ total +" }";
             }

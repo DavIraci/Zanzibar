@@ -218,7 +218,7 @@ public class DataBase {
     public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
         List<Postation> postazioni = new ArrayList<>();
         List<Double> prices = takePrice(date, period);
-        String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND (book.bookingPeriod='Full' OR book.bookingPeriod=?)";
+        String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND book.canceled=0 AND (book.bookingPeriod='Full' OR book.bookingPeriod=?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDate(1, Date.valueOf(date));
             statement.setString(2, period);
@@ -229,6 +229,59 @@ public class DataBase {
             rs.close();
 
             return postazioni;
+        }
+    }
+
+    public static int placeBook(List<Postation> postations, LocalDate date, String period, double price, int user_id, int extra_chair )throws SQLException {
+        String query1 = "INSERT INTO iraci.book (date, bookingPeriod, cost, User_id_User) " +
+                "VALUES (?, ?, ?, ?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setDate(1, Date.valueOf(date));
+            statement.setString(2, period);
+            statement.setDouble(3, price);
+            statement.setInt(4, user_id);
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            int id = -1;
+            if (rs.next()) {
+                id = rs.getInt(1);
+                System.out.println(id);
+                rs.close();
+                for (int i = 0; i < postations.size(); i++) {
+                    String query2 = "INSERT INTO iraci.book_has_umbrellastation (Book_id_Book, UmbrellaStation_id_UmbrellaStation, extraChair) values (?, ?, ?)";
+                    try (PreparedStatement statement2 = connection.prepareStatement(query2)) {
+                        statement2.setInt(1, id);
+                        statement2.setInt(2, postations.get(i).getId());
+                        statement2.setInt(3, extra_chair > 2 ? 2 : extra_chair);
+                        extra_chair -= extra_chair > 2 ? 2 : extra_chair;
+                        if (statement2.executeUpdate() == 0) {
+                            return -1;
+                        }
+                    }
+                }
+                return id;
+            }
+        }
+        return -1;
+    }
+
+    public static void insertInvoid(int id, String name, String surname, String email, String fiscal, String address, String region, String province, String city, String cap, String method, String cardno) throws SQLException{
+        String query1 = "INSERT INTO iraci.invoice (id_book, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, surname);
+            statement.setString(4, email);
+            statement.setString(5, fiscal);
+            statement.setString(6, address);
+            statement.setString(7, region);
+            statement.setString(8, province);
+            statement.setString(9, city);
+            statement.setString(10, cap);
+            statement.setString(11, method);
+            statement.setString(12, cardno == null ? "" : cardno);
+            statement.executeUpdate();
         }
     }
 }

@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile">Cellulare</label>
-                                    <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="mobile" placeholder="<%= ((User) request.getSession().getAttribute("USER")).getCellulare()%>" name="mobile" pattern="[0-9]{10}" value="<%= ((User) request.getSession().getAttribute("USER")).getCellulare()%>" required>
+                                    <input title="Inserire nel format 3xx-xxxxxxx!" type="tel" class="form-control" id="mobile" name="mobile" pattern="[0-9]{10}" value="<%= ((User) request.getSession().getAttribute("USER")).getCellulare()%>" required>
                                     <div class="valid-feedback">Valido</div>
                                     <div class="invalid-feedback">Per favore riempi questo campo</div>
                                 </div>

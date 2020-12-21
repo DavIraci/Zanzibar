@@ -105,9 +105,9 @@ var posSelected = [];
 //var totalePrenotazioni = 0;
 
 function updateTotal(){
-    let total=parseInt(($('#extra-chair').val())*(parseInt($('.qty').val())).toFixed(2));
+    let total=parseFloat(($('#extra-chair').val())*(parseInt($('.qty').val())).toFixed(2));
     $.each($('#postazioni p'), function(key, val){
-        total+=parseInt(val.value);
+        total+=parseFloat(val.value);
     });
 
     if(total==0)
@@ -125,24 +125,6 @@ function updateChair(){
     }
     updateTotal();
 }
-
-/*function updateTotal(price, action){
-    let value=$('#totale').val();
-    if(value=="")
-        value = 0;
-    if(action=="-"){
-        value= (parseInt(value) - parseInt(price)).toFixed(2);
-    }
-    if(action=="+"){
-        value= (parseInt(value) + parseInt(price)).toFixed(2);
-    }
-    $('#totale').val(value);
-    if(value==0)
-        $('#totale').html("");
-    else
-        $('#totale').html("<h1>Totale    " + value + "€</h1>");
-
-}*/
 
 function setDate(data){
     var month = data.getMonth() + 1;
@@ -189,7 +171,6 @@ function load(){
             },
             success: function (data) {
                 if(data.RESPONSE == 'Confirm'){ //Dati ok
-                    // buildMappa(data[0]);
                     setPostazioni(data.BOOKED);
                     setLabel(data.PRICE);
                     setExtraChairs(data.EXTRA_CHAIR_PRICE);
@@ -221,7 +202,10 @@ function checkBook(){
             },
             success: function (data) {
                 if(data.RESPONSE == 'Confirm'){ //Dati ok
-                    checkout(data);
+                    data.DATE=date;
+                    data.PERIOD=period;
+                    console.log(data);
+                    initializeCheckout(data);
                 }else {
                     reset();
                     load();
@@ -238,11 +222,6 @@ function checkBook(){
     }else{
         console.log("Error!");
     }
-}
-
-function checkout(data){
-    $('#checkoutModal').modal('show');
-    console.log(data);
 }
 
 function reset(){
@@ -284,8 +263,8 @@ function setLabel(price){
 }
 
 function setExtraChairs(price){
-    $('#extra-chair').html("Extra sdraio ("+(parseInt(price)).toFixed(2)+"€ cad.):");
-    $('#extra-chair').val((parseInt(price)).toFixed(2));
+    $('#extra-chair').html("Extra sdraio ("+(parseFloat(price)).toFixed(2)+"€ cad.):");
+    $('#extra-chair').val((parseFloat(price)).toFixed(2));
 }
 
 function checkInput(val) {
