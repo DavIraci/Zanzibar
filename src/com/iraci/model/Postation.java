@@ -25,7 +25,7 @@ public class Postation {
         this.id = id;
         this.row = (int) id/10;
         this.number=id -(this.row*10)+1;
-        this.price = prices.get(this.row-1);
+        this.price = prices.get(this.row);
     }
 
     public int getId() {
@@ -61,8 +61,9 @@ public class Postation {
     }
 
     public void setPrice(List<Double> prices) {
-        this.price = prices.get(this.row-1);
+        this.price = prices.get(this.row);
     }
+
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Postation){

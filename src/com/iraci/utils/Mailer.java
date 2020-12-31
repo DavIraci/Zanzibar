@@ -1,8 +1,13 @@
 package com.iraci.utils;
 
+import javax.activation.DataHandler;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
+import javax.swing.text.Document;
 import java.util.Properties;
 
 /**
@@ -28,9 +33,12 @@ public class Mailer implements Runnable {
 	private String indirizzoDestinazione;
 	private String oggetto;
 	private String messaggio;
+	private String attachment_title;
+	private byte[] pdf;
 	private static String address="http://localhost:8080";
 	private static String indirizzoEmail="lidozanzibar01@gmail.com";
 	private static String cellulare="3290000000";
+
 	
 	/**
 	 * Construttore della classe.
@@ -44,6 +52,25 @@ public class Mailer implements Runnable {
 		this.indirizzoDestinazione = indirizzoDestinazione;
 		this.oggetto = oggetto;
 		this.messaggio = messaggio;
+		this.pdf = null;
+		this.attachment_title = null;
+	}
+
+	/**
+	 * Construttore della classe con allegato.
+	 * @param indirizzoDestinazione
+	 * @param oggetto
+	 * @param messaggio
+	 * @param pdf
+	 */
+	public Mailer (String indirizzoDestinazione, String oggetto, String messaggio, byte[] pdf,String attachment_title) {
+		this.host = "smtp.gmail.com";
+		this.password = "LidoZanzibar01";
+		this.indirizzoDestinazione = indirizzoDestinazione;
+		this.oggetto = oggetto;
+		this.messaggio = messaggio;
+		this.pdf = pdf;
+		this.attachment_title = attachment_title;
 	}
 	
 	/**
@@ -66,17 +93,62 @@ public class Mailer implements Runnable {
 			}
 		});
 		
-		// Compone il messaggio della mail.
+		/*// Compone il messaggio della mail.
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress("Lido Zanzibar <"+indirizzoEmail+">"));
 		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(indirizzoDestinazione));
 		msg.setSubject(oggetto);
 		msg.setContent(messaggio, "text/html");
-   
+
+		if(pdf!=null){
+			Message message = new MimeMessage(session);
+			Multipart multipart = new MimeMultipart();
+
+			// creates body part for the message
+			MimeBodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setContent(message, "text/html");
+
+			// creates body part for the attachment
+			MimeBodyPart attachPart = new MimeBodyPart();
+
+			// code to add attachment...will be revealed later
+
+			// adds parts to the multipart
+			multipart.addBodyPart(messageBodyPart);
+			multipart.addBodyPart(attachPart);
+
+			// sets the multipart as message's content
+			message.setContent(multipart);
+		}*/
+
+		Message msg = new MimeMessage(session);
+
+		msg.setFrom(new InternetAddress("Lido Zanzibar <"+indirizzoEmail+">"));
+		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(indirizzoDestinazione));
+		msg.setSubject(oggetto);
+		msg.setContent(messaggio, "text/html");
+
+		// creates message part
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(messaggio, "text/html");
+
+		// creates multi-part
+		Multipart multipart = new MimeMultipart();
+		multipart.addBodyPart(messageBodyPart);
+
+		if(pdf!=null){
+			MimeBodyPart att = new MimeBodyPart();
+			ByteArrayDataSource bds = new ByteArrayDataSource(pdf, "application/pdf");
+			bds.setName(attachment_title);
+			att.setDataHandler(new DataHandler(bds));
+			att.setFileName(bds.getName()+".pdf");
+			multipart.addBodyPart(att);
+			msg.setContent(multipart);
+		}
 		// Invia il messaggio al destinatario
-			Transport.send(msg);
-			System.out.println("Email inviata con successo a " + indirizzoDestinazione);
-		} 
+		Transport.send(msg);
+		System.out.println("Email inviata con successo a " + indirizzoDestinazione);
+	}
 	
 	/**
 	 * Override del metodo run() della classe Thread. Serve per permettere alle servlet di 

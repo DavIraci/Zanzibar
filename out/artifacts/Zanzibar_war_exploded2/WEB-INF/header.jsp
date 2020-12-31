@@ -60,10 +60,10 @@
                                             <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-day"></i> Prenota</a>
+                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
+                                            <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
                                         </li>
                                         <li>
                                             <a href="#"><i class="icon_chat_alt"></i> Chats</a>

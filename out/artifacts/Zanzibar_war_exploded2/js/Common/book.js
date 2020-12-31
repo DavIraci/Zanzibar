@@ -226,6 +226,7 @@ function checkBook(){
 
 function reset(){
     let id;
+    $('.qty').val(0);
     for (let i = 10; i < 60; i++) {
         id="#pos_"+ i;
         setFree(id, Snap.select(id));

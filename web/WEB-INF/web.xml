@@ -35,6 +35,7 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>User</role-name>
+            <role-name>Admin</role-name> <!-- MOMENTANEO -->
         </auth-constraint>
     </security-constraint>
 

@@ -3,9 +3,24 @@ package com.iraci.utils;
 import com.iraci.DataBase.DataBase;
 import com.iraci.model.Postation;
 
+//import javax.swing.text.Document;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.codec.Base64;
 
 public class Utils {
 
@@ -57,4 +72,69 @@ public class Utils {
         }
         return occupied;
     }
+
+    public static void generateInvoide(ByteArrayOutputStream baos, int BookID){
+        //init document
+        Document document = new Document(PageSize.A4, 60, 30, 140, 90);
+        document.setMarginMirroring(false);
+
+        try {
+            //init pdf writer
+            PdfWriter writer = PdfWriter.getInstance(document, baos);
+            writer.setBoxSize("art", new com.itextpdf.text.Rectangle(36, 54, 559, 788));
+
+
+            //open the document
+            document.open();
+
+            //add title and body
+            document.addTitle("Fattura ordine "+String.format("%08d", BookID));
+            document.addSubject("Fattura");
+            document.addKeywords("Invoice, PDF, Fattura");
+            document.addAuthor("Lido Zanzibar");
+            document.addCreator("Lido Zanzibar");
+            document.add(new Paragraph("Prova prenotazione numero: "+ String.format("%08d", BookID)));
+
+            //document.addHeader(text+".pdf", "application/pdf");
+
+            //close document and pdf writer
+            document.close();
+            writer.close();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+        /*OutputStream os = response.getOutputStream();
+
+        PdfWriter writer;
+        PdfDocument pdf = new PdfDocument( writer);
+        Document document = new Document();
+        getInstance(Document document, OutputStream os)
+
+            document.setMarginMirroring(false);
+
+            //init pdf writer
+            writer = PdfWriter.getInstance(document, baos);
+            writer.setBoxSize("art", new com.itextpdf.text.Rectangle(36, 54, 559, 788));
+
+            //add header and footer
+            HeaderFooter event = new HeaderFooter(header, footer, absolutLogoPath);
+            writer.setPageEvent(event);
+
+            //open the document
+            document.open();
+
+            //add title and body
+            addTitle(document, acc)
+            addBody(document, acc, body, vat, writer);
+
+            //close document and pdf writer
+            document.close();
+
+        writer.close();
+    }*/
 }

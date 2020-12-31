@@ -126,5 +126,6 @@
     <orderEntry type="library" name="activation-2.2.1" level="project" />
     <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="itextpdf-5.5.13" level="project" />
   </component>
 </module>

@@ -1,9 +1,15 @@
 package com.iraci.model;
 
+import com.iraci.model.*;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private String period;
+    private LocalDate date;
+    private LocalDate booked_date;
     private int user_id;
     private int book_id;
     private double price;
@@ -11,9 +17,26 @@ public class Order {
     private LocalDate checkin;
     private LocalDate checkout;
     private int extra_chair;
-    private Postation postations[];
+    private List<Postation> postations=new ArrayList<>();
 
-    public Order(String period, int user_id, int book_id, double price, boolean canceled, LocalDate checkin, LocalDate checkout, int extra_chair, Postation[] postations) {
+    @Override
+    public String toString() {
+        return "Order{" +
+                "period='" + period + '\'' +
+                ", date=" + date +
+                ", booked_date=" + booked_date +
+                ", user_id=" + user_id +
+                ", book_id=" + book_id +
+                ", price=" + price +
+                ", canceled=" + canceled +
+                ", checkin=" + checkin +
+                ", checkout=" + checkout +
+                ", extra_chair=" + extra_chair +
+                ", postations=" + postations.toString() +
+                '}';
+    }
+
+    public Order(String period, int user_id, int book_id, double price, boolean canceled, LocalDate checkin, LocalDate checkout, int extra_chair, LocalDate date, LocalDate booked_date) {
         this.period = period;
         this.user_id = user_id;
         this.book_id = book_id;
@@ -22,17 +45,26 @@ public class Order {
         this.checkin = checkin;
         this.checkout = checkout;
         this.extra_chair = extra_chair;
-        this.postations = postations;
+        this.date = date;
+        this.booked_date = booked_date;
     }
 
-    public Order(String period, int user_id, double price, boolean canceled, int extra_chair, Postation[] postations) {
+    public Order(String period, int user_id, double price, boolean canceled, int extra_chair, List<Postation> postations, LocalDate date) {
         this.period = period;
         this.user_id = user_id;
         this.price = price;
         this.canceled = canceled;
         this.extra_chair = extra_chair;
         this.postations = postations;
+        this.date = date;
     }
+
+    public Order() {
+    }
+
+    public LocalDate getDate() { return date; }
+
+    public void setDate(LocalDate date) { this.date = date; }
 
     public String getPeriod() {
         return period;
@@ -98,11 +130,19 @@ public class Order {
         this.extra_chair = extra_chair;
     }
 
-    public Postation[] getPostations() {
+    public List<Postation> getPostations() {
         return postations;
     }
 
-    public void setPostations(Postation[] postations) {
+    public void setPostations(List<Postation> postations) {
         this.postations = postations;
+    }
+
+    public void addPostation(Postation postation){ this.postations.add(postation); }
+
+    public void setPrices(List<Double> prices){
+        for(int i=0; i<this.postations.size(); i++){
+            postations.get(i).setPrice(prices);
+        }
     }
 }

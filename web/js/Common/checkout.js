@@ -46,14 +46,14 @@ function updatePaymentMethod(){
 
 function payOrder(){
     var method = $('#credit')[0].checked?"CreditCard":"Paypal";
-    var name = $('#nameCO').val();
-    var surname = $('#surnameCO').val();
+    var name = capitalletters($('#nameCO').val());
+    var surname = capitalletters($('#surnameCO').val());
     var email = $('#emailCO').val();
-    var fiscal = $('#fiscalcodeCO').val();
-    var address = $('#addressCO').val() + $('#address2CO').val();
-    var region = $('#regionCO').val();
-    var province = $('#provinceCO').val();
-    var city = $('#cityCO').val();
+    var fiscal = $('#fiscalcodeCO').val().toUpperCase();
+    var address = $('#addressCO').val() + " " + $('#address2CO').val();
+    var region = capitalletters($('#regionCO').val());
+    var province = $('#provinceCO').val().toUpperCase();
+    var city = capitalletters($('#cityCO').val());
     var cap = $('#capCO').val();
     var cardno =method=="CreditCard"?$('#regionCO').val():null;
 
@@ -98,4 +98,8 @@ function checkValidation(){
     }else{
         $('#payBtn').removeClass("active").addClass("disabled");
     }
+}
+
+function capitalletters(string){
+    return string[0].toUpperCase()+string.slice(1);
 }

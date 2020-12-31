@@ -1,0 +1,112 @@
+$(document).ready(function () {
+    loadBook();
+});
+var dati;
+
+function loadBook(){
+    $.ajax({
+        url: './managebook',
+        dataType: 'json',
+        type: 'post',
+        data: {},
+        success: function (data) {
+            setBook(data);
+        },
+        error: function (errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+function setBook(data){
+    dati=data.BOOK;
+    $.each(data.BOOK, function(key, val){
+        var checkin = "-";
+        if(val.checkin!=null)
+            checkin=val.checkin.year + '-' + (val.checkin.monthValue-1) + '-' + val.checkin.dayOfMonth;
+
+        var checkout = "-";
+        var decoration="";
+        if(val.checkout!=null) {
+            checkout = val.checkout.year + '-' + (val.checkout.monthValue - 1) + '-' + val.checkout.dayOfMonth;
+
+        }
+        var period;
+        if(val.period == "Full" || val.period == "AM" )
+            period="8:00";
+        else
+            period="14:00";
+
+        if(val.period == "Full" || val.period == "PM" )
+            period+="-19:00";
+        else
+            period+="-13:00";
+
+        var invoice='<i class="fas fa-file-invoice mr-1 actions" onclick="takeInvoice('+val.book_id+')"></i>';
+        var canc='<i class="far fa-calendar-times actions" onclick="cancOrder('+val.book_id+')"></i>'
+        if (val.canceled==true) {
+            decoration = "class=\"canceled\"";
+            canc=invoice='';
+        }
+
+        var date= new Date(val.date.year, (val.date.monthValue-1), val.date.dayOfMonth);
+        var today = new Date();
+
+        if (date<= today && val.canceled==false){
+            decoration="class=\"finished\"";
+            canc='';
+        }
+
+        var postations="";
+        $.each(val.postations, function(key, val2){
+            postations+="F"+val2.row+"P"+val2.number+", ";
+        });
+        postations=postations.slice(0,-2);
+
+        text='<tr '+decoration+'>'+
+            '<th scope="row">'+zeropadInt(val.book_id,4)+'</th>' +
+            '<td>'+val.date.year + '-' + (val.date.monthValue-1) + '-' + val.date.dayOfMonth+'</td>'+
+            '<td>'+period+'</td>'+
+            '<td>'+postations+'</td>'+
+            '<td>'+val.extra_chair+'</td>'+
+            '<td>'+(val.canceled==true?"Si":"-")+'</td>'+
+            '<td>'+checkin+'</td>'+
+            '<td>'+checkout+'</td>'+
+            '<td>'+parseFloat(val.price).toFixed(2)+' €</td>'+
+            '<td>'+invoice+canc+'</td>'+
+        '</tr>';
+        //metodo di pagamento, azioni (fattura eliminare)
+        $('#booksRow').append(text);
+    });
+}
+
+function takeInvoice(id){
+    console.log("Take invoce: " + id);
+    $.ajax({
+        url: './managebook',
+        dataType: 'json',
+        type: 'post',
+        data: {
+            'Request': "Invoid",
+            'BookID': id
+        },
+        success: function (data) {
+            if(data.RESPONSE == 'Confirm'){ //Dati ok
+                console.log(data.MESSAGE);
+            }
+        },
+        error: function (errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+function cancOrder(id){
+    console.log("Delete order: " + id);
+}
+
+function zeropadInt(num, padlen) {
+    var pad_char = '0';
+    var pad = new Array(1 + padlen).join(pad_char);
+    return (pad + num).slice(-pad.length);
+}

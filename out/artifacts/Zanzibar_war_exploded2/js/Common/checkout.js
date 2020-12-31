@@ -50,13 +50,12 @@ function payOrder(){
     var surname = $('#surnameCO').val();
     var email = $('#emailCO').val();
     var fiscal = $('#fiscalcodeCO').val();
-    var address = $('#addressCO').val() + $('#address2CO').val();
+    var address = $('#addressCO').val() + " " + $('#address2CO').val();
     var region = $('#regionCO').val();
     var province = $('#provinceCO').val();
     var city = $('#cityCO').val();
     var cap = $('#capCO').val();
     var cardno =method=="CreditCard"?$('#regionCO').val():null;
-    console.log(order + method + cardno);
 
     $.ajax({
         url: './placeBook',

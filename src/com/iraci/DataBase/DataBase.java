@@ -2,9 +2,11 @@ package com.iraci.DataBase;
 
 import com.iraci.model.*;
 
+import javax.ejb.Local;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Date;
@@ -284,4 +286,76 @@ public class DataBase {
             statement.executeUpdate();
         }
     }
+
+    public static List<Order> getBooks(int user_id) throws SQLException {
+        List<Order> books = new ArrayList<>();
+        int last_bookid=-1;
+        Order book = null;
+        LocalDate checkin, checkout;
+        String query = "SELECT * FROM iraci.book JOIN iraci.book_has_umbrellastation ON book.id_Book=book_has_umbrellastation.Book_id_Book WHERE book.User_id_User=?;";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user_id);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                if(rs.getInt("id_Book")==last_bookid){
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
+                }else{
+                    if (last_bookid!=-1)
+                        books.add(book);
+                    checkin=rs.getDate("checkIn")==null?null:LocalDate.parse(rs.getDate("checkIn").toString());
+                    checkout=rs.getDate("checkOut")==null?null:LocalDate.parse(rs.getDate("checkOut").toString());
+                    book=new Order(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+
+                    last_bookid=book.getBook_id();
+                }
+            }
+            if (last_bookid!=-1)
+                books.add(book);
+            rs.close();
+            return books;
+        }
+    }
+
+    public static Order getBook(int bookID) throws SQLException {
+        Order book=null;
+        int last_bookid=-1;
+        LocalDate checkin, checkout;
+        String query = "SELECT * FROM iraci.book JOIN iraci.book_has_umbrellastation ON book.id_Book=book_has_umbrellastation.Book_id_Book WHERE book.id_Book=?;";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookID);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                if(rs.getInt("id_Book")==last_bookid){
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
+                }else{
+                    checkin=rs.getDate("checkIn")==null?null:LocalDate.parse(rs.getDate("checkIn").toString());
+                    checkout=rs.getDate("checkOut")==null?null:LocalDate.parse(rs.getDate("checkOut").toString());
+                    book=new Order(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+
+                    last_bookid=book.getBook_id();
+                }
+            }
+            rs.close();
+            book.setPrices(takePrice(book.getDate(), book.getPeriod()));
+            return book;
+        }
+    }
+
+    public static Invoice getInvoice(int BookID) throws SQLException {
+        String query = "SELECT I.*, B.bookingDate, B.date FROM iraci.invoice as I JOIN iraci.book as B ON I.id_book=B.id_Book where I.id_Book=?;";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, BookID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return new Invoice(BookID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.parse(rs.getDate("bookingDate").toString()), LocalDate.parse(rs.getDate("date").toString()), getBook(BookID));
+            }
+            rs.close();
+        }
+        return null;
+    }
+
 }
