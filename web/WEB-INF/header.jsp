@@ -10,7 +10,7 @@
 <html>
     <head>
         <script src="/Zanzibar/js/header.js"></script>
-        <%@ include file="/WEB-INF/productlist.jsp"%>
+        <%@ include file="/WEB-INF/productList.jsp"%>
     </head>
     <body>
         <!-- NavBar -->
@@ -67,7 +67,7 @@
                                             <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
                                         </li>
                                         <li>
-                                            <a href="#" data-toggle="modal" data-target="#productsModal"><i class="fas fa-burger-soda" ></i> Prodotti</a>
+                                            <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
                                         </li>
                                         <li>
                                             <a href="#"><i class="fas fa-shopping-cart"></i> Carello</a>

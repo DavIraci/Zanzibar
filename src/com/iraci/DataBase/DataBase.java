@@ -381,4 +381,20 @@ public class DataBase {
             }
         }
     }
+
+    public static List<Product> getProducts(String category) throws SQLException {
+        List<Product> products= new ArrayList<>();
+        String condition=category.equals("All")?"1":"product.category";
+        String query = "SELECT * FROM iraci.product WHERE "+ condition +"=? ORDER BY product.name ASC";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, category.equals("All")?"1":category);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                products.add(new Product(rs.getString("name"), rs.getInt("quantity"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category")));
+            }
+            rs.close();
+
+            return products;
+        }
+    }
 }
