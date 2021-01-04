@@ -118,7 +118,7 @@ function updateTotal(){
 }
 
 function updateChair(){
-    var text="<p>Sdraio extra "+parseInt($('.qty').val())+" <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
+    var text="<p>N°"+parseInt($('.qty').val())+" Sdraio extra  <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
     $('#sdraio').html(text);
     if(parseInt($('.qty').val())==0){
         $('#sdraio').html("");

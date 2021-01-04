@@ -1,9 +1,6 @@
 package com.iraci.utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 import com.iraci.model.Invoice;
 import com.iraci.model.Postation;
@@ -24,7 +21,6 @@ public class InvoiceGenerator {
     public static void createInovice (ByteArrayOutputStream baos, Invoice invoice){
 
         try {
-            System.out.println(invoice.toString());
             Document document = new Document();
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
@@ -72,11 +68,11 @@ public class InvoiceGenerator {
             billTable.addCell(getBillHeaderCell("Quantità"));
             billTable.addCell(getBillHeaderCell("Totale"));
 
-            int i, qty=invoice.getOrder().getPostations().size();
-            double price=invoice.getOrder().getPrice();
+            int i, qty=invoice.getBook().getPostations().size();
+            double price=invoice.getBook().getPrice();
 
-            for (i=0; i<invoice.getOrder().getPostations().size(); i++){
-                Postation post=invoice.getOrder().getPostations().get(i);
+            for (i=0; i<invoice.getBook().getPostations().size(); i++){
+                Postation post=invoice.getBook().getPostations().get(i);
                 billTable.addCell(getBillRowCell((i+1)+""));
                 billTable.addCell(getBillRowCell("Postazione"));
                 billTable.addCell(getBillRowCell("Ombrellone con 2 sdraio \n Fila "+ post.getRow() + ", Posto "+ post.getNumber()));
@@ -86,17 +82,17 @@ public class InvoiceGenerator {
                 price-=post.getPrice();
             }
 
-            if(invoice.getOrder().getExtra_chair()>0){
+            if(invoice.getBook().getExtra_chair()>0){
                 qty++;
                 billTable.addCell(getBillRowCell((i+1)+""));
                 billTable.addCell(getBillRowCell("Sdraio"));
                 billTable.addCell(getBillRowCell("Sdraio Extra"));
-                billTable.addCell(getBillRowCell(String.format("%.2f", price/invoice.getOrder().getExtra_chair())));
-                billTable.addCell(getBillRowCell(invoice.getOrder().getExtra_chair()+""));
+                billTable.addCell(getBillRowCell(String.format("%.2f", price/invoice.getBook().getExtra_chair())));
+                billTable.addCell(getBillRowCell(invoice.getBook().getExtra_chair()+""));
                 billTable.addCell(getBillRowCell(String.format("%.2f",price)));
             }
 
-            for( i=0; i<(17-qty); i++) {
+            for( i=0; i<(15-qty); i++) { //Padding invoice
                 billTable.addCell(getBillRowCell(" "));
                 billTable.addCell(getBillRowCell(""));
                 billTable.addCell(getBillRowCell(" "));
@@ -119,11 +115,11 @@ public class InvoiceGenerator {
             PdfPTable accounts = new PdfPTable(2);
             accounts.setWidthPercentage(100);
             accounts.addCell(getAccountsCell("Totale"));
-            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getOrder().getPrice()*0.78)));
+            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getBook().getPrice()*0.78)));
             accounts.addCell(getAccountsCell("Tasse(22%)"));
-            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getOrder().getPrice()*0.22)));
+            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getBook().getPrice()*0.22)));
             accounts.addCell(getAccountsCell("Totale Pagato"));
-            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getOrder().getPrice())));
+            accounts.addCell(getAccountsCellR(String.format("%.2f",invoice.getBook().getPrice())));
             PdfPCell summaryR = new PdfPCell (accounts);
             summaryR.setColspan (3);
             billTable.addCell(summaryR);

@@ -7,7 +7,6 @@ import com.iraci.model.User;
 import com.iraci.utils.Mailer;
 import com.iraci.utils.Utils;
 
-import javax.ejb.Local;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

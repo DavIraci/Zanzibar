@@ -23,12 +23,12 @@ function setBook(data){
     $.each(data.BOOK, function(key, val){
         var checkin = "-";
         if(val.checkin!=null)
-            checkin=val.checkin.year + '-' + (val.checkin.monthValue-1) + '-' + val.checkin.dayOfMonth;
+            checkin=val.checkin.hour + ':' + zeropadInt(val.checkin.minute,2) + ':' + val.checkin.second;
 
         var checkout = "-";
         var decoration="";
         if(val.checkout!=null) {
-            checkout = val.checkout.year + '-' + (val.checkout.monthValue - 1) + '-' + val.checkout.dayOfMonth;
+            checkout=val.checkout.hour + ':' + zeropadInt(val.checkout.minute,2) + ':' + val.checkout.second;
 
         }
         var period;
@@ -65,7 +65,7 @@ function setBook(data){
 
         text='<tr '+decoration+'>'+
             '<th scope="row">'+zeropadInt(val.book_id,4)+'</th>' +
-            '<td>'+val.date.year + '-' + (val.date.monthValue-1) + '-' + val.date.dayOfMonth+'</td>'+
+            '<td>'+zeropadInt(val.date.dayOfMonth,2) + '-' + zeropadInt(val.date.monthValue, 2) + '-' + val.date.year+'</td>'+
             '<td>'+period+'</td>'+
             '<td>'+postations+'</td>'+
             '<td>'+val.extra_chair+'</td>'+
@@ -81,7 +81,6 @@ function setBook(data){
 }
 
 function takeInvoice(id){
-    console.log("Take invoce: " + id);
     $.ajax({
         url: './managebook',
         dataType: 'json',
@@ -91,9 +90,11 @@ function takeInvoice(id){
             'BookID': id
         },
         success: function (data) {
-            if(data.RESPONSE == 'Confirm'){ //Dati ok
-                console.log(data.MESSAGE);
-            }
+            var typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
+            let text='<div class="row" style="justify-content: center">' +
+                '<div class="alert '+typemessage+' alert-dismissible" role="alert">' +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
+            $('#message-alert').html(text);
         },
         error: function (errorThrown) {
             console.log(errorThrown);
@@ -102,7 +103,27 @@ function takeInvoice(id){
 }
 
 function cancOrder(id){
-    console.log("Delete order: " + id);
+    $.ajax({
+        url: './managebook?BookID='+id,
+        dataType: 'json',
+        type: 'DELETE',
+        success: function (data) {
+            var typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
+            let text='<div class="row" style="justify-content: center">' +
+                '<div class="alert '+typemessage+' alert-dismissible" role="alert">' +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
+            $('#message-alert').html(text);
+            resetManageBook();
+        },
+        error: function (errorThrown) {
+            console.log(errorThrown);
+        }
+    });
+}
+
+function resetManageBook(){
+    $('#booksRow').html("");
+    loadBook();
 }
 
 function zeropadInt(num, padlen) {

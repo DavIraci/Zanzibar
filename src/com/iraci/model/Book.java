@@ -3,10 +3,11 @@ package com.iraci.model;
 import com.iraci.model.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Book {
     private String period;
     private LocalDate date;
     private LocalDate booked_date;
@@ -14,14 +15,14 @@ public class Order {
     private int book_id;
     private double price;
     private boolean canceled;
-    private LocalDate checkin;
-    private LocalDate checkout;
+    private LocalDateTime checkin;
+    private LocalDateTime checkout;
     private int extra_chair;
     private List<Postation> postations=new ArrayList<>();
 
     @Override
     public String toString() {
-        return "Order{" +
+        return "Book{" +
                 "period='" + period + '\'' +
                 ", date=" + date +
                 ", booked_date=" + booked_date +
@@ -36,7 +37,7 @@ public class Order {
                 '}';
     }
 
-    public Order(String period, int user_id, int book_id, double price, boolean canceled, LocalDate checkin, LocalDate checkout, int extra_chair, LocalDate date, LocalDate booked_date) {
+    public Book(String period, int user_id, int book_id, double price, boolean canceled, LocalDateTime checkin, LocalDateTime checkout, int extra_chair, LocalDate date, LocalDate booked_date) {
         this.period = period;
         this.user_id = user_id;
         this.book_id = book_id;
@@ -49,7 +50,7 @@ public class Order {
         this.booked_date = booked_date;
     }
 
-    public Order(String period, int user_id, double price, boolean canceled, int extra_chair, List<Postation> postations, LocalDate date) {
+    public Book(String period, int user_id, double price, boolean canceled, int extra_chair, List<Postation> postations, LocalDate date) {
         this.period = period;
         this.user_id = user_id;
         this.price = price;
@@ -57,9 +58,6 @@ public class Order {
         this.extra_chair = extra_chair;
         this.postations = postations;
         this.date = date;
-    }
-
-    public Order() {
     }
 
     public LocalDate getDate() { return date; }
@@ -106,19 +104,19 @@ public class Order {
         this.canceled = canceled;
     }
 
-    public LocalDate getCheckin() {
+    public LocalDateTime getCheckin() {
         return checkin;
     }
 
-    public void setCheckin(LocalDate checkin) {
+    public void setCheckin(LocalDateTime checkin) {
         this.checkin = checkin;
     }
 
-    public LocalDate getCheckout() {
+    public LocalDateTime getCheckout() {
         return checkout;
     }
 
-    public void setCheckout(LocalDate checkout) {
+    public void setCheckout(LocalDateTime checkout) {
         this.checkout = checkout;
     }
 

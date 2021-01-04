@@ -58,6 +58,8 @@
                     <div class="row" style="justify-content: center">
                         <h1>Gestisci Prenotazioni</h1>
                     </div>
+
+                    <div class="row" style="justify-content: center" id="message-alert"></div>
                     <!--div class="row" style="text-align: center"-->
                         <table class="table table-striped">
                             <thead class="thead-dark">

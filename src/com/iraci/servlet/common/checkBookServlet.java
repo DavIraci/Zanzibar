@@ -2,7 +2,7 @@ package com.iraci.servlet.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
-import com.iraci.model.Order;
+import com.iraci.model.Book;
 import com.iraci.model.Postation;
 import com.iraci.model.User;
 import com.iraci.utils.Utils;
@@ -32,7 +32,7 @@ public class checkBookServlet extends HttpServlet {
             int i;
             boolean error=false;
             List<Double> prices= DataBase.takePrice(date, period);
-            Double extra = prices.remove(0);
+            Double extra = prices.get(0);
             Double total= extra_chair*extra;
 
             PrintWriter pr = response.getWriter();

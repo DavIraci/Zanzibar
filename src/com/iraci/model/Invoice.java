@@ -18,9 +18,9 @@ public class Invoice {
     private String method;
     private LocalDate booked_date;
     private LocalDate date;
-    private Order order;
+    private Book book;
 
-    public Invoice(int bookID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate booked_date, LocalDate date, Order order) {
+    public Invoice(int bookID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate booked_date, LocalDate date, Book book) {
         this.bookID = bookID;
         this.invoiceID = invoiceID;
         this.name = name;
@@ -34,7 +34,7 @@ public class Invoice {
         this.CAP = CAP;
         this.method = method;
         this.booked_date = booked_date;
-        this.order = order;
+        this.book = book;
         this.date = date;
     }
 
@@ -63,16 +63,16 @@ public class Invoice {
                 ", method='" + method + '\'' +
                 ", booked_date=" + booked_date +
                 ", date=" + date +
-                ", order=" + order +
+                ", book=" + book +
                 '}';
     }
 
-    public Order getOrder() {
-        return order;
+    public Book getBook() {
+        return book;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public int getBookID() {

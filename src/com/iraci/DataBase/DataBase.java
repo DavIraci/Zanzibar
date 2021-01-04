@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.sql.DataSource;
 import java.util.LinkedHashMap;
@@ -220,10 +222,16 @@ public class DataBase {
     public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
         List<Postation> postazioni = new ArrayList<>();
         List<Double> prices = takePrice(date, period);
-        String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND book.canceled=0 AND (book.bookingPeriod='Full' OR book.bookingPeriod=?)";
+        String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND book.canceled=0 AND (book.bookingPeriod='Full' OR book.bookingPeriod=? OR book.bookingPeriod=?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDate(1, Date.valueOf(date));
-            statement.setString(2, period);
+            if(period.equals("Full")) {
+                statement.setString(2, "AM");
+                statement.setString(3, "PM");
+            }else{
+                statement.setString(2, period);
+                statement.setString(3, "");
+            }
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 postazioni.add(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation"), prices));
@@ -247,7 +255,6 @@ public class DataBase {
             int id = -1;
             if (rs.next()) {
                 id = rs.getInt(1);
-                System.out.println(id);
                 rs.close();
                 for (int i = 0; i < postations.size(); i++) {
                     String query2 = "INSERT INTO iraci.book_has_umbrellastation (Book_id_Book, UmbrellaStation_id_UmbrellaStation, extraChair) values (?, ?, ?)";
@@ -287,11 +294,11 @@ public class DataBase {
         }
     }
 
-    public static List<Order> getBooks(int user_id) throws SQLException {
-        List<Order> books = new ArrayList<>();
+    public static List<Book> getBooks(int user_id) throws SQLException {
+        List<Book> books = new ArrayList<>();
         int last_bookid=-1;
-        Order book = null;
-        LocalDate checkin, checkout;
+        Book book = null;
+        LocalDateTime checkin, checkout;
         String query = "SELECT * FROM iraci.book JOIN iraci.book_has_umbrellastation ON book.id_Book=book_has_umbrellastation.Book_id_Book WHERE book.User_id_User=?;";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, user_id);
@@ -303,9 +310,9 @@ public class DataBase {
                 }else{
                     if (last_bookid!=-1)
                         books.add(book);
-                    checkin=rs.getDate("checkIn")==null?null:LocalDate.parse(rs.getDate("checkIn").toString());
-                    checkout=rs.getDate("checkOut")==null?null:LocalDate.parse(rs.getDate("checkOut").toString());
-                    book=new Order(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    //checkin=rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime();
+                    //checkout=rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime();
+                    book=new Book(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
 
                     last_bookid=book.getBook_id();
@@ -318,10 +325,10 @@ public class DataBase {
         }
     }
 
-    public static Order getBook(int bookID) throws SQLException {
-        Order book=null;
+    public static Book getBook(int bookID) throws SQLException {
+        Book book=null;
         int last_bookid=-1;
-        LocalDate checkin, checkout;
+        LocalDateTime checkin, checkout;
         String query = "SELECT * FROM iraci.book JOIN iraci.book_has_umbrellastation ON book.id_Book=book_has_umbrellastation.Book_id_Book WHERE book.id_Book=?;";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, bookID);
@@ -331,9 +338,9 @@ public class DataBase {
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
                     book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
                 }else{
-                    checkin=rs.getDate("checkIn")==null?null:LocalDate.parse(rs.getDate("checkIn").toString());
-                    checkout=rs.getDate("checkOut")==null?null:LocalDate.parse(rs.getDate("checkOut").toString());
-                    book=new Order(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    checkin=rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime();
+                    checkout=rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime();
+                    book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
 
                     last_bookid=book.getBook_id();
@@ -351,6 +358,10 @@ public class DataBase {
             statement.setInt(1, BookID);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
+                System.out.println(":"+rs.getInt("id_invoice")+":");
+                /*if(rs.getInt("id_invoice")==null{
+                    return null;
+                }*/
                 return new Invoice(BookID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.parse(rs.getDate("bookingDate").toString()), LocalDate.parse(rs.getDate("date").toString()), getBook(BookID));
             }
             rs.close();
@@ -358,4 +369,16 @@ public class DataBase {
         return null;
     }
 
+    public static boolean cancelBook(int bookID) throws SQLException {
+        String query = "UPDATE iraci.book SET book.canceled = 1 WHERE id_Book = ?;";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, bookID);
+            int result = statement.executeUpdate();
+            if (result > 0) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
 }
