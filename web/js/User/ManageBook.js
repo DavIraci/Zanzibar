@@ -1,7 +1,6 @@
 $(document).ready(function () {
     loadBook();
 });
-var dati;
 
 function loadBook(){
     $.ajax({
@@ -19,7 +18,6 @@ function loadBook(){
 }
 
 function setBook(data){
-    dati=data.BOOK;
     $.each(data.BOOK, function(key, val){
         var checkin = "-";
         if(val.checkin!=null)

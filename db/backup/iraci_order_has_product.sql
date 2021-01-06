@@ -27,6 +27,7 @@ CREATE TABLE `order_has_product` (
   `Product_barcode` varchar(12) NOT NULL,
   `quantity` int NOT NULL DEFAULT '1',
   `price` decimal(6,2) NOT NULL,
+  `details` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Order_id_Order`,`Product_barcode`),
   KEY `fk_Order_has_Product_Product1_idx` (`Product_barcode`),
   KEY `fk_Order_has_Product_Order1_idx` (`Order_id_Order`),
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-10 12:54:59
+-- Dump completed on 2021-01-06 16:29:02

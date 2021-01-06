@@ -62,10 +62,11 @@ public class DataBase {
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
 
             statement.setString(1, email);
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                return new User(result.getInt("id_User"), result.getString("name"), result.getString("surname"), result.getString("email"), result.getString("mobile"), result.getString("telephone"), result.getString("role"), LocalDate.parse(result.getDate("birthday").toString()));
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getInt("id_User"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("mobile"), rs.getString("telephone"), rs.getString("role"), LocalDate.parse(rs.getDate("birthday").toString()));
             } else {
+                rs.close();
                 return null;
             }
         }
@@ -110,11 +111,11 @@ public class DataBase {
         boolean res=false;
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
                 res = true;
             }
-            result.close();
+            rs.close();
             return res;
         }
     }
@@ -167,11 +168,11 @@ public class DataBase {
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             statement.setString(2, checkPassword);
-            ResultSet result = statement.executeQuery();
-            if (result.next()) {
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
                 res = true;
             }
-            result.close();
+            rs.close();
             return res;
         }
     }
@@ -214,7 +215,6 @@ public class DataBase {
                 price.add( rs.getDouble(season)/( (rs.getInt("row")==0)?1:half ) );
             }
             rs.close();
-
             return price;
         }
     }
@@ -237,7 +237,6 @@ public class DataBase {
                 postazioni.add(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation"), prices));
             }
             rs.close();
-
             return postazioni;
         }
     }
@@ -270,6 +269,7 @@ public class DataBase {
                 }
                 return id;
             }
+            rs.close();
         }
         return -1;
     }
@@ -359,9 +359,6 @@ public class DataBase {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 System.out.println(":"+rs.getInt("id_invoice")+":");
-                /*if(rs.getInt("id_invoice")==null{
-                    return null;
-                }*/
                 return new Invoice(BookID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.parse(rs.getDate("bookingDate").toString()), LocalDate.parse(rs.getDate("date").toString()), getBook(BookID));
             }
             rs.close();
@@ -393,8 +390,19 @@ public class DataBase {
                 products.add(new Product(rs.getString("name"), rs.getInt("quantity"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category")));
             }
             rs.close();
-
             return products;
+        }
+    }
+
+    public static Product getProduct(int barcode) throws SQLException {
+        String query = "SELECT * FROM iraci.product WHERE product.barcode=? ";
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, barcode);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next())
+                return new Product(rs.getString("name"), rs.getInt("quantity"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category"));
+            rs.close();
+            return null;
         }
     }
 }

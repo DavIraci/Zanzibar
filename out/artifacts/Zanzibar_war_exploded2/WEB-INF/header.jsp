@@ -7,9 +7,19 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.iraci.model.User" %>
+<%@ page import="com.iraci.model.Cart" %>
 <html>
     <head>
         <script src="/Zanzibar/js/header.js"></script>
+        <style>
+            .badge.badge-pill{
+                background-color: #5fbfcd;
+                color: white;
+            }
+            .dropdown-menu.extended li a:hover span{
+                background-color: black !important;
+            }
+        </style>
         <%@ include file="/WEB-INF/productList.jsp"%>
     </head>
     <body>
@@ -70,7 +80,8 @@
                                             <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
                                         </li>
                                         <li>
-                                            <a href="#"><i class="fas fa-shopping-cart"></i> Carello</a>
+                                            <a href="${pageContext.request.contextPath}/user/cartManage"><span class="badge badge-pill" id="spanCart"><%if(((Cart) request.getSession().getAttribute("CART"))!=null && ((Cart) request.getSession().getAttribute("CART")).getSize()>0 ){%><%=((Cart) request.getSession().getAttribute("CART")).getSize() %><%}%></span><i class="fas fa-shopping-cart"></i> Carello
+                                            </a>
                                         </li>
                                         <li>
                                             <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>

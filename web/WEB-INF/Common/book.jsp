@@ -138,9 +138,9 @@
                     <div class="input-group mb-3">
                         <label id="extra-chair" for="myform"></label><br>
                         <div id='myform'>
-                            <input type='button' value='-' class='qtyminus btn btn-danger' field='quantity' style="border-radius: 0.5rem"/>
-                            <input type='text' name='quantity' value='0' class='qty' style="max-width: 25%" readonly/>
-                            <input type='button' value='+' class='qtyplus btn btn-success' field='quantity' style="border-radius: 0.5rem"/>
+                            <input id="bookQtyMinus" type='button' value='-' class='qtyminus btn btn-danger' field='quantity' style="border-radius: 0.5rem"/>
+                            <input id="bookQty" type='text' name='quantity' value='0' class='qty' style="max-width: 25%" readonly/>
+                            <input id="bookQtyPlus" type='button' value='+' class='qtyplus btn btn-success' field='quantity' style="border-radius: 0.5rem"/>
                         </div>
                     </div>
                 </div>

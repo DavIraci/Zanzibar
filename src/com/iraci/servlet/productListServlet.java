@@ -33,8 +33,6 @@ public class productListServlet extends HttpServlet {
             String status, category=request.getParameter("Category");
             List<Product> products;
 
-            System.out.println(category);
-
             if((products=DataBase.getProducts(category)).isEmpty()){
                 status = "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è stato possibile reperire i prodotti, riprovare!\"}";
             }else { //TakeBook

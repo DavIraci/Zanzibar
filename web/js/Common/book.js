@@ -3,19 +3,18 @@ $(document).ready(function () {
     fixDate(new Date());
     var s = Snap('#map');
 
-    $('.qtyplus').click(function(){
-        if($('.qty').val()<(2*posSelected.length)) {
-            $('.qty').val(parseInt($('.qty').val()) + 1);
+    $('#bookQtyPlus').click(function(){
+        if($('#bookQty').val()<(2*posSelected.length)) {
+            $('#bookQty').val(parseInt($('#bookQty').val()) + 1);
             updateChair();
         }
     });
 
-    $('.qtyminus').click(function(){
-        if($('.qty').val()>0) {
-            $('.qty').val(parseInt($('.qty').val()) - 1);
+    $('#bookQtyMinus').click(function(){
+        if($('#bookQty').val()>0) {
+            $('#bookQty').val(parseInt($('#bookQty').val()) - 1);
             updateChair();
         }
-
     });
 
     $('#checkBook').click(function () {

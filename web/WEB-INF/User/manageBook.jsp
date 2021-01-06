@@ -60,7 +60,6 @@
                     </div>
 
                     <div class="row" style="justify-content: center" id="message-alert"></div>
-                    <!--div class="row" style="text-align: center"-->
                         <table class="table table-striped">
                             <thead class="thead-dark">
                             <tr>
@@ -79,38 +78,9 @@
                             <tbody id="booksRow">
                             </tbody>
                         </table>
-                    <!--/div-->
                 </section>
             </div>
         </div>
-        <!--
-        <div class="container mt-4">
-            <div class="row" style="justify-content: center" id="message-alert">
-            </div>
-            <div class="row" style="place-content: center;">
-                <div class="col-sm-3 col-sm-offset-3">
-                    <div class="input-group mb-3">
-                        <label id="extra-chair" for="myform"></label><br>
-                        <div id='myform'>
-                            <input type='button' value='-' class='qtyminus btn btn-danger' field='quantity' style="border-radius: 0.5rem"/>
-                            <input type='text' name='quantity' value='0' class='qty' style="max-width: 25%" readonly/>
-                            <input type='button' value='+' class='qtyplus btn btn-success' field='quantity' style="border-radius: 0.5rem"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-9" style="text-align: right;">
-                    <div id="postazioni">
-                    </div>
-                    <div id="sdraio">
-                    </div>
-                    <div id="totale">
-                    </div>
-                    <div>
-                        <input type="button" class="btn-lg btn-primary disabled" id="checkBook" value="Conferma e paga">
-                    </div>
-                </div>
-            </div>
-        </div-->
     </main>
 
         <%@ include file="/WEB-INF/footer.jsp"%>
