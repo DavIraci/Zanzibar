@@ -45,6 +45,11 @@
                 color: grey;
                 cursor: pointer;
             }
+            .table td.fit,
+            .table th.fit {
+                white-space: nowrap;
+                width: 1%;
+            }
         </style>
 
         <%@ include file="/WEB-INF/header.jsp"%>
@@ -60,19 +65,19 @@
                     </div>
 
                     <div class="row" style="justify-content: center" id="message-alert"></div>
-                        <table class="table table-striped">
+                        <table class="table table-striped table-responsive">
                             <thead class="thead-dark">
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Giorno</th>
-                                <th scope="col">Fascia Oraria</th>
-                                <th scope="col">Postazioni</th>
-                                <th scope="col">Sdraio Extra</th>
-                                <th scope="col">Cancellata</th>
-                                <th scope="col">Check-in</th>
-                                <th scope="col">Check-out</th>
-                                <th scope="col">Costo</th>
-                                <th scope="col">Azioni</th>
+                                <th class="fit" scope="col">ID</th>
+                                <th class="fit" scope="col">Giorno</th>
+                                <th class="fit" scope="col">Fascia Oraria</th>
+                                <th class="fit" scope="col">Postazioni</th>
+                                <th class="fit" scope="col">Sdraio Extra</th>
+                                <th class="fit" scope="col">Cancellata</th>
+                                <th class="fit" scope="col">Check-in</th>
+                                <th class="fit" scope="col">Check-out</th>
+                                <th class="fit" scope="col">Costo</th>
+                                <th class="fit" scope="col">Azioni</th>
                             </tr>
                             </thead>
                             <tbody id="booksRow">

@@ -42,7 +42,12 @@
                 max-width: 9rem;
             }
             td div input{
-                line-height: 1 !important;
+                line-height: 0.5rem !important;
+            }
+            .table td.fit,
+            .table th.fit {
+                white-space: nowrap;
+                width: 1%;
             }
         </style>
 
@@ -59,22 +64,33 @@
                     </div>
 
                     <div class="row" style="justify-content: center" id="cart-message-alert"></div>
-                    <!--div class="row" style="text-align: center"-->
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nome Prodotto</th>
-                                <th scope="col">Categoria</th>
-                                <th scope="col">Quantità</th>
-                                <th scope="col">Prezzo</th>
-                                <th scope="col">Note</th>
-                            </tr>
-                            </thead>
-                            <tbody id="productsRow">
-                            </tbody>
-                        </table>
-                    <!--/div-->
+                    <table class="table table-striped table-responsive">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="fit" scope="col">ID</th>
+                            <th class="fit" scope="col">Nome Prodotto</th>
+                            <th class="fit" scope="col">Categoria</th>
+                            <th class="fit" scope="col">Quantità</th>
+                            <th class="fit" scope="col">Prezzo</th>
+                            <th class="fit" scope="col">Note</th>
+                        </tr>
+                        </thead>
+                        <tbody id="productsRow">
+                        </tbody>
+                    </table>
+                    <div>
+                        <div class="text-right">
+                            <div id="postazioni">
+                            </div>
+                            <div id="sdraio">
+                            </div>
+                            <div id="totale">
+                            </div>
+                            <div>
+                                <input type="button" class="btn-lg btn-primary disabled" id="checkBook" value="Conferma e paga">
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

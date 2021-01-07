@@ -46,7 +46,7 @@ function setCart(data) {
                 '<td>'+val.category+'</td>'+
                 '<td><div id=\'productQtyForm'+val.barcode+'\'>\n' +
                 '       <input id="productQtyMinus'+val.barcode+'" type=\'button\' value=\'-\' class=\'qtyminus btn btn-danger\' field=\'quantity\' style="border-radius: 0.5rem"/>\n' +
-                '       <input id="productQty'+val.barcode+'" type=\'text\' name=\'quantity\' value=\''+val.quantity+'\' class=\'qty text-center\' style="max-width: 25%" readonly/>\n' +
+                '       <input id="productQty'+val.barcode+'" type=\'text\' name=\'quantity\' value=\''+val.quantity+'\' class=\'qty text-center align-middle\' style="max-width: 25%" readonly/>\n' +
                 '       <input id="productQtyPlus'+val.barcode+'" type=\'button\' value=\'+\' class=\'qtyplus btn btn-success\' field=\'quantity\' style="border-radius: 0.5rem"/>\n' +
                 '    </div></td>'+
                 '<td>'+parseInt(val.price).toFixed(2)+'€</td>'+

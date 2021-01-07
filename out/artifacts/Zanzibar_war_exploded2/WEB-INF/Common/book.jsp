@@ -93,6 +93,9 @@
             input {
                 text-align: center;
             }
+            td div input{
+                line-height: 0.75rem !important;
+            }
         </style>
 
 
@@ -139,12 +142,12 @@
                         <label id="extra-chair" for="myform"></label><br>
                         <div id='myform'>
                             <input id="bookQtyMinus" type='button' value='-' class='qtyminus btn btn-danger' field='quantity' style="border-radius: 0.5rem"/>
-                            <input id="bookQty" type='text' name='quantity' value='0' class='qty' style="max-width: 25%" readonly/>
+                            <input id="bookQty" type='text' name='quantity' value='0' class='qty align-middle' style="max-width: 25%" readonly/>
                             <input id="bookQtyPlus" type='button' value='+' class='qtyplus btn btn-success' field='quantity' style="border-radius: 0.5rem"/>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-9" style="text-align: right;">
+                <div class="col-sm-9 text-right">
                     <div id="postazioni">
                     </div>
                     <div id="sdraio">
