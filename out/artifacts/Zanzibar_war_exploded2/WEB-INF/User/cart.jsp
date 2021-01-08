@@ -80,14 +80,9 @@
                     </table>
                     <div>
                         <div class="text-right">
-                            <div id="postazioni">
+                            <div id="subTotal">
                             </div>
-                            <div id="sdraio">
-                            </div>
-                            <div id="totale">
-                            </div>
-                            <div>
-                                <input type="button" class="btn-lg btn-primary disabled" id="checkBook" value="Conferma e paga">
+                            <div id="payOrder">
                             </div>
                         </div>
                     </div>

@@ -116,7 +116,7 @@ public class Cart {
             tot += p.getPrice() * products.get(p).getQuantity();
             quantity+=products.get(p).getQuantity();
         }
-        return cart.substring(0, cart.length() - 1)+"] , \"TOTALE\" : \""+String.format("%.2f",tot) + "\", \"PRODUCTNUMBER\" : \"" + quantity+"\" ";
+        return cart.substring(0, cart.length() - 1)+"] , \"TOTAL\" : \""+String.format("%.2f",tot) + "\", \"PRODUCTNUMBER\" : \"" + quantity+"\" ";
     }
 
     @Override
@@ -157,5 +157,17 @@ public class Cart {
         Product p = searchProduct(idProduct);
         if(p != null)
             products.get(p).setQuantity(quantity);
+    }
+
+    /**
+     * Modifica la quantità di un'order.
+     * @param idProduct
+     * @param quantity
+     */
+    public int getQuantity(int idProduct) {
+        Product p = searchProduct(idProduct);
+        if(p != null)
+            return products.get(p).getQuantity();
+        return -1;
     }
 }

@@ -38,7 +38,12 @@ public class manageCartServlet extends HttpServlet {
                         status=cartManage(request, response);
                         break;
                     }
+                    case "UpdateQuantity": {
+                        status=updateQuantity(request, response);
+                        break;
+                    }
                     default:{
+                        System.out.println("Error!");
                     }
                 }
                 if(status!=null) {
@@ -52,6 +57,26 @@ public class manageCartServlet extends HttpServlet {
             e.printStackTrace();
             response.sendError(400);
         }
+    }
+
+    private String updateQuantity(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+        int barcode=Integer.parseInt(request.getParameter("Barcode")), quantity=Integer.parseInt(request.getParameter("Quantity"));
+        Cart cart = (Cart) request.getSession().getAttribute("CART");
+        // Se il carrello è vuoto crea un nuovo oggetto carrello.
+        if(cart == null || cart.getSize()==0 || cart.searchProduct(barcode)==null) {
+            return "{\"RESPONSE\" : \"Error\"}";
+        }
+        if(quantity==0){
+            cart.removeProduct(barcode);
+        }else {
+            cart.setQuantity(barcode, quantity);
+            quantity = cart.getQuantity(barcode);
+        }
+        if(quantity==-1)
+            return "{\"RESPONSE\" : \"Error\"}";
+        System.out.println(cart);
+        return "{\"RESPONSE\" : \"Confirm\", \"QUANTITY\" : "+quantity+"}";
+
     }
 
     private String cartManage(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
