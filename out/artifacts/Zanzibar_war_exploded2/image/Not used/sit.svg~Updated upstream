@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="sit" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1071 899" style="enable-background:new 0 0 1071 899;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#231F20;}
+	.st2{fill:none;stroke:#231F20;stroke-width:21;stroke-miterlimit:10;}
+	.st3{fill:#010101;stroke:#010101;stroke-miterlimit:10;}
+	.st4{fill:#FFFFFF;stroke:#010101;stroke-miterlimit:10;}
+	.st5{fill:none;}
+</style>
+<g id="chair">
+	<rect x="71" y="55.5" class="st0" width="18.5" height="765.1"/>
+	<rect x="146.5" y="55.5" class="st0" width="19" height="765.1"/>
+	<rect x="222.5" y="55.5" class="st0" width="20" height="765"/>
+	<rect x="299.5" y="55.5" class="st0" width="15.5" height="765"/>
+	<rect x="65.8" y="55.5" width="5.2" height="765.1"/>
+	<rect x="314.4" y="55.8" width="5.2" height="765.1"/>
+	<rect x="700.3" y="55.5" class="st0" width="18.5" height="765.1"/>
+	<rect x="775.8" y="55.5" class="st0" width="19" height="765.1"/>
+	<rect x="851.8" y="55.5" class="st0" width="20" height="765"/>
+	<rect x="928.8" y="55.5" class="st0" width="15.5" height="765"/>
+	<rect x="695.1" y="55.5" class="st0" width="5.2" height="765.1"/>
+	<rect x="943.7" y="55.8" class="st0" width="5.2" height="765.1"/>
+	<g id="c_x5F_black">
+		<rect x="89.5" y="55.2" class="st1" width="57" height="765.4"/>
+		<rect x="165.5" y="55.2" class="st1" width="57" height="765.4"/>
+		<rect x="242.5" y="55.2" class="st1" width="57" height="765.4"/>
+		<ellipse class="st2" cx="21" cy="585" rx="0.3" ry="64"/>
+		<ellipse class="st2" cx="365" cy="585" rx="0.3" ry="64"/>
+		<ellipse class="st2" cx="365" cy="94" rx="0.3" ry="30"/>
+		<ellipse class="st2" cx="21" cy="94" rx="0.3" ry="30"/>
+		<ellipse class="st2" cx="45.5" cy="450" rx="0.3" ry="432.5"/>
+		<ellipse class="st2" cx="342" cy="450" rx="0.3" ry="432.5"/>
+		<rect x="34.9" y="22.1" class="st1" width="317.5" height="33.3"/>
+		<rect x="35" y="820.3" class="st1" width="317.5" height="33.3"/>
+		<rect x="56.2" y="565" class="st1" width="275.1" height="8"/>
+		<rect x="718.8" y="55.2" class="st1" width="57" height="765.4"/>
+		<rect x="794.8" y="55.2" class="st1" width="57" height="765.4"/>
+		<rect x="871.8" y="55.2" class="st1" width="57" height="765.4"/>
+		<ellipse class="st2" cx="650.3" cy="585" rx="0.3" ry="64"/>
+		<ellipse class="st2" cx="994.3" cy="585" rx="0.3" ry="64"/>
+		<ellipse class="st2" cx="994.3" cy="94" rx="0.3" ry="30"/>
+		<ellipse class="st2" cx="650.3" cy="94" rx="0.3" ry="30"/>
+		<ellipse class="st2" cx="674.8" cy="450" rx="0.3" ry="432.5"/>
+		<ellipse class="st2" cx="971.3" cy="450" rx="0.3" ry="432.5"/>
+		<rect x="664.2" y="22.1" class="st1" width="317.5" height="33.3"/>
+		<rect x="664.3" y="820.3" class="st1" width="317.5" height="33.3"/>
+		<rect x="685.4" y="565" class="st1" width="275.1" height="8"/>
+	</g>
+</g>
+<g id="umbrella">
+	<g id="u_x5F_black">
+		<path class="st3" d="M165.2,403.3L811,670.8c-10.4-29.5-22.8-75.7-22.9-133.1C788,479.6,800.5,433,811,403.3L165.2,670.8
+			c9.7-33.4,19.6-81.4,19-139.4C183.5,478.8,174.3,435,165.2,403.3z"/>
+		<path class="st3" d="M622.7,214.2L355.2,860c29.5-10.4,75.7-22.8,133.1-22.9C546.4,837,593,849.5,622.7,860L355.2,214.2
+			c33.4,9.7,81.4,19.6,139.4,19C547.2,232.5,591,223.4,622.7,214.2z"/>
+	</g>
+	<path class="st4" d="M166,670.7l645.8-267.5c-28.3-13.5-69.6-37.4-110.3-77.9c-41.1-41-65.2-82.8-78.8-111.2L355.2,859.9
+		c-16.8-30.5-43.6-71.4-85.1-111.9C232.4,711.1,194.9,686.6,166,670.7z"/>
+	<path class="st4" d="M355.2,214.1l267.5,645.8c13.5-28.3,37.4-69.6,77.9-110.3c41-41.1,82.8-65.2,111.2-78.8L166,403.2
+		c30.5-16.8,71.4-43.6,111.9-85.1C314.8,280.4,339.3,242.9,355.2,214.1z"/>
+</g>
+<g id="rect">
+	<rect id="rect_1_" class="st5" width="1071" height="899"/>
+</g>
+</svg>
