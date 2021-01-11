@@ -1,13 +1,11 @@
-package com.iraci.servlet.common;
+package com.iraci.servlet.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
 import com.iraci.model.Postation;
 import com.iraci.model.User;
 import com.iraci.utils.Mailer;
 import com.iraci.utils.Utils;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +16,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "placeBookServlet", urlPatterns={"/common/placeBook"})
+/**
+ * Questa classe gestisce la prenotazione delle postazioni
+ * @author Davide Iraci
+ */
+@WebServlet(name = "placeBookServlet", urlPatterns={"/user/placeBook"})
 public class placeBookServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            // Prende i dati selezionati dall'utente
             String method, name, surname, email, fiscal, address, region, province, city, cap, cardno, period;
-            List<Postation> postations=new ArrayList<>();
-            int i=0, extrachair, id;
-            double totalprice;
-            LocalDate date;
             method = request.getParameter("PaymentMethod");
             name = request.getParameter("Name");
             surname = request.getParameter("Surname");
@@ -38,27 +40,33 @@ public class placeBookServlet extends HttpServlet {
             city = request.getParameter("City");
             cap = request.getParameter("CAP");
             cardno = request.getParameter("CardNO");
+            int extrachair = Integer.parseInt(request.getParameter("Order[EXTRA_CHAIR]"));
+            double totalprice = Double.parseDouble(request.getParameter("Order[TOTAL_PRICE]"));
+            period = request.getParameter("Order[PERIOD]");
+            LocalDate date = LocalDate.parse(request.getParameter("Order[DATE]"));
+
+            // Inizializza le postazioni passate tramite JSON
+            List<Postation> postations=new ArrayList<>();
+            int i=0, id;
             while (request.getParameter("Order[POSTATION]["+i+"][id]")!=null){
                 postations.add(new Postation(Integer.parseInt(request.getParameter("Order[POSTATION]["+i+"][id]")), Double.parseDouble(request.getParameter("Order[POSTATION]["+i+"][price]"))));
                 i++;
             }
-            extrachair = Integer.parseInt(request.getParameter("Order[EXTRA_CHAIR]"));
-            totalprice = Double.parseDouble(request.getParameter("Order[TOTAL_PRICE]"));
-            period = request.getParameter("Order[PERIOD]");
-            date = LocalDate.parse(request.getParameter("Order[DATE]"));
+
+            //Prepara il necessario per la risposta JSON
             PrintWriter pr = response.getWriter();
             response.setContentType("application/json");
-            ObjectMapper mapper = new ObjectMapper();
             String status;
 
             if(Utils.occupiedCheck(postations, date, period) || (id=DataBase.placeBook(postations, date, period, totalprice, ((User) request.getSession().getAttribute("USER")).getIdUtente(), extrachair))==-1){
+                // Verifica se le postazioni sono state occupate nel mentre e verifica se c'è stato un errore nella prenotazione
                 status = "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"E' stato riscontrato un errore nella prenotazione, una postazione risulta già prenotata! Per favore riprovare!\"}";
             }else{
+                // Prenotazione effettuata, inserisce i dati della fattura, quindi invia una mail al cliente con i dati della prenotazione
                 DataBase.insertInvoid(id, name, surname, email, fiscal, address, region, province, city, cap, method, cardno);
                 status = "{\"RESPONSE\" : \"Confirm\", \"MESSAGE\" : \"Il tuo ordine è stato pagato e confermato! A presto!\"}"; //Send email confirm order
 
-                String start=(period.equals("PM")==true)?"14:00":"8:00", end=(period.equals("AM")==true)?"13:00":"19:00";
-
+                String start=(period.equals("PM"))?"14:00":"8:00", end=(period.equals("AM"))?"13:00":"19:00";
                 String messaggio = "<p>Ciao " + name + " " + surname + ", <br>"
                         + "ti comunichiamo che è stato effettuato l'ordine N°"+String.format("%08d", id)+" per giorno " + date + ". Ti aspettiamo dalle ore "
                         + start + " alle ore " + end + "<br>Nel sito puoi gestire la tua prenotazione e trovare la relativa fattura.<br><br>"
@@ -76,8 +84,10 @@ public class placeBookServlet extends HttpServlet {
         }
     }
 
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendError(400);
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.sendError(404);
     }
 }

@@ -2,11 +2,9 @@ package com.iraci.DataBase;
 
 import com.iraci.model.*;
 
-import javax.ejb.Local;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,12 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import javax.sql.DataSource;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,20 +24,13 @@ import java.util.Map;
  * @author Davide Iraci
  */
 public class DataBase {
-    /**
-     * Dichiarazione delle variabili necessarie a gestire la connessione con il database e
-     * l'esecuzione delle query.
-     */
-    private static Context context = null;
     private static DataSource dataSource = null;
 
-
-    /**
-     * Inizializza il context ed il data source per la comunicazione con il database.
-     */
+    // Inizializza il context ed il data source per la comunicazione con il database.
     static {
         try {
-            context = new InitialContext();
+            // Dichiarazione delle variabili necessarie a gestire la connessione con il database e l'esecuzione delle query.
+            Context context = new InitialContext();
             dataSource = (DataSource) context.lookup("java:comp/env/jdbc/iraci");
         }
         catch (NamingException e) {
@@ -52,15 +39,14 @@ public class DataBase {
     }
 
     /**
-     *
-     * @param email
-     * @return
-     * @throws SQLException
+     * Prende i dati dal DB dell'utente registrato con l'email fornita come argomento
+     * @param email Email dell'account con cui si vuole effettuare il login
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
      */
     public static User takeUser(String email) throws SQLException{
-        String query1 = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.email=?";
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
-
+        String query = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.email=?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -70,24 +56,22 @@ public class DataBase {
                 return null;
             }
         }
-
     }
 
     /**
      * Inserisce all'interno del database i dati del cliente che effettua la registrazione
-     * @param nome
-     * @param cognome
-     * @param email
-     * @param cellulare
-     * @param datanascita
-     * @param password
-     * @throws SQLException
+     * @param nome nome
+     * @param cognome cognome
+     * @param email email
+     * @param cellulare cellulare
+     * @param datanascita datanascita
+     * @param password password
+     * @throws SQLException SQLException
      */
     public static void userSignIn(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password) throws SQLException{
-        String query1 = "INSERT INTO iraci.user (name, surname, email, password, mobile, telephone, birthday, role) " +
+        String query = "INSERT INTO iraci.user (name, surname, email, password, mobile, telephone, birthday, role) " +
                 "VALUES (?, ?, ?, SHA2(?, 256), ?, ?, ?, ?)";
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
-
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, nome);
             statement.setString(2, cognome);
             statement.setString(3, email);
@@ -102,9 +86,9 @@ public class DataBase {
 
     /**
      * Ritorna TRUE se esiste un account con la stessa email, viceversa FALSE
-     * @param email
-     * @return
-     * @throws SQLException
+     * @param email email
+     * @return true o false
+     * @throws SQLException SQLException
      */
     public static boolean checkAlreadyReg(String email) throws SQLException{
         String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=?";
@@ -122,29 +106,29 @@ public class DataBase {
 
     /**
      * Metodo che genera una stringa di 10 caratteri con almeno un carattare minuscolo, uno maiuscolo e un numero
-     * @param length
-     * @return
+     * @param length lunghezza voluta della password
+     * @return stringa contenente la password
      */
     public static String generateRandomPassword(int length) {
         String character = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        String password="";
+        StringBuilder password= new StringBuilder();
         Random random = new Random();
         String regex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
 
-        while (!password.matches(regex)){
-            password = "";
+        while (!password.toString().matches(regex)){
+            password = new StringBuilder();
             for (int i = 0; i < length; i++) {
-                password+=character.charAt(random.nextInt(character.length()));
+                password.append(character.charAt(random.nextInt(character.length())));
             }
         }
-        return password;
+        return password.toString();
     }
 
     /**
-     * Ritorna la stringa contenente la nuova password o ritorna null se non trova corrispondenza
-     * @param email
-     * @return
-     * @throws SQLException
+     * Resetta la password ritornando una stringa contenente la nuova password o ritorna null se non trova corrispondenza
+     * @param email account da resettare
+     * @return stringa password nuova o null
+     * @throws SQLException SQLException
      */
     public static String resetPassword(String email) throws SQLException{
         String newpwd=generateRandomPassword(8);
@@ -159,9 +143,15 @@ public class DataBase {
                 return null;
             }
         }
-
     }
 
+    /**
+     * Verifica se la password inserita è corretta per l'email selezionato
+     * @param email account
+     * @param checkPassword password
+     * @return true o false
+     * @throws SQLException SQLException
+     */
     public static boolean checkPassword(String email, String checkPassword) throws SQLException {
         String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=? AND u.password=?";
         boolean res=false;
@@ -177,6 +167,19 @@ public class DataBase {
         }
     }
 
+    /**
+     * Modifica i dati dell'account associato
+     * @param nome nome
+     * @param cognome cognome
+     * @param email email
+     * @param cellulare cellulare
+     * @param telefono telefono
+     * @param datanascita datanascita
+     * @param password password
+     * @param user user
+     * @return true o false
+     * @throws SQLException SQLException
+     */
     public static boolean alterDate(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password, User user) throws SQLException{
         String query = "UPDATE iraci.user SET name=?, surname=?, birthday=?, telephone=?, email=?, password=SHA2(?, 256), mobile=?  WHERE email=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
@@ -189,14 +192,17 @@ public class DataBase {
             statement.setString(7, cellulare);
             statement.setString(8, user.getEmail());
             int result = statement.executeUpdate();
-            if (result > 0) {
-                return true;
-            }else{
-                return false;
-            }
+            return result > 0;
         }
     }
 
+    /**
+     * Ritorna una lista di Double contenente i prezzi relativi alla data e allo slot di tempo selezionato. Nel primo posto c'è il prezzo della sdraio extra e dopo le postazioni ordinate per fila
+     * @param date data
+     * @param period slot temporale
+     * @return Lista prezzi [Sdraio, Fila1, Fila2, Fila3, Fila4, Fila5]
+     * @throws SQLException SQLException
+     */
     public static List<Double> takePrice(LocalDate date, String period) throws SQLException {
         List<Double> price = new ArrayList<>();
         String season;
@@ -219,6 +225,13 @@ public class DataBase {
         }
     }
 
+    /**
+     * Prende tutte le postazioni prenotate nel giorno e nello slot di tempo selezionato
+     * @param date data
+     * @param period slot temporale
+     * @return lista di postazioni occupate
+     * @throws SQLException SQLException
+     */
     public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
         List<Postation> postazioni = new ArrayList<>();
         List<Double> prices = takePrice(date, period);
@@ -241,6 +254,17 @@ public class DataBase {
         }
     }
 
+    /**
+     * Effettua l'insirimento nel DB di una prenotazione, inserendo tutte le postazioni prenotate con i dettagli
+     * @param postations lista di Postazioni
+     * @param date data
+     * @param period slot temporale
+     * @param price prezzo totale
+     * @param user_id user_id
+     * @param extra_chair sedie sdraio extra
+     * @return id_prenotazione o -1 in caso di errore
+     * @throws SQLException SQLException
+     */
     public static int placeBook(List<Postation> postations, LocalDate date, String period, double price, int user_id, int extra_chair )throws SQLException {
         String query1 = "INSERT INTO iraci.book (date, bookingPeriod, cost, User_id_User) " +
                 "VALUES (?, ?, ?, ?)";
@@ -251,17 +275,16 @@ public class DataBase {
             statement.setInt(4, user_id);
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
-            int id = -1;
             if (rs.next()) {
-                id = rs.getInt(1);
+                int id = rs.getInt(1);
                 rs.close();
-                for (int i = 0; i < postations.size(); i++) {
+                for (Postation postation : postations) {
                     String query2 = "INSERT INTO iraci.book_has_umbrellastation (Book_id_Book, UmbrellaStation_id_UmbrellaStation, extraChair) values (?, ?, ?)";
                     try (PreparedStatement statement2 = connection.prepareStatement(query2)) {
                         statement2.setInt(1, id);
-                        statement2.setInt(2, postations.get(i).getId());
-                        statement2.setInt(3, extra_chair > 2 ? 2 : extra_chair);
-                        extra_chair -= extra_chair > 2 ? 2 : extra_chair;
+                        statement2.setInt(2, postation.getId());
+                        statement2.setInt(3, Math.min(extra_chair, 2));
+                        extra_chair -= Math.min(extra_chair, 2);
                         if (statement2.executeUpdate() == 0) {
                             return -1;
                         }
@@ -274,10 +297,26 @@ public class DataBase {
         return -1;
     }
 
+    /**
+     * Inserisce nel DB i dati della fattura relativa ad una prenotazione
+     * @param id id prenotazione
+     * @param name nome
+     * @param surname cognome
+     * @param email email
+     * @param fiscal codice fiscale
+     * @param address indirizzo
+     * @param region regione
+     * @param province provincia
+     * @param city città
+     * @param cap CAP
+     * @param method metodo pagamento
+     * @param cardno numero carta
+     * @throws SQLException SQLException
+     */
     public static void insertInvoid(int id, String name, String surname, String email, String fiscal, String address, String region, String province, String city, String cap, String method, String cardno) throws SQLException{
-        String query1 = "INSERT INTO iraci.invoice (id_book, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
+        String query = "INSERT INTO iraci.invoice (id_book, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, surname);
@@ -294,27 +333,30 @@ public class DataBase {
         }
     }
 
+    /**
+     * Seleziona tutte le prenotazioni effettuate da un determinato utente
+     * @param user_id id user
+     * @return lista di prenotazioni
+     * @throws SQLException SQLException
+     */
     public static List<Book> getBooks(int user_id) throws SQLException {
         List<Book> books = new ArrayList<>();
         int last_bookid=-1;
         Book book = null;
-        LocalDateTime checkin, checkout;
         String query = "SELECT * FROM iraci.book JOIN iraci.book_has_umbrellastation ON book.id_Book=book_has_umbrellastation.Book_id_Book WHERE book.User_id_User=?;";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, user_id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 if(rs.getInt("id_Book")==last_bookid){
+                    assert book != null;
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
                     book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
                 }else{
                     if (last_bookid!=-1)
                         books.add(book);
-                    //checkin=rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime();
-                    //checkout=rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime();
-                    book=new Book(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    book=new Book(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-
                     last_bookid=book.getBook_id();
                 }
             }
@@ -325,6 +367,12 @@ public class DataBase {
         }
     }
 
+    /**
+     * Seleziona una determinata prenotazione mediante il suo ID
+     * @param bookID id prenotazione
+     * @return la prenotazione o null se inesistente
+     * @throws SQLException SQLException
+     */
     public static Book getBook(int bookID) throws SQLException {
         Book book=null;
         int last_bookid=-1;
@@ -335,23 +383,31 @@ public class DataBase {
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 if(rs.getInt("id_Book")==last_bookid){
+                    assert book != null;
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
                     book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
                 }else{
                     checkin=rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime();
                     checkout=rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime();
-                    book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled")==0?false:true, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                     book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
 
                     last_bookid=book.getBook_id();
                 }
             }
             rs.close();
+            assert book != null;
             book.setPrices(takePrice(book.getDate(), book.getPeriod()));
             return book;
         }
     }
 
+    /**
+     * Ritorna la fattura di una determinata prenotazione mediante il suo id
+     * @param BookID id prenotazione
+     * @return la fattura o null se inesistente
+     * @throws SQLException SQLException
+     */
     public static Invoice getInvoice(int BookID) throws SQLException {
         String query = "SELECT I.*, B.bookingDate, B.date FROM iraci.invoice as I JOIN iraci.book as B ON I.id_book=B.id_Book where I.id_Book=?;";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
@@ -366,19 +422,27 @@ public class DataBase {
         return null;
     }
 
+    /**
+     * Elimina la prenotazione con l'id inserito 
+     * @param bookID id prenotazione
+     * @return true o false
+     * @throws SQLException SQLException
+     */
     public static boolean cancelBook(int bookID) throws SQLException {
         String query = "UPDATE iraci.book SET book.canceled = 1 WHERE id_Book = ?;";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, bookID);
             int result = statement.executeUpdate();
-            if (result > 0) {
-                return true;
-            }else{
-                return false;
-            }
+            return result > 0;
         }
     }
 
+    /**
+     * Ritorna la lista di prodotti in vendita della categoria selezionata
+     * @param category categoria
+     * @return lista di prodotti o null se vuoti
+     * @throws SQLException SQLException
+     */
     public static List<Product> getProducts(String category) throws SQLException {
         List<Product> products= new ArrayList<>();
         String condition=category.equals("All")?"1":"product.category";
@@ -394,6 +458,12 @@ public class DataBase {
         }
     }
 
+    /**
+     * Ritorna il prodotto con il codice inserito
+     * @param barcode codice prodotto
+     * @return il prodotto o null se inesistente
+     * @throws SQLException SQLException
+     */
     public static Product getProduct(int barcode) throws SQLException {
         String query = "SELECT * FROM iraci.product WHERE product.barcode=? ";
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
@@ -406,6 +476,12 @@ public class DataBase {
         }
     }
 
+    /**
+     * Verifica se l'utente è attualmente presente dentro al lido
+     * @param user_id user id
+     * @return true o false
+     * @throws SQLException SQLException
+     */
     public static boolean userInSite(int user_id) throws SQLException {
         String query = "SELECT * FROM iraci.book WHERE book.date=? AND book.checkIn<now() AND book.User_id_User=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
@@ -422,11 +498,20 @@ public class DataBase {
         }
     }
 
+    /**
+     * Inserisce nel database un ordine effettuato per il servizio ristorazione
+     * @param cart carrello contenente i prodotti
+     * @param user_id user id
+     * @param payed pagato
+     * @param delivery metodo di ritiro
+     * @return id dell'ordine inserito
+     * @throws SQLException SQLException
+     */
     public static int placeOrder(Cart cart, int user_id, boolean payed, String delivery)throws SQLException {
-        String query1 = "INSERT INTO iraci.order (order.date, order.payed, order.User_id_User, order.delivery_method) VALUES (?,?,?,?)";
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS)) {
+        String query = "INSERT INTO iraci.order (order.date, order.payed, order.User_id_User, order.delivery_method) VALUES (?,?,?,?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-            statement.setByte(2, (byte) (payed==true?1:0));
+            statement.setByte(2, (byte) (payed ?1:0));
             statement.setInt(3, user_id);
             statement.setString(4, delivery);
             statement.executeUpdate();
@@ -452,10 +537,26 @@ public class DataBase {
         }
     }
 
+    /**
+     * Inserisce nel DB i dati della fattura relativa ad un ordine del servizio ristorazione
+     * @param id id ordine
+     * @param name nome
+     * @param surname cognome
+     * @param email email
+     * @param fiscal codice fiscale
+     * @param address indirizzo
+     * @param region regione
+     * @param province provincia
+     * @param city città
+     * @param cap CAP
+     * @param method metodo pagamento
+     * @param cardno numero carta
+     * @throws SQLException SQLException
+     */
     public static void insertOrderInvoid(int id, String name, String surname, String email, String fiscal, String address, String region, String province, String city, String cap, String method, String cardno) throws SQLException{
-        String query1 = "INSERT INTO iraci.invoice (id_order, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
+        String query = "INSERT INTO iraci.invoice (id_order, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.setString(2, name);
             statement.setString(3, surname);
@@ -472,6 +573,13 @@ public class DataBase {
         }
     }
 
+    /**
+     * Ritorna la fattura di un determinato ordine mediante il suo id
+     * @param orderID id prenotazione
+     * @param cart carello contenente i prodotti
+     * @return la fattura o null se inesistente
+     * @throws SQLException SQLException
+     */
     public static Invoice getOrderInvoice(int orderID, Cart cart) throws SQLException {
         String query = "SELECT I.* FROM iraci.invoice AS I WHERE I.id_order=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {

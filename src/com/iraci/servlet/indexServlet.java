@@ -1,8 +1,5 @@
 package com.iraci.servlet;
 
-import com.iraci.DataBase.DataBase;
-import com.iraci.utils.Mailer;
-
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,11 +14,17 @@ import javax.servlet.annotation.WebServlet;
  */
 @WebServlet(name="indexServlet", urlPatterns={""})
 public class indexServlet extends HttpServlet {
+    /**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");

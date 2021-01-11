@@ -22,7 +22,7 @@
                 background-color: black !important;
             }
         </style>
-        <%@ include file="/WEB-INF/productList.jsp"%>
+        <%@ include file="/WEB-INF/User/productList.jsp"%>
     </head>
     <body>
         <% if(request.getUserPrincipal() != null && request.getSession().getAttribute("USER") == null){
@@ -81,10 +81,10 @@
                                             <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                            <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
+                                            <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
                                         </li>
                                         <li>
                                             <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
@@ -104,10 +104,10 @@
                                             <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                            <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.request.contextPath}/common/book"><i class="fas fa-calendar-day"></i> Prenota</a>
+                                            <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-day"></i> Prenota</a>
                                         </li>
                                         <li>
                                             <a href="#"><i class="icon_chat_alt"></i> Chats</a>

@@ -1,13 +1,9 @@
-package com.iraci.servlet;
+package com.iraci.servlet.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
-import com.iraci.model.Book;
 import com.iraci.model.Product;
-import com.iraci.model.User;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,26 +12,28 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Questa classe gestisce la visualizzazione dei prodotti in vendita al bar del lido
+ * @author Davide Iraci
+ */
 @WebServlet(name = "productListServlet", urlPatterns={"/productList"})
 public class productListServlet extends HttpServlet {
     /**
-     *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            //Prepara il necessario per la risposta JSON
             PrintWriter pr = response.getWriter();
             response.setContentType("application/json");
-            ObjectMapper mapper = new ObjectMapper();
             String status, category=request.getParameter("Category");
-            List<Product> products;
 
+            // Carica i prodotti dal DB in base alla categoria scelta e li ritorna tramite JSON, verificando prima che non siano vuoti
+            List<Product> products;
             if((products=DataBase.getProducts(category)).isEmpty()){
                 status = "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è stato possibile reperire i prodotti, riprovare!\"}";
             }else { //TakeBook
+                ObjectMapper mapper = new ObjectMapper();
                 status = "{\"RESPONSE\" : \"Confirm\", \"PRODUCTS\" : " + mapper.writeValueAsString(products) + " }";
             }
             pr.write(status);
@@ -46,14 +44,9 @@ public class productListServlet extends HttpServlet {
     }
 
     /**
-     *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/User/manageBook.jsp");
-        dispatcher.forward(request, response);
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doPost(request, response);
     }
 }

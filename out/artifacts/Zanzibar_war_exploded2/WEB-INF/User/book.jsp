@@ -32,7 +32,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/snap.svg-min.js"></script>
-        <script src="/Zanzibar/js/Common/book.js"></script>
+        <script src="/Zanzibar/js/User/book.js"></script>
 
         <!--SNAP-->
         <style>
@@ -100,7 +100,7 @@
 
 
         <%@ include file="/WEB-INF/header.jsp"%>
-        <%@ include file="/WEB-INF/Common/checkout.jsp"%>
+        <%@ include file="/WEB-INF/User/checkout.jsp"%>
     </head>
 
     <body id="page-top">

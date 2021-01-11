@@ -93,8 +93,8 @@
     </main>
 
     <!-- Order Message Modal -->
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="orderMessageModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="orderMessageModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal" role="document">
             <div class="modal-content" style="border: #518CC8 5px solid;">
                 <div class="modal-header">
                     <h4 class="modal-title" id="orderMessageLabel"></h4>

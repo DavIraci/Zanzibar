@@ -45,7 +45,7 @@
             }
         }
     </style>
-    <script src="/Zanzibar/js/productList.js"></script>
+    <script src="/Zanzibar/js/User/productList.js"></script>
 </head>
 <body>
     <!-- Product List Modal -->

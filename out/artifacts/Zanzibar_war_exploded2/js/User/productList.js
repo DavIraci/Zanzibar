@@ -105,7 +105,7 @@ function updateCart(){
         },
         success: function (data) {
             if(data.RESPONSE=="Confirm")
-                $('#spanCart').html(parseInt(data.SIZE));
+                $('#spanCart').html(parseInt(data.SIZE)>0?parseInt(data.SIZE):"");
             else
                 console.log("Errore!");
         },

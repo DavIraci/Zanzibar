@@ -4,14 +4,12 @@ import com.iraci.DataBase.DataBase;
 import com.iraci.utils.Mailer;
 import com.iraci.utils.Utils;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Questa classe gestisce la creazione di un nuovo account User da parte di un utente
@@ -19,18 +17,27 @@ import java.time.format.DateTimeFormatter;
  */
 @WebServlet(name = "signinServlet", urlPatterns={"/signin"})
 public class signinServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Verifica che l'utente non abbia effettuato l'accesso
         if(request.getUserPrincipal() == null)
             request.getSession().setAttribute("SignIn","");
         response.sendRedirect(request.getContextPath());
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Verifica che l'utente non abbia effettuato l'accesso
         if(request.getUserPrincipal() != null)
             response.sendRedirect(request.getContextPath());
         else {
             try {
-                String nome, cognome, email, password, confPassword, cellulare, telefono, nascita, errore;
+                // Prende i dati dal form compilato dall'utente
+                String nome, cognome, email, password, confPassword, cellulare, telefono, errore;
                 nome = request.getParameter("username");
                 cognome = request.getParameter("surname");
                 email = request.getParameter("email").toLowerCase();
@@ -38,13 +45,13 @@ public class signinServlet extends HttpServlet {
                 confPassword = request.getParameter("passwordrep");
                 cellulare = request.getParameter("mobile");
                 telefono = request.getParameter("telephone");
-                /*nascita = request.getParameter("birth");
-                LocalDate datanascita = LocalDate.parse(nascita, DateTimeFormatter.ofPattern("yyyy-MM-dd"));*/
                 LocalDate datanascita = LocalDate.parse(request.getParameter("birth"));
 
+                // Verifica se i dati sono nella forma corretta
                 errore = Utils.verificaDatiForm(nome, cognome, email, password, confPassword, cellulare, telefono, datanascita.toString());
 
-                if (errore != null) { //sono stati inseriti dati scorretti
+                // Se sono stati inseriti dati in modo sbagliato, ritorna il tipo di errore
+                if (errore != null) {
                     request.getSession().setAttribute("name", nome);
                     request.getSession().setAttribute("surname", cognome);
                     request.getSession().setAttribute("email", email);
@@ -57,7 +64,9 @@ public class signinServlet extends HttpServlet {
                     return;
                 }
 
-                if (DataBase.checkAlreadyReg(email)) { // l'indirizzo email già esiste
+
+                if (DataBase.checkAlreadyReg(email)) {
+                    // Se l'indirizzo email già esiste nel DB ritorna l'errore
                     request.getSession().setAttribute("name", nome);
                     request.getSession().setAttribute("surname", cognome);
                     request.getSession().setAttribute("email", email);
@@ -68,6 +77,8 @@ public class signinServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath());
                     return;
                 }
+
+                // Registra l'utente e invia la mail di benvenuto
                 DataBase.userSignIn(nome, cognome, email, cellulare, telefono, datanascita, password);
 
                 String messaggio = "<p><h1>Il Lido Zanzibar ti d&agrave; il benvenuto!</h1> <p>Ciao " + nome + " " + cognome + ", <br>"
@@ -79,50 +90,12 @@ public class signinServlet extends HttpServlet {
                 Thread thread = new Thread(mailer);
                 thread.start();
 
-
                 request.getSession().setAttribute("SignIn", "Registrazione completata con successo");
                 response.sendRedirect(request.getContextPath());
-
             } catch (Exception e) {
                 e.printStackTrace();
                 response.sendError(400);
             }
         }
     }
-
-    /*public static String verificaDatiRegistrazione(String nome, String cognome, String email, String password, String confPassword, String cellulare, String telefono, String nascita) {
-
-        if( (nome == null || cognome == null || email == null || password == null || confPassword == null || cellulare == null || nascita == null) || (nome.replaceAll("\\s+","").contentEquals("") || cellulare.replaceAll("\\s+","").contentEquals("") || cognome.replaceAll("\\s+","").contentEquals("") ||
-                email.replaceAll("\\s+","").contentEquals("") || password.replaceAll("\\s+","").contentEquals("") || nascita.replaceAll("\\s+","").contentEquals("")) )
-            return "I campi sono tutti richiesti.";
-
-
-        String regex = "^[A-Za-zèùàòé][a-zA-Z'èùàòé ]*$";
-        if(!nome.matches(regex))
-            return "Il nome non rispetta il formato richiesto.";
-
-        if(!cognome.matches(regex))
-            return "Il cognome non rispetta il formato richiesto.";
-
-        regex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+[.][a-zA-Z0-9-.]+$";
-        if(!email.matches(regex))
-            return "L'email non rispetta il formato richiesto.";
-
-        regex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
-        if(!password.matches(regex))
-            return "La password non rispetta il formato richiesto.";
-
-        if(!password.equals(confPassword))
-            return "Le password non corrispondono.";
-
-        regex = "\\d{4}-\\d{2}-\\d{2}";
-        if(!nascita.matches(regex))
-            return "La data di nascita non rispetta il formato richiesto.";
-
-        regex = "[0-9]{10}";
-        if( (!telefono.replaceAll("\\s+","").contentEquals("") && !telefono.matches(regex)) || !cellulare.matches(regex))
-            return "Il telefono non rispetta il formato richiesto.";
-
-        return null;
-    }*/
 }

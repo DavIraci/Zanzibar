@@ -1,12 +1,12 @@
-package com.iraci.servlet;
+package com.iraci.servlet.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
-import com.iraci.model.*;
+import com.iraci.model.Cart;
+import com.iraci.model.Invoice;
+import com.iraci.model.Product;
+import com.iraci.model.User;
 import com.iraci.utils.InvoiceGenerator;
 import com.iraci.utils.Mailer;
-import com.iraci.utils.Utils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,17 +18,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Questa classe gestisce tutte le operazioni effettuate sul carrello, compreso l'ordine
+ * @author Davide Iraci
+ */
 @WebServlet(name = "manageCartServlet", urlPatterns={"/user/cartManage"})
 public class manageCartServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            // Verifica se c'è stato un errore della richieta JSON
             if(request.getParameter("Type")==null)
                 response.sendError(400);
-            else{
+            else{ // Prende il tipo di operazione richesta e invoca il metodo adeguato
                 String status=null, type=request.getParameter("Type");
                 switch (type){
                     case "AddProduct": {
@@ -36,39 +41,45 @@ public class manageCartServlet extends HttpServlet {
                         break;
                     }
                     case "CartSize": {
-                        status=cartSize(request, response);
+                        status=cartSize(request);
                         break;
                     }
                     case "CartManage": {
-                        status=cartManage(request, response);
+                        status=cartManage(request);
                         break;
                     }
                     case "UpdateQuantity": {
-                        status=updateQuantity(request, response);
+                        status=updateQuantity(request);
                         break;
                     }
                     case "PlaceOrder": {
-                        status=placeOrder(request, response);
+                        status=placeOrder(request);
                         break;
                     }
                     default:{
-                        System.out.println("Error!");
+                        response.sendError(400);
                     }
                 }
-                if(status!=null) {
+                if(status!=null) { // Se è prevista una risposta la invia
                     PrintWriter pr = response.getWriter();
                     response.setContentType("application/json");
                     pr.write(status);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(400);
         }
     }
 
-    private String placeOrder(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    /**
+     * Metodo che effettua la richiesta di ordine dei prodotti nel carrello
+     * @param request Servelt request del metodo invocante
+     * @return stringa di risposta JSON
+     * @throws SQLException SQLException
+     */
+    private String placeOrder(HttpServletRequest request) throws SQLException {
+        // Prende i dati selezionati dall'utente
         String method, delivery, name, surname, email, fiscal, address, region, province, city, cap, cardno;
         method = request.getParameter("PaymentMethod");
         delivery = request.getParameter("DeliveryMethod");
@@ -85,18 +96,24 @@ public class manageCartServlet extends HttpServlet {
 
         User user=((User) request.getSession().getAttribute("USER"));
 
+        // Verifica se l'utente è attualmente all'interno del lido
         if( !(DataBase.userInSite(user.getIdUtente())) )
             return "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è possibile effettuare ordini se non si è all'interno del lido!\"}";
 
+        // Verifica che il carrello non sia vuoto
         Cart cart = (Cart) request.getSession().getAttribute("CART");
         if(cart == null || cart.getSize()==0) {
             return "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è possibile effettuare un ordine con il carrello vuoto!\"}";
         }
 
-        int order_id = DataBase.placeOrder(cart, user.getIdUtente(), method.equals("Cassa")?false:true, delivery);
+        // Effettua l'ordine inserendolo nel DB
+        int order_id = DataBase.placeOrder(cart, user.getIdUtente(), !method.equals("Cassa"), delivery);
+
+        // Verifica se c'è stato errore nell'inserimento
         if(order_id==-1)
             return "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è stato possibile effettuare l'ordine! Riprovare!\"}";
 
+        // Resetta il carrello e invia la mail all'utente, nel caso in cui il pagamento sia online invia la fattura dell'ordine
         request.getSession().setAttribute("CART", null);
         if(!method.equals("Cassa")) {
             DataBase.insertOrderInvoid(order_id, name, surname, email, fiscal, address, region, province, city, cap, method, cardno);
@@ -116,47 +133,70 @@ public class manageCartServlet extends HttpServlet {
         return  "{\"RESPONSE\" : \"Confirm\", \"MESSAGE\" : \"Il tuo ordine è stato confermato! <br>Riceverai a breve un'email contenente i dettagli dell'ordine!\"}"; //Send email confirm order
     }
 
-    private String updateQuantity(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+    /**
+     * Metodo che effettua la modifica della quantità di un oggetto inserito nel carrello o lo rimuove se è 0
+     * @param request Servelt request del metodo invocante
+     * @return stringa di risposta JSON
+     */
+    private String updateQuantity(HttpServletRequest request) {
+        // Prende i dati dell'utente
         int barcode=Integer.parseInt(request.getParameter("Barcode")), quantity=Integer.parseInt(request.getParameter("Quantity"));
+
+        // Carica il carrello e verifica se è vuoto
         Cart cart = (Cart) request.getSession().getAttribute("CART");
-        // Se il carrello è vuoto crea un nuovo oggetto carrello.
         if(cart == null || cart.getSize()==0 || cart.searchProduct(barcode)==null) {
             return "{\"RESPONSE\" : \"Error\"}";
         }
+
+        // Se la quantità voluta è 0 allora rimuove il prodotto, viceversa imposta la quantità voluta
         if(quantity==0){
             cart.removeProduct(barcode);
         }else {
             cart.setQuantity(barcode, quantity);
             quantity = cart.getQuantity(barcode);
         }
-        if(quantity==-1)
+
+        if(quantity<0)
             return "{\"RESPONSE\" : \"Error\"}";
         return "{\"RESPONSE\" : \"Confirm\", \"QUANTITY\" : "+quantity+"}";
-
     }
 
-    private String cartManage(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException, SQLException {
+    /**
+     * Metodo che si occupa di restituire il carello
+     * @param request Servelt request del metodo invocante
+     * @return stringa di risposta JSON
+     * @throws SQLException SQLException
+     */
+    private String cartManage(HttpServletRequest request) throws SQLException {
+        // Carica il carrello e verifica se è vuoto
         Cart cart = (Cart) request.getSession().getAttribute("CART");
-        // Se il carrello è vuoto crea un nuovo oggetto carrello.
         if(cart == null || cart.getSize()==0) {
             return "{\"RESPONSE\" : \"Confirm\", \"CART\" : "+null+"}";
         }
         return "{\"RESPONSE\" : \"Confirm\", \"CART\" : "+cart.toajaxString()+", \"INSITE\" : "+DataBase.userInSite(((User) request.getSession().getAttribute("USER")).getIdUtente()) +"}";
     }
 
-    protected String cartSize(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        int quantity;
+    /**
+     * Metodo che si occupa di restituire il quantitativo di prodotti nel carrello
+     * @param request Servelt request del metodo invocante
+     * @return stringa di risposta JSON
+     */
+    protected String cartSize(HttpServletRequest request) {
+        // Carica il carrello, verifica se è vuoto e ne restituisce la quantità
         Cart cart = (Cart) request.getSession().getAttribute("CART");
-        // Se il carrello è vuoto crea un nuovo oggetto carrello.
-        if(cart == null) {
-            quantity=0;
-        }else{
-            quantity= cart.getSize();
-        }
-        return "{\"RESPONSE\" : \"Confirm\", \"SIZE\" : "+quantity+"}";
+        if(cart == null)
+            return "{\"RESPONSE\" : \"Confirm\", \"SIZE\" : "+0+"}";
+        return "{\"RESPONSE\" : \"Confirm\", \"SIZE\" : "+cart.getSize()+"}";
     }
 
+    /**
+     * Metodo che aggiunge il prodotto selezionato dall'utente al carrello
+     * @param request Servelt request del metodo invocante
+     * @param response Servelt response del metodo invocante
+     * @throws SQLException SQLException
+     */
     protected void addProduct(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        // Prende i dati selezionati dall'utente e verifica che non ci siano errori
         if(request.getParameter("Barcode")==null || request.getParameter("Quantity")==null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -164,15 +204,15 @@ public class manageCartServlet extends HttpServlet {
         String note=request.getParameter("Description");
         int barcode=Integer.parseInt(request.getParameter("Barcode")), quantity=Integer.parseInt(request.getParameter("Quantity"));
 
-        Product product;
+
+        // Carica il carrello, verifica se è vuoto e in caso lo istanzia
         Cart cart = (Cart) request.getSession().getAttribute("CART");
-        // Se il carrello è vuoto crea un nuovo oggetto carrello.
         if(cart == null) {
             cart = new Cart();
         }
-        /* Se il prodotto non è ancora presente all'interno del carrello richiede al database i dati del prodotto
-         * selezionato.
-         */
+
+        // Se il prodotto non è ancora presente all'interno del carrello richiede al database i dati del prodotto selezionato.
+        Product product;
         if((product=cart.searchProduct(barcode))==null) {
             product = DataBase.getProduct(barcode);
             if(product == null) {
@@ -181,24 +221,33 @@ public class manageCartServlet extends HttpServlet {
             }
         }
 
-        /* Aggiunge il prodotto al carrello (caso in cui non era presente) o ne incrementa la quantità
-         * (caso in cui era già nel carrello del cliente).
-         */
+        // Aggiunge il prodotto al carrello (caso in cui non era presente) o ne incrementa la quantità (caso in cui era già nel carrello del cliente).
         cart.addProduct(product, quantity, note);
-        System.out.println(cart);
         request.getSession().setAttribute("CART", cart);
     }
 
+    /**
+     * Metodo che si occupa di generare la fattura dell'ordine e inviarla via mail al cliente
+     * @param orderID ID ordine
+     * @param user Oggetto User
+     * @param cart Oggetto Cart
+     * @param request Servelt request del metodo invocante
+     * @return stringa di risposta JSON
+     * @throws SQLException SQLException
+     */
     private boolean sendOrderInvoid(int orderID, User user, Cart cart, HttpServletRequest request ) throws SQLException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // Controlla se la fattura esiste e la prende dal DB
         Invoice invoice= DataBase.getOrderInvoice(orderID, cart);
         if(invoice==null)
             return false;
 
+        // Crea gli oggetti necessari alla fattura e invoca la creazione della stessa con la classe InvoiceGenerator
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InvoiceGenerator.createOrderInovice(baos, invoice);
         byte[] bytes = baos.toByteArray();
         String title=baos.toString().substring(baos.toString().indexOf("Title(")+6, baos.toString().indexOf("Title(")+29).trim();
 
+        // Prende i dati dell'utente e invia la mail con la fattura in allegato
         String messaggio = "<p>Ciao " + user.getNome() + " " + user.getCognome() + ", <br>"
                 + "ti comunichiamo che è stato effettuato l'ordine N°"+String.format("%08d", invoice.getOrderID())+".<br>"
                 + "Questo è il riepilogo del suo ordine:<br>"+cart.getProductsString()+ "<br>"
@@ -215,6 +264,9 @@ public class manageCartServlet extends HttpServlet {
         return true;
     }
 
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/User/cart.jsp");
         dispatcher.forward(request, response);

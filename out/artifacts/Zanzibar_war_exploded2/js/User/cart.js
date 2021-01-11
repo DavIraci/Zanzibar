@@ -34,6 +34,7 @@ function loadCart(){
             console.log(errorThrown);
         }
     });
+    updateCart();
 }
 
 function setCart(data) {
@@ -48,10 +49,10 @@ function setCart(data) {
     } else {
         $('#subTotal').html('<p>Numero prodotti: '+parseInt(data.PRODUCTNUMBER)+'</p>' +
             '<h2>Totale:     '+ parseInt(data.TOTAL).toFixed(2) + '€</h2>');
-        var onclickaction=data.INSITE==true?"initializeOrderCheckout()":"notInSite()";
+        var onclickaction=data.INSITE===true?"initializeOrderCheckout()":"notInSite()";
         $('#payOrder').html("<input type=\"button\" class=\"btn-lg btn-primary\" id=\"orderCheckout\" onclick=\""+onclickaction+"\" value=\"Conferma e ordina\">");
         $.each(data.CART, function(key, val){
-            var note=val.note=="null"?"":val.note;
+            var note=val.note==="null"?"":val.note;
             text='<tr>'+
                 '<th scope="row">'+zeropadInt(val.barcode,3)+'</th>' +
                 '<td>'+val.name+'</td>'+
@@ -150,7 +151,6 @@ function Order(){
             $('#orderMessageModal').modal('show');
             setTimeout(function(){ $('#orderMessageModal').modal('hide'); }, 1500);
             loadCart();
-            console.log(data);
         },
         error: function (errorThrown) {
             console.log(errorThrown);
@@ -211,7 +211,6 @@ function quantityMinus(id){
 }
 
 function updateQuantityCart(id, quantity){
-    console.log("Wanna change quantity of product "+ id + ", from quantity: "+$('#productQty'+id).val() + " to quantity: "+ quantity);
     $.ajax({
         url: '/Zanzibar/user/cartManage',
         dataType: 'json',

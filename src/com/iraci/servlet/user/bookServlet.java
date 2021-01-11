@@ -1,37 +1,42 @@
-package com.iraci.servlet.common;
+package com.iraci.servlet.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
 import com.iraci.model.Postation;
-import com.iraci.model.User;
-import com.iraci.utils.Mailer;
-import com.iraci.utils.Utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.DatabaseMetaData;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@WebServlet(name = "bookServlet", urlPatterns={"/common/book"})
+/**
+ * Questa classe gestisce la visualizzazione della mappa della spiaggia in base al giorno e all'intervallo selezionato
+ * @author Davide Iraci
+ */
+@WebServlet(name = "bookServlet", urlPatterns={"/user/book"})
 public class bookServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            // Prende i dati selezionati dall'utente
             LocalDate date = LocalDate.parse(request.getParameter("Date"));
             String period = request.getParameter("Period");
+
+            //Prepara il necessario per la risposta JSON
             PrintWriter pr = response.getWriter();
             response.setContentType("application/json");
             ObjectMapper mapper = new ObjectMapper();
             String status;
 
+            // Verifica il corretto format del periodo, prende la lista di prenotazioni, dei prezzi e invia la risposta JSON
             if(period.equals("Full") || period.equals("AM") || period.equals("PM")){
                 List<Postation> booked= DataBase.takeBooking(date, period);
                 List<Double> price=DataBase.takePrice(date, period);
@@ -48,8 +53,11 @@ public class bookServlet extends HttpServlet {
         }
     }
 
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Common/book.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/User/book.jsp");
         dispatcher.forward(request, response);
     }
 }

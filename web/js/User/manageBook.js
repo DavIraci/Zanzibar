@@ -93,6 +93,7 @@ function takeInvoice(id){
                 '<div class="alert '+typemessage+' alert-dismissible" role="alert">' +
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
             $('#message-alert').html(text);
+            $('html,body').animate({scrollTop: $('#page-top').offset().top},'slow');
         },
         error: function (errorThrown) {
             console.log(errorThrown);

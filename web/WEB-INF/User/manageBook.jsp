@@ -1,8 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
   User: Davide Iraci
-  Date: 15/10/2020
-  Time: 18:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -31,7 +29,7 @@
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
-        <script src="/Zanzibar/js/User/ManageBook.js"></script>
+        <script src="/Zanzibar/js/User/manageBook.js"></script>
 
         <style>
             .canceled{
