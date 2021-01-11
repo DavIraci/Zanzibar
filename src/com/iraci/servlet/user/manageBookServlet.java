@@ -75,11 +75,11 @@ public class manageBookServlet extends HttpServlet {
         }
         InvoiceGenerator.createInovice(baos, invoice);
         byte[] bytes = baos.toByteArray();
-        String title=baos.toString().substring(baos.toString().indexOf("Title(")+6, baos.toString().indexOf("Title(")+29).trim();
+        String title=baos.toString().substring(baos.toString().indexOf("Title(")+6, baos.toString().indexOf("Title(")+35).trim();
 
         User user=((User) request.getSession().getAttribute("USER"));
         String messaggio = "<p>Ciao " + user.getNome() + " " + user.getCognome() + ", <br>"
-                + "In allegato troverai la fattura dell'ordine da te richiesta!<br><br>"
+                + "In allegato troverai la fattura della prenotazione da te richiesta!<br><br>"
                 + "<a href='" + Mailer.getAddress() + request.getContextPath() + "'> Visita il nostro sito</a> per usufruire dei nostri servizi."
                 + "<br>Ti auguriamo una buona permanenza nel nostro lido! <br><br>"
                 + "Lo staff del lido</p>";

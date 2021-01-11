@@ -23,7 +23,7 @@
 		<CredentialHandler className="org.apache.catalina.realm.MessageDigestCredentialHandler"
 						   algorithm="SHA-256"
 						   iterations="1"
-						   saltlenght="0"
+						   encoding="ISO-8859-1"
 		/>
 	</Realm>
 </Context>

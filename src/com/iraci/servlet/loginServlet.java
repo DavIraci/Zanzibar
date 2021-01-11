@@ -20,26 +20,15 @@ import java.sql.SQLException;
 @WebServlet(name = "loginServlet", urlPatterns={"/login"})
 public class loginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getUserPrincipal() != null && request.getSession().getAttribute("USER") == null ) { //Richiesta post j_security_check
-            try {
-                User user = DataBase.takeUser(request.getUserPrincipal().getName());
-                if (user == null) {
-                    response.sendError(400);
-                }
-                request.getSession().setAttribute("USER", user);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        } else if (request.getParameter("Authentication") != null && request.getParameter("Authentication").equals("Error")) { //Credenziali sbagliate
+        if (request.getParameter("Authentication") != null && request.getParameter("Authentication").equals("Error")) { //Credenziali sbagliate
             request.getSession().setAttribute("Login", "ERROR");
-        } else { //Richiesta pagina da url
-            request.getSession().setAttribute("Login", "TRUE");
         }
         response.sendRedirect(request.getContextPath()+ "/");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        //Richiesta pagina da url
+        request.getSession().setAttribute("Login", "TRUE");
+        response.sendRedirect(request.getContextPath()+ "/");
     }
 }

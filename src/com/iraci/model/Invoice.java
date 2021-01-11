@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class Invoice {
     private int bookID;
+    private int orderID;
     private int invoiceID;
     private String name;
     private String surname;
@@ -19,6 +20,7 @@ public class Invoice {
     private LocalDate booked_date;
     private LocalDate date;
     private Book book;
+    private Cart order;
 
     public Invoice(int bookID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate booked_date, LocalDate date, Book book) {
         this.bookID = bookID;
@@ -36,6 +38,41 @@ public class Invoice {
         this.booked_date = booked_date;
         this.book = book;
         this.date = date;
+        this.order = null;
+    }
+
+    public Invoice(int orderID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate date, Cart order) {
+        this.orderID = orderID;
+        this.invoiceID = invoiceID;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.fiscalcode = fiscalcode;
+        this.address = address;
+        this.region = region;
+        this.province = province;
+        this.city = city;
+        this.CAP = CAP;
+        this.method = method;
+        this.order = order;
+        this.date = date;
+        this.book = null;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public Cart getOrder() {
+        return order;
+    }
+
+    public void setOrder(Cart order) {
+        this.order = order;
     }
 
     public LocalDate getDate() {

@@ -52,6 +52,7 @@
         </style>
 
         <%@ include file="/WEB-INF/header.jsp"%>
+        <%@ include file="/WEB-INF/User/orderCheckout.jsp"%>
     </head>
 
     <body id="page-top">
@@ -90,6 +91,23 @@
             </div>
         </div>
     </main>
+
+    <!-- Order Message Modal -->
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="orderMessageModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal" role="document">
+            <div class="modal-content" style="border: #518CC8 5px solid;">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="orderMessageLabel"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="orderMessageText">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Order Message Modal -->
 
         <%@ include file="/WEB-INF/footer.jsp"%>
 

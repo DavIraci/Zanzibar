@@ -162,7 +162,6 @@ public class Cart {
     /**
      * Modifica la quantità di un'order.
      * @param idProduct
-     * @param quantity
      */
     public int getQuantity(int idProduct) {
         Product p = searchProduct(idProduct);

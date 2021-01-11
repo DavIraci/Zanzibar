@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.iraci.model.User" %>
 <%@ page import="com.iraci.model.Cart" %>
+<%@ page import="com.iraci.DataBase.DataBase" %>
+<%@ page import="java.sql.SQLException" %>
 <html>
     <head>
         <script src="/Zanzibar/js/header.js"></script>
@@ -23,6 +25,17 @@
         <%@ include file="/WEB-INF/productList.jsp"%>
     </head>
     <body>
+        <% if(request.getUserPrincipal() != null && request.getSession().getAttribute("USER") == null){
+                try {
+                    User user = DataBase.takeUser(request.getUserPrincipal().getName());
+                    if (user == null) {
+                        response.sendError(400);
+                    }
+                    request.getSession().setAttribute("USER", user);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            } %>
         <!-- NavBar -->
         <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
             <div class="container">
@@ -135,7 +148,7 @@
                                     <% }
                                     request.getSession().removeAttribute("Login");
                                 } %>
-                            <form action="j_security_check" method="POST" class="was-validated">
+                            <form action="<%= response.encodeURL("j_security_check") %>" method="POST" class="was-validated">
                                 <div class="form-group">
                                     <label for="uname">Email:</label>
                                     <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="uname" placeholder="Inserisci username" name="j_username" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>

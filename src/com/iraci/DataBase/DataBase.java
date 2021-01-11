@@ -405,4 +405,84 @@ public class DataBase {
             return null;
         }
     }
+
+    public static boolean userInSite(int user_id) throws SQLException {
+        String query = "SELECT * FROM iraci.book WHERE book.date=? AND book.checkIn<now() AND book.User_id_User=?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(LocalDate.now()));
+            statement.setInt(2, user_id);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                System.out.println(rs.getInt("id_Book"));
+                if(rs.getTimestamp("checkOut")==null)
+                    return true;
+            }
+            rs.close();
+            return false;
+        }
+    }
+
+    public static int placeOrder(Cart cart, int user_id, boolean payed, String delivery)throws SQLException {
+        String query1 = "INSERT INTO iraci.order (order.date, order.payed, order.User_id_User, order.delivery_method) VALUES (?,?,?,?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setByte(2, (byte) (payed==true?1:0));
+            statement.setInt(3, user_id);
+            statement.setString(4, delivery);
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            int order_id = -1;
+            if (rs.next()) {
+                order_id = rs.getInt(1);
+                rs.close();
+                for (Map.Entry<Product, Order> entry : cart.getProducts().entrySet()) {
+                    String query2 = "INSERT INTO iraci.order_has_product (order_has_product.Order_id_Order, order_has_product.Product_barcode, order_has_product.quantity, order_has_product.price, order_has_product.details) VALUES (?,?,?,?,?)";
+                    try(PreparedStatement statement2 = connection.prepareStatement(query2)) {
+                        statement2.setInt(1, order_id );
+                        statement2.setInt(2, entry.getKey().getBarcode());
+                        statement2.setInt(3, entry.getValue().getQuantity());
+                        statement2.setDouble(4, entry.getKey().getPrice());
+                        statement2.setString(5, entry.getValue().getNote());
+                        statement2.executeUpdate();
+                    }
+                }
+            }
+            rs.close();
+            return order_id;
+        }
+    }
+
+    public static void insertOrderInvoid(int id, String name, String surname, String email, String fiscal, String address, String region, String province, String city, String cap, String method, String cardno) throws SQLException{
+        String query1 = "INSERT INTO iraci.invoice (id_order, name, surname, email, fiscalcode, address, region, province, city, CAP, method, cardno) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query1)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, surname);
+            statement.setString(4, email);
+            statement.setString(5, fiscal);
+            statement.setString(6, address);
+            statement.setString(7, region);
+            statement.setString(8, province);
+            statement.setString(9, city);
+            statement.setString(10, cap);
+            statement.setString(11, method);
+            statement.setString(12, cardno == null ? "" : cardno);
+            statement.executeUpdate();
+        }
+    }
+
+    public static Invoice getOrderInvoice(int orderID, Cart cart) throws SQLException {
+        String query = "SELECT I.* FROM iraci.invoice AS I WHERE I.id_order=?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, orderID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                System.out.println(":"+rs.getInt("id_invoice")+":");
+                return new Invoice(orderID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.now(), cart);
+            }
+            rs.close();
+        }
+        return null;
+    }
 }

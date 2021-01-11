@@ -203,7 +203,6 @@ function checkBook(){
                 if(data.RESPONSE == 'Confirm'){ //Dati ok
                     data.DATE=date;
                     data.PERIOD=period;
-                    console.log(data);
                     initializeCheckout(data);
                 }else {
                     reset();
