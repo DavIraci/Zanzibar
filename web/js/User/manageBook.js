@@ -9,7 +9,13 @@ function loadBook(){
         type: 'post',
         data: {},
         success: function (data) {
-            setBook(data);
+            if(data.BOOK==null){
+                let text = '<div class="row" style="justify-content: center">' +
+                    '<div class="alert alert-info alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>Non è stata ancora effettuata nessuna prenotaizone, procedi <a href="/Zanzibar/user/book">qui</a></div></div>';
+                $('#message-alert').html(text);
+            }else
+                setBook(data);
         },
         error: function (errorThrown) {
             console.log(errorThrown);

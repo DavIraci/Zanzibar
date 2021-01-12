@@ -29,7 +29,7 @@
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
-        <script src="/Zanzibar/js/User/ManageBook.js"></script>
+        <script src="/Zanzibar/js/User/manageBook.js"></script>
 
         <style>
             .canceled{

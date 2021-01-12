@@ -1,12 +1,14 @@
 package com.iraci.model;
 
-import com.iraci.model.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa classe è la rappresentazione dell'oggetto Prenotazione
+ * @author Davide Iraci
+ */
 public class Book {
     private String period;
     private LocalDate date;
@@ -20,6 +22,10 @@ public class Book {
     private int extra_chair;
     private List<Postation> postations=new ArrayList<>();
 
+    /**
+     * Effettua la concatenazione string degli attributi
+     * @return stringa
+     */
     @Override
     public String toString() {
         return "Book{" +
@@ -37,6 +43,19 @@ public class Book {
                 '}';
     }
 
+    /**
+     * Costruttore
+     * @param period period
+     * @param user_id user_id
+     * @param book_id book_id
+     * @param price price
+     * @param canceled canceled
+     * @param checkin checkin
+     * @param checkout checkout
+     * @param extra_chair extra_chair
+     * @param date date
+     * @param booked_date booked_date
+     */
     public Book(String period, int user_id, int book_id, double price, boolean canceled, LocalDateTime checkin, LocalDateTime checkout, int extra_chair, LocalDate date, LocalDate booked_date) {
         this.period = period;
         this.user_id = user_id;
@@ -50,6 +69,16 @@ public class Book {
         this.booked_date = booked_date;
     }
 
+    /**
+     * Costruttore
+     * @param period period
+     * @param user_id user_id
+     * @param price price
+     * @param canceled canceled
+     * @param extra_chair extra_chair
+     * @param postations postations
+     * @param date date
+     */
     public Book(String period, int user_id, double price, boolean canceled, int extra_chair, List<Postation> postations, LocalDate date) {
         this.period = period;
         this.user_id = user_id;
@@ -138,9 +167,13 @@ public class Book {
 
     public void addPostation(Postation postation){ this.postations.add(postation); }
 
+    /**
+     * Imposta il prezzo di ciascuna postazione
+     * @param prices lista dei prezzi
+     */
     public void setPrices(List<Double> prices){
-        for(int i=0; i<this.postations.size(); i++){
-            postations.get(i).setPrice(prices);
+        for (Postation postation : this.postations) {
+            postation.setPrice(prices);
         }
     }
 }

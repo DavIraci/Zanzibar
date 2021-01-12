@@ -1,8 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Cuchi
-  Date: 04/01/2021
-  Time: 16:07
+  User: Davide Iraci
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -45,7 +43,7 @@
             }
         }
     </style>
-    <script src="/Zanzibar/js/productList.js"></script>
+    <script src="/Zanzibar/js/User/productList.js"></script>
 </head>
 <body>
     <!-- Product List Modal -->

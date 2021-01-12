@@ -1,5 +1,9 @@
 package com.iraci.model;
 
+/**
+ * Questa classe è la rappresentazione dell'ordine del servizio ristorazione
+ * @author Davide Iraci
+ */
 public class Order {
     private int quantity;
     private String note;

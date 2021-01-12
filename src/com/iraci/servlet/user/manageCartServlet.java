@@ -243,7 +243,8 @@ public class manageCartServlet extends HttpServlet {
 
         // Crea gli oggetti necessari alla fattura e invoca la creazione della stessa con la classe InvoiceGenerator
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InvoiceGenerator.createOrderInovice(baos, invoice);
+        //InvoiceGenerator.createOrderInovice(baos, invoice);
+        InvoiceGenerator.createInovice(baos, invoice);
         byte[] bytes = baos.toByteArray();
         String title=baos.toString().substring(baos.toString().indexOf("Title(")+6, baos.toString().indexOf("Title(")+29).trim();
 

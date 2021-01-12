@@ -1,5 +1,9 @@
 package com.iraci.model;
 
+/**
+ * Questa classe è la rappresentazione di un prodotto
+ * @author Davide Iraci
+ */
 public class Product {
     private String name;
     private int quantity;
@@ -8,9 +12,17 @@ public class Product {
     private int barcode;
     private String category;
 
+    /**
+     * Costruttore classe
+     * @param name nome
+     * @param quantity quantità
+     * @param description descrizione
+     * @param price prezzo
+     * @param barcode codice prodotto
+     * @param category categoria
+     */
     public Product(String name, int quantity, String description, double price, int barcode, String category) {
         this.name = name;
-        //this.quantity = quantity==-1?null:quantity;
         this.quantity=quantity;
         this.description = description;
         this.price = price;

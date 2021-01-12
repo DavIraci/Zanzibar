@@ -3,24 +3,25 @@ package com.iraci.model;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Questa classe è la rappresentazione del carrello
+ * @author Davide Iraci
+ */
 public class Cart {
-    /**
-     * Mappa dei prodotti con le relative quantità e note che il cliente ha inserito nel carrello
-     * (ogni prodotto è una chiave e la relativa quantità e le note sono il valore corrispondente a quella
-     * chiave).
-     */
-    private Map<Product, Order> products;
+    // Mappa dei prodotti con le relative quantità e note che il cliente ha inserito nel carrello
+    // (ogni prodotto è una chiave e la relativa quantità e le note sono il valore corrispondente a quella chiave).
+    private final Map<Product, Order> products;
 
     /**
      * Costruttore della classe senza parametri.
      */
     public Cart() {
-        this.products = new LinkedHashMap<Product, Order>();
+        this.products = new LinkedHashMap<>();
     }
 
     /**
      * Costruttore della classe con parametri.
-     * @param products
+     * @param products prodotti
      */
     public Cart(Map<Product, Order> products) {
         this.products = products;
@@ -35,9 +36,9 @@ public class Cart {
 
     /**
      * Aggiunge un prodotto al carrello.
-     * @param product
-     * @param quantity
-     * @param note
+     * @param product prodotto
+     * @param quantity quantità
+     * @param note note
      */
     public void addProduct(Product product, int quantity, String note) {
         Product p=searchProduct(product.getBarcode());
@@ -62,7 +63,7 @@ public class Cart {
 
     /**
      * Ritorna il prodotto se è già presente nel carrello altrimenti ritorna null
-     * @param idProduct
+     * @param idProduct id prodotto
      */
     public Product searchProduct(int idProduct) {
         for (Product p : products.keySet()) {
@@ -98,42 +99,50 @@ public class Cart {
      * @return listaAcquisti
      */
     public String getProductsString() {
-        String cart = "<table>";
+        StringBuilder cart = new StringBuilder("<table>");
         double tot = 0;
         for (Product p : products.keySet()) {
-            cart += "<tr><td>"+p.getName() + "</td><td>x" + products.get(p).getQuantity() + "</td><td>" + p.getPrice() * products.get(p).getQuantity() + "0&euro;</td></tr>";
+            cart.append("<tr><td>").append(p.getName()).append("</td><td>x").append(products.get(p).getQuantity()).append("</td><td>").append(p.getPrice() * products.get(p).getQuantity()).append("0&euro;</td></tr>");
             tot += p.getPrice() * products.get(p).getQuantity();
         }
-        cart += "<tr><td colspan=\"3\"><hr /></td></tr><tr><td>Totale: " + tot + "0&euro;</td></tr></table>";
-        return cart;
+        cart.append("<tr><td colspan=\"3\"><hr /></td></tr><tr><td>Totale: ").append(tot).append("0&euro;</td></tr></table>");
+        return cart.toString();
     }
 
+    /**
+     * Ritorna la stringa contenente l'array dei prodotti del carrello, formattati per essere inviati tramite JSON
+     * @return stringa JSON
+     */
     public String toajaxString() {
-        String cart = "[";
+        StringBuilder cart = new StringBuilder("[");
         double tot = 0, quantity=0;
         for (Product p : products.keySet()) {
-            cart += "{\"barcode\":"+p.getBarcode() + ",\"name\":\""+p.getName() + "\",\"category\":\""+p.getCategory() + "\",\"quantity\":"+products.get(p).getQuantity() + ", \"price\": "+p.getPrice() + ",\"note\":\""+products.get(p).getNote() + "\"},";
+            cart.append("{\"barcode\":").append(p.getBarcode()).append(",\"name\":\"").append(p.getName()).append("\",\"category\":\"").append(p.getCategory()).append("\",\"quantity\":").append(products.get(p).getQuantity()).append(", \"price\": ").append(p.getPrice()).append(",\"note\":\"").append(products.get(p).getNote()).append("\"},");
             tot += p.getPrice() * products.get(p).getQuantity();
             quantity+=products.get(p).getQuantity();
         }
         return cart.substring(0, cart.length() - 1)+"] , \"TOTAL\" : \""+String.format("%.2f",tot) + "\", \"PRODUCTNUMBER\" : \"" + quantity+"\" ";
     }
 
+    /**
+     * Effettua la concatenazione string degli attributi
+     * @return stringa
+     */
     @Override
     public String toString() {
-        String cart = "";
+        StringBuilder cart = new StringBuilder();
         double tot = 0;
         for (Product p : products.keySet()) {
-            cart += "Prodotto: "+p.getName() + ", Quantità: " + products.get(p).getQuantity() + ", Prezzo: " + String.format("%.2f",p.getPrice() * products.get(p).getQuantity()) + "€"+ ", Note: " + products.get(p).getNote() +";\n";
+            cart.append("Prodotto: ").append(p.getName()).append(", Quantità: ").append(products.get(p).getQuantity()).append(", Prezzo: ").append(String.format("%.2f", p.getPrice() * products.get(p).getQuantity())).append("€").append(", Note: ").append(products.get(p).getNote()).append(";\n");
             tot += p.getPrice() * products.get(p).getQuantity();
         }
-        cart += "TOTALE: " + String.format("%.2f",tot) + "€;";
-        return cart;
+        cart.append("TOTALE: ").append(String.format("%.2f", tot)).append("€;");
+        return cart.toString();
     }
 
     /**
      * Rimuove un prodotto dal carrello.
-     * @param idProduct
+     * @param idProduct id prodotto
      */
     public void removeProduct(int idProduct) {
         Product p = searchProduct(idProduct);
@@ -150,8 +159,8 @@ public class Cart {
 
     /**
      * Modifica la quantità di un'order.
-     * @param idProduct
-     * @param quantity
+     * @param idProduct id prodotto
+     * @param quantity quantità desiderata
      */
     public void setQuantity(int idProduct, int quantity) {
         Product p = searchProduct(idProduct);
@@ -161,7 +170,7 @@ public class Cart {
 
     /**
      * Modifica la quantità di un'order.
-     * @param idProduct
+     * @param idProduct id prodotto
      */
     public int getQuantity(int idProduct) {
         Product p = searchProduct(idProduct);

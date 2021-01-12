@@ -73,6 +73,7 @@ public class manageBookServlet extends HttpServlet {
 
         // Crea gli oggetti necessari alla fattura e invoca la creazione della stessa con la classe InvoiceGenerator
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //InvoiceGenerator.createBookInovice(baos, invoice);
         InvoiceGenerator.createInovice(baos, invoice);
         byte[] bytes = baos.toByteArray();
         String title=baos.toString().substring(baos.toString().indexOf("Title(")+6, baos.toString().indexOf("Title(")+35).trim();
@@ -123,7 +124,7 @@ public class manageBookServlet extends HttpServlet {
                         + "<br>Ti auguriamo una buona permanenza nel nostro lido! <br><br>"
                         + "Lo staff del lido</p>";
 
-                Mailer mailer = new Mailer(((User) request.getSession().getAttribute("USER")).getEmail(), "Lido Zanzibar - Cancellazione ordine N°"+ id, messaggio);
+                Mailer mailer = new Mailer(((User) request.getSession().getAttribute("USER")).getEmail(), "Lido Zanzibar - Cancellazione prenotazione N°"+ id, messaggio);
 
                 Thread thread = new Thread(mailer);
                 thread.start();

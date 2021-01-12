@@ -1,8 +1,11 @@
 package com.iraci.model;
 
-import javax.ejb.Local;
 import java.time.LocalDate;
 
+/**
+ * Questa classe è la rappresentazione della fattura
+ * @author Davide Iraci
+ */
 public class Invoice {
     private int bookID;
     private int orderID;
@@ -22,6 +25,24 @@ public class Invoice {
     private Book book;
     private Cart order;
 
+    /**
+     * Costruttore fattura prenotazione
+     * @param bookID bookID
+     * @param invoiceID invoiceID
+     * @param name name
+     * @param surname surname
+     * @param email email
+     * @param fiscalcode fiscalcode
+     * @param address address
+     * @param region region
+     * @param province province
+     * @param city city
+     * @param CAP CAP
+     * @param method method
+     * @param booked_date booked_date
+     * @param date date
+     * @param book book
+     */
     public Invoice(int bookID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate booked_date, LocalDate date, Book book) {
         this.bookID = bookID;
         this.invoiceID = invoiceID;
@@ -41,6 +62,23 @@ public class Invoice {
         this.order = null;
     }
 
+    /**
+     * Costruttore fattura ordine servizio ristorazione
+     * @param orderID orderID
+     * @param invoiceID invoiceID
+     * @param name name
+     * @param surname surname
+     * @param email email
+     * @param fiscalcode fiscalcode
+     * @param address address
+     * @param region region
+     * @param province province
+     * @param city city
+     * @param CAP CAP
+     * @param method method
+     * @param date date
+     * @param order order
+     */
     public Invoice(int orderID, int invoiceID, String name, String surname, String email, String fiscalcode, String address, String region, String province, String city, String CAP, String method, LocalDate date, Cart order) {
         this.orderID = orderID;
         this.invoiceID = invoiceID;
@@ -83,6 +121,10 @@ public class Invoice {
         this.date = date;
     }
 
+    /**
+     * Effettua la concatenazione string degli attributi
+     * @return stringa
+     */
     @Override
     public String toString() {
         return "Invoice{" +
@@ -214,5 +256,21 @@ public class Invoice {
 
     public void setBooked_date(LocalDate booked_date) {
         this.booked_date = booked_date;
+    }
+
+    /**
+     * Metodo per capire se la fattura in questione è di una prenotazione oppure no
+     * @return true o false
+     */
+    public boolean isBookInvoice(){
+        return this.order==null;
+    }
+
+    /**
+     * Metodo per capire se la fattura in questione è di un ordine ristorazione oppure no
+     * @return true o false
+     */
+    public boolean isOrderInvoice(){
+        return this.book==null;
     }
 }

@@ -7,7 +7,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import javax.swing.text.Document;
 import java.util.Properties;
 
 /**
@@ -28,23 +27,23 @@ public class Mailer implements Runnable {
 	 * messaggio --> stringa html che contiene il corpo della mail
 	 */
 
-	private String host;
-	private String password;
-	private String indirizzoDestinazione;
-	private String oggetto;
-	private String messaggio;
-	private String attachment_title;
-	private byte[] pdf;
-	private static String address="http://localhost:8080";
-	private static String indirizzoEmail="lidozanzibar01@gmail.com";
-	private static String cellulare="3290000000";
+	private final String host;
+	private final String password;
+	private final String indirizzoDestinazione;
+	private final String oggetto;
+	private final String messaggio;
+	private final String attachment_title;
+	private final byte[] pdf;
+	private static final String address="http://localhost:8080";
+	private static final String indirizzoEmail="lidozanzibar01@gmail.com";
+	private static final String cellulare="3290000000";
 
 	
 	/**
 	 * Construttore della classe.
-	 * @param indirizzoDestinazione
-	 * @param oggetto
-	 * @param messaggio
+	 * @param indirizzoDestinazione indirizzo email destinatario
+	 * @param oggetto oggetto della mail
+	 * @param messaggio messaggio della mail
 	 */
 	public Mailer (String indirizzoDestinazione, String oggetto, String messaggio) {
 		this.host = "smtp.gmail.com";
@@ -58,10 +57,10 @@ public class Mailer implements Runnable {
 
 	/**
 	 * Construttore della classe con allegato.
-	 * @param indirizzoDestinazione
-	 * @param oggetto
-	 * @param messaggio
-	 * @param pdf
+	 * @param indirizzoDestinazione indirizzo email destinatario
+	 * @param oggetto oggetto della email
+	 * @param messaggio messaggio della email
+	 * @param pdf pdf allegato
 	 */
 	public Mailer (String indirizzoDestinazione, String oggetto, String messaggio, byte[] pdf,String attachment_title) {
 		this.host = "smtp.gmail.com";
@@ -79,7 +78,6 @@ public class Mailer implements Runnable {
 	 * il costruttore. 
 	 */
 	public void sendMail() throws MessagingException {
-		
 		// Imposta le proprietà del server SMTP.
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", host); 
@@ -92,34 +90,6 @@ public class Mailer implements Runnable {
 			return new PasswordAuthentication(indirizzoEmail, password);
 			}
 		});
-		
-		/*// Compone il messaggio della mail.
-		MimeMessage msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress("Lido Zanzibar <"+indirizzoEmail+">"));
-		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(indirizzoDestinazione));
-		msg.setSubject(oggetto);
-		msg.setContent(messaggio, "text/html");
-
-		if(pdf!=null){
-			Message message = new MimeMessage(session);
-			Multipart multipart = new MimeMultipart();
-
-			// creates body part for the message
-			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent(message, "text/html");
-
-			// creates body part for the attachment
-			MimeBodyPart attachPart = new MimeBodyPart();
-
-			// code to add attachment...will be revealed later
-
-			// adds parts to the multipart
-			multipart.addBodyPart(messageBodyPart);
-			multipart.addBodyPart(attachPart);
-
-			// sets the multipart as message's content
-			message.setContent(multipart);
-		}*/
 
 		Message msg = new MimeMessage(session);
 
@@ -157,7 +127,7 @@ public class Mailer implements Runnable {
 	@Override
 	public void run() {
 		try {
-		this.sendMail();
+			this.sendMail();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -167,7 +137,6 @@ public class Mailer implements Runnable {
 	public static String getAddress() {
 		return address;
 	}
-
 
 	public static String getCellulare() {
 		return cellulare;

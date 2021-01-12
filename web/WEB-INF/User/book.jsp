@@ -1,8 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
   User: Davide Iraci
-  Date: 15/10/2020
-  Time: 18:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,7 +30,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/snap.svg-min.js"></script>
-        <script src="/Zanzibar/js/Common/book.js"></script>
+        <script src="/Zanzibar/js/User/book.js"></script>
 
         <!--SNAP-->
         <style>
@@ -100,7 +98,7 @@
 
 
         <%@ include file="/WEB-INF/header.jsp"%>
-        <%@ include file="/WEB-INF/Common/checkout.jsp"%>
+        <%@ include file="/WEB-INF/User/checkout.jsp"%>
     </head>
 
     <body id="page-top">

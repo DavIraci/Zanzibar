@@ -1,8 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
   User: Davide Iraci
-  Date: 16/10/2020
-  Time: 10:46
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -70,51 +68,58 @@
                             </a>
                             <ul class="dropdown-menu extended" style="left: auto;right: 0" id="dropDownMenu">
                                 <% if(request.getSession().getAttribute("USER") == null){ %>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/login"><i class="fas fa-sign-in-alt" ></i> Accedi</a>
-                                        </li>
-                                         <li>
-                                             <a href="#" data-toggle="modal" data-target="#registerModal"><i class="fas fa-pencil-alt" ></i> Registrati</a>
-                                        </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/login"><i class="fas fa-sign-in-alt" ></i> Accedi</a>
+                                    </li>
+                                     <li>
+                                         <a href="#" data-toggle="modal" data-target="#registerModal"><i class="fas fa-pencil-alt" ></i> Registrati</a>
+                                    </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
-                                        <li class="eborder-top">
-                                            <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/user/cartManage"><span class="badge badge-pill" id="spanCart"><%if(((Cart) request.getSession().getAttribute("CART"))!=null && ((Cart) request.getSession().getAttribute("CART")).getSize()>0 ){%><%=((Cart) request.getSession().getAttribute("CART")).getSize() %><%}%></span><i class="fas fa-shopping-cart"></i> Carello
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-                                        </li>
+                                    <li class="eborder-top">
+                                        <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/cartManage"><span class="badge badge-pill" id="spanCart"><%if(((Cart) request.getSession().getAttribute("CART"))!=null && ((Cart) request.getSession().getAttribute("CART")).getSize()>0 ){%><%=((Cart) request.getSession().getAttribute("CART")).getSize() %><%}%></span><i class="fas fa-shopping-cart"></i> Carello
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                                    </li>
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("User") ){ %>
-                                        <li class="eborder-top">
-                                            <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-day"></i> Prenota</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="icon_chat_alt"></i> Chats</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-                                        </li>
+                                    <li class="eborder-top">
+                                        <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/user/cartManage"><span class="badge badge-pill" id="spanCart"><%if(((Cart) request.getSession().getAttribute("CART"))!=null && ((Cart) request.getSession().getAttribute("CART")).getSize()>0 ){%><%=((Cart) request.getSession().getAttribute("CART")).getSize() %><%}%></span><i class="fas fa-shopping-cart"></i> Carello
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                                    </li>
                                 <% } %>
                             </ul>
                         </li>
