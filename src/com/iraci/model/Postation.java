@@ -19,7 +19,6 @@ public class Postation {
      */
     public Postation(int id, double price) {
         this(id);
-        System.out.println("Costruttore Postation3");
         this.price=price;
     }
 
@@ -30,7 +29,6 @@ public class Postation {
      */
     public Postation(int id, List<Double> prices) {
         this(id);
-        System.out.println("Costruttore Postation2");
         this.price = prices.get(this.row);
     }
 
@@ -39,10 +37,8 @@ public class Postation {
      * @param id id
      */
     public Postation(int id) {
-        System.out.println("Costruttore Postation");
         this.id = id;
         this.row = id/10;
-        System.out.println("ID: " + this.row );
         this.number=id -(this.row*10)+1;
     }
 

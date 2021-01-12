@@ -13,7 +13,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <title>Zanzibar Lido - Modifica Dati</title>
+        <title>Zanzibar Lido - Gestisci Prenotazioni</title>
 
         <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
 

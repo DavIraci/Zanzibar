@@ -13,7 +13,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <title>Zanzibar Lido - Prenota Postazione</title>
+        <title>Zanzibar Lido - Gestione Spiaggia</title>
 
         <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
 
@@ -30,7 +30,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/snap.svg-min.js"></script>
-        <script src="/Zanzibar/js/User/book.js"></script>
+        <script src="/Zanzibar/js/Lifeguard/beachManage.js"></script>
 
         <!--SNAP-->
         <style>
@@ -96,9 +96,7 @@
             }
         </style>
 
-
         <%@ include file="/WEB-INF/header.jsp"%>
-        <%@ include file="/WEB-INF/User/checkout.jsp"%>
     </head>
 
     <body id="page-top">
@@ -107,14 +105,14 @@
             <div class="marketing">
                 <section class="text-center">
                     <div class="row" style="justify-content: center">
-                        <h1>Prenotazione</h1>
+                        <h1>Gestione Spiaggia</h1>
                     </div>
                     <div class="row" style="text-align: center">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label for="date">Data:</label>
                             <input class="form-control" type="date" id="date" name="date" pattern="\d{2}/\d{2}/\d{4}" onchange="reset();load()">
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="period">Fascia oraria:</label>
                                 <select class="form-control" id="period" name="period" onchange="reset();load()">
@@ -124,6 +122,10 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <label for="bookNumber">Numero Prenotazioni:</label>
+                            <input class="form-control" type="text" id="bookNumber" name="bookNumber" value="3" readonly>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -132,18 +134,10 @@
         <div id="map"></div>
         <div id="tooltip"></div>
         <div class="container mt-4">
-            <div class="row" style="justify-content: center" id="message-alert">
+            <div class="row justify-content-center" id="message-alert">
             </div>
             <div class="row" style="place-content: center;">
                 <div class="col-sm-3 col-sm-offset-3">
-                    <div class="input-group mb-3">
-                        <label id="extra-chair" for="myform"></label><br>
-                        <div id='myform'>
-                            <input id="bookQtyMinus" type='button' value='-' class='qtyminus btn btn-danger' field='quantity' style="border-radius: 0.5rem"/>
-                            <input id="bookQty" type='text' name='quantity' value='0' class='qty align-middle' style="max-width: 25%" readonly/>
-                            <input id="bookQtyPlus" type='button' value='+' class='qtyplus btn btn-success' field='quantity' style="border-radius: 0.5rem"/>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-sm-9 text-right">
                     <div id="postazioni">
@@ -153,16 +147,14 @@
                     <div id="totale">
                     </div>
                     <div>
-                        <input type="button" class="btn-lg btn-primary disabled" id="checkBook" value="Conferma e paga">
+                        <input type="button" class="btn-lg btn-primary disabled" id="checkIn" value="Check In">
+                        <input type="button" class="btn-lg btn-info disabled" id="checkOut" value="Check Out">
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
         <%@ include file="/WEB-INF/footer.jsp"%>
 
-        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
-        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
     </body>
 </html>
