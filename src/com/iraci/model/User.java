@@ -16,66 +16,114 @@ public class User {
     private LocalDate birthday;
     private String ruolo;
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getTelefono() {
         return telefono;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getRuolo() {
         return ruolo;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setRuolo(String ruolo) {
         this.ruolo = ruolo;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public int getIdUtente() {
         return idUtente;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setIdUtente(int idUtente) {
         this.idUtente = idUtente;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getCognome() {
         return cognome;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public String getCellulare() {
         return cellulare;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setCellulare(String cellulare) {
         this.cellulare = cellulare;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public LocalDate getBirthday() {
         return birthday;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Utente
+     */
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }

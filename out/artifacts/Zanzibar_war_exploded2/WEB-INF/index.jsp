@@ -129,7 +129,7 @@
 
             <!-- Beach -->
             <section class="page-section portfolio" id="beach">
-                <a href="${pageContext.request.contextPath}/common/book">
+                <a href="${pageContext.request.contextPath}/user/book">
                     <img alt="Beach" src="/Zanzibar/image/mapALL.svg" style="width: 100%;height: 70%;">
                 </a>
             </section>

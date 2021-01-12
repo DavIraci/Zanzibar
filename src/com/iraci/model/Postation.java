@@ -18,20 +18,9 @@ public class Postation {
      * @param price prezzi
      */
     public Postation(int id, double price) {
-        this.id = id;
-        this.row = (int) id/10;
-        this.number=id -(this.row*10)+1;
+        this(id);
+        System.out.println("Costruttore Postation3");
         this.price=price;
-    }
-
-    /**
-     * Costruttore senza i prezzi
-     * @param id id
-     */
-    public Postation(int id) {
-        this.id = id;
-        this.row = (int) id/10;
-        this.number=id -(this.row*10)+1;
     }
 
     /**
@@ -40,44 +29,82 @@ public class Postation {
      * @param prices lista prezzi
      */
     public Postation(int id, List<Double> prices) {
-        this.id = id;
-        this.row = (int) id/10;
-        this.number=id -(this.row*10)+1;
+        this(id);
+        System.out.println("Costruttore Postation2");
         this.price = prices.get(this.row);
     }
 
+    /**
+     * Costruttore senza i prezzi
+     * @param id id
+     */
+    public Postation(int id) {
+        System.out.println("Costruttore Postation");
+        this.id = id;
+        this.row = id/10;
+        System.out.println("ID: " + this.row );
+        this.number=id -(this.row*10)+1;
+    }
+
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public void setRow(int row) {
         this.row = row;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public void setNumber(int number) {
         this.number = number;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public double getPrice() {
         return price;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public void setPrice(double price) {
         this.price = price;
     }
 
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Postazione
+     */
     public void setPrice(List<Double> prices) {
         this.price = prices.get(this.row);
     }

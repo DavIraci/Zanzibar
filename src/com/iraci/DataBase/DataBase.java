@@ -413,10 +413,8 @@ public class DataBase {
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, BookID);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                System.out.println(":"+rs.getInt("id_invoice")+":");
+            if (rs.next())
                 return new Invoice(BookID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.parse(rs.getDate("bookingDate").toString()), LocalDate.parse(rs.getDate("date").toString()), getBook(BookID));
-            }
             rs.close();
         }
         return null;
@@ -489,7 +487,6 @@ public class DataBase {
             statement.setInt(2, user_id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
-                System.out.println(rs.getInt("id_Book"));
                 if(rs.getTimestamp("checkOut")==null)
                     return true;
             }
@@ -585,10 +582,8 @@ public class DataBase {
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, orderID);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                System.out.println(":"+rs.getInt("id_invoice")+":");
+            if (rs.next())
                 return new Invoice(orderID, rs.getInt("id_invoice"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("fiscalcode"), rs.getString("address"), rs.getString("region"), rs.getString("province"), rs.getString("city"), rs.getString("CAP"), rs.getString("method"), LocalDate.now(), cart);
-            }
             rs.close();
         }
         return null;

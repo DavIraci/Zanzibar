@@ -43,8 +43,6 @@ public class Cart {
     public void addProduct(Product product, int quantity, String note) {
         Product p=searchProduct(product.getBarcode());
         if(p!=null) {
-            System.out.println("Prodotto già presente nel carrello!");
-
             Order order=products.get(p);
             if(note!=null) {
                 if(order.getNote()==null) {
@@ -55,10 +53,8 @@ public class Cart {
 
             }
             order.setQuantity(quantity+order.getQuantity());
-        }else {
-            System.out.println("Prodotto NON nel carrello!");
+        }else
             products.put(product, new Order(quantity,note));
-        }
     }
 
     /**
