@@ -84,7 +84,7 @@
                                 <!-- Admin logged -->
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
                                     <li class="eborder-top">
-                                        <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                        <a ><i class="fas fa-crown"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                     </li>
                                     <li>
                                         <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
@@ -121,10 +121,10 @@
                                 <!-- Lifeguard logged -->
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Lifeguard") ){ %>
                                     <li class="eborder-top">
-                                        <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                        <a ><i class="fas fa-life-ring"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/lifeguard/manageBeach"><i class="fas fa-user-cog"></i> Gestisci spiaggia</a>
+                                        <a href="${pageContext.request.contextPath}/lifeguard/beachManage"><i class="fas fa-umbrella-beach"></i> Gestisci spiaggia</a>
                                     </li>
                                     <li>
                                         <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>

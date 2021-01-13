@@ -11,6 +11,40 @@ $(document).ready(function () {
 
             el.click(function(ev){
                 // Stati possibili: Prenotato - Checkin - Checkout - Free
+                /*let elem = el.parent();
+                let id = '#'+ elem.node.id;
+
+
+
+                if( elem.data('status')=='CO' || elem.data('status')=='F'){
+                    //CheckOut effettuato o Free
+
+                } else if( elem.data('status')=='S' ) {
+                    //Selezionata
+                    setFree(id, elem);
+                    posSelected.splice(posSelected.indexOf(id), 1);
+                    $('#postazioni .part_'+id.split("#")[1]).remove();
+                    if(posSelected.length==0)
+                        $('#checkBook').removeClass("active").addClass("disabled");
+                    if($('.qty').val()>=(2*posSelected.length)){
+                        $('.qty').val(2*posSelected.length);
+                        updateChair();
+                    }
+                    updateTotal();
+
+                } else if( elem.data('status')=='CI' ){
+                    //CheckIn effettuato
+
+                } else { //status B
+                    // Prenotata-CheckIn non effettuato
+                    setSelected(id, elem);
+                    posSelected.push(id);
+                    let text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
+                    $('#postazioni').append(text);
+                    $('#checkBook').removeClass("disabled").addClass("active");
+                    $('.part_'+id.split("#")[1]).val(elem.data('row3'));
+                    updateTotal();
+                }*/
             });
 
             el.mousemove(function(ev){
@@ -91,6 +125,7 @@ function setTable(BOOK, USERS){
         let decoration="class=\"bookedStatus\"";
         let checkout;
 
+        //let checkin='<i class="fas fa-file-invoice mr-1 actions" onclick="checkIN('+val.book_id+')">Check-in</i>';
         let checkin='<input type="button" class="btn btn-primary active" id="checkIn" value="Check In" onclick="checkIN('+val.book_id+')">';
 
         if(val.checkin!=null) {

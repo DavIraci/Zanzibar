@@ -22,9 +22,9 @@
         <auth-constraint>
             <role-name>User</role-name>
             <role-name>Admin</role-name>
-            <role-name>Banco</role-name>
-            <role-name>Bagnino</role-name>
-            <role-name>Cucina</role-name>
+            <role-name>CashDesk</role-name>
+            <role-name>Lifeguard</role-name>
+            <role-name>Cook</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -49,6 +49,36 @@
         </auth-constraint>
     </security-constraint>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Lifeguard</web-resource-name>
+            <url-pattern>/lifeguard/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Lifeguard</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>CashDesk</web-resource-name>
+            <url-pattern>/cashdesk/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CashDesk</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Cook</web-resource-name>
+            <url-pattern>/cook/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Cook</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <security-role>
         <role-name>Admin</role-name>
     </security-role>
@@ -56,13 +86,13 @@
         <role-name>User</role-name>
     </security-role>
     <security-role>
-        <role-name>Banco</role-name>
+        <role-name>CashDesk</role-name>
     </security-role>
     <security-role>
-        <role-name>Bagnino</role-name>
+        <role-name>Lifeguard</role-name>
     </security-role>
     <security-role>
-        <role-name>Cucina</role-name>
+        <role-name>Cook</role-name>
     </security-role>
 
     <error-page>

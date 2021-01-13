@@ -59,6 +59,26 @@ public class DataBase {
     }
 
     /**
+     * Prende i dati dal DB dell'utente registrato con l'email fornita come argomento
+     * @param userID User ID dell'account voluto
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
+     */
+    public static User takeUser(int userID) throws SQLException{
+        String query = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.id_User=?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getInt("id_User"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("mobile"), rs.getString("telephone"), rs.getString("role"), LocalDate.parse(rs.getDate("birthday").toString()));
+            } else {
+                rs.close();
+                return null;
+            }
+        }
+    }
+
+    /**
      * Inserisce all'interno del database i dati del cliente che effettua la registrazione
      * @param nome nome
      * @param cognome cognome
@@ -232,7 +252,7 @@ public class DataBase {
      * @return lista di postazioni occupate
      * @throws SQLException SQLException
      */
-    public static List<Postation> takeBooking(LocalDate date, String period) throws SQLException {
+    public static List<Postation> takePostationsBooked(LocalDate date, String period) throws SQLException {
         List<Postation> postazioni = new ArrayList<>();
         List<Double> prices = takePrice(date, period);
         String query = "SELECT UmbrellaStation_id_UmbrellaStation FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND book.canceled=0 AND (book.bookingPeriod='Full' OR book.bookingPeriod=? OR book.bookingPeriod=?)";
@@ -587,5 +607,82 @@ public class DataBase {
             rs.close();
         }
         return null;
+    }
+
+    /**
+     * Restituiscre la liste delle prenotazioni per la giornata e lo slot temporale selezionato
+     * @param date data
+     * @param period slot temporale
+     * @return lista di prenotazioni
+     * @throws SQLException
+     */
+    public static List<Book> takeBooks(LocalDate date, String period) throws SQLException {
+        List<Book> books = new ArrayList<>();
+        int last_bookid=-1;
+        Book book = null;
+        String query = "SELECT * FROM iraci.book_has_umbrellastation JOIN iraci.book ON book.id_book=book_has_umbrellastation.Book_id_Book WHERE book.date=? AND book.canceled=0 AND (book.bookingPeriod='Full' OR book.bookingPeriod=? OR book.bookingPeriod=?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(date));
+            if(period.equals("Full")) {
+                statement.setString(2, "AM");
+                statement.setString(3, "PM");
+            }else{
+                statement.setString(2, period);
+                statement.setString(3, "");
+            }
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) {
+                if(rs.getInt("id_Book")==last_bookid){
+                    assert book != null;
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
+                }else{
+                    if (last_bookid!=-1)
+                        books.add(book);
+                    book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
+                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                    last_bookid=book.getBook_id();
+                }
+            }
+            if (last_bookid!=-1)
+                books.add(book);
+            rs.close();
+            return books;
+        }
+    }
+
+    /**
+     * Effettua l'inserimento del Timestamp attuale per il check-in del cliente assieme alla lista degli ospiti
+     * @param bookID bookID
+     * @param guests ospiti
+     * @return true o false
+     * @throws SQLException
+     */
+    public static boolean insertCheckIn(int bookID, String guests) throws SQLException {
+        String query = "UPDATE iraci.book SET guests = ?, checkIn = ? WHERE id_Book = ? AND book.checkIn IS NULL";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, guests);
+            statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setInt(3, bookID);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
+    }
+
+    /**
+     * Effettua l'inserimento del Timestamp attuale per il check-out del cliente
+     * @param bookID bookID
+     * @return true o false
+     * @throws SQLException
+     */
+    public static boolean insertCheckOut(int bookID) throws SQLException {
+        String query = "UPDATE iraci.book SET checkOut = ? WHERE id_Book = ? AND book.checkIn IS NOT NULL";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setInt(2, bookID);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
     }
 }

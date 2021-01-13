@@ -38,7 +38,7 @@ public class bookServlet extends HttpServlet {
 
             // Verifica il corretto format del periodo, prende la lista di prenotazioni, dei prezzi e invia la risposta JSON
             if(period.equals("Full") || period.equals("AM") || period.equals("PM")){
-                List<Postation> booked= DataBase.takeBooking(date, period);
+                List<Postation> booked= DataBase.takePostationsBooked(date, period);
                 List<Double> price=DataBase.takePrice(date, period);
                 Double extra = price.remove(0);
 

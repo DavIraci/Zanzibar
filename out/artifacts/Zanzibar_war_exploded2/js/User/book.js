@@ -98,10 +98,6 @@ $(document).ready(function () {
 var order;
 var posNotAvailable = [];
 var posSelected = [];
-//var prenotazioni = {};
-//var prodottiSelezionati = {};
-//var totaleOrdini = 0;
-//var totalePrenotazioni = 0;
 
 function updateTotal(){
     let total=parseFloat(($('#extra-chair').val())*(parseInt($('.qty').val())).toFixed(2));

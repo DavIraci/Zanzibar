@@ -74,7 +74,7 @@ public class Utils {
      */
     public static boolean occupiedCheck(List<Postation> posts, LocalDate date, String period) throws SQLException {
         boolean occupied = false;
-        List<Postation> post_occupied= DataBase.takeBooking(date, period);
+        List<Postation> post_occupied= DataBase.takePostationsBooked(date, period);
 
         for (Postation post : posts) {
             if (post_occupied.contains(post)) {

@@ -177,7 +177,7 @@
             </div>
         </div>
     </div>
-    <!-- /Details Modal -->
+    <!-- /Add to cart Modal -->
 
     <!-- Added to Cart Modal -->
     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="addedToCartModal" aria-hidden="true">
