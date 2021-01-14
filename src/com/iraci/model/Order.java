@@ -3,8 +3,7 @@ package com.iraci.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ import java.util.Map;
  */
 public class Order {
     private int orderID;
-    private LocalDate date;
+    private LocalDateTime date;
     private char status;
     private boolean payed;
     private int userID;
@@ -29,7 +28,7 @@ public class Order {
      * @param userID user ID
      * @param deliveryMethod metodo di consegna
      */
-    public Order(int orderID, LocalDate date, char status, boolean payed, int userID, String deliveryMethod) {
+    public Order(int orderID, LocalDateTime date, char status, boolean payed, int userID, String deliveryMethod) {
         this.orderID = orderID;
         this.date = date;
         this.status = status;
@@ -48,7 +47,7 @@ public class Order {
      * @param deliveryMethod metodo di consegna
      * @param products Mappa prodotti
      */
-    public Order(int orderID, LocalDate date, char status, boolean payed, int userID, String deliveryMethod, Map<Product, Detail> products) {
+    public Order(int orderID, LocalDateTime date, char status, boolean payed, int userID, String deliveryMethod, Map<Product, Detail> products) {
         this.orderID = orderID;
         this.date = date;
         this.status = status;
@@ -75,14 +74,14 @@ public class Order {
     /**
     * Metodo per la manipolazione degli attributi dell'oggetto Ordine
     */
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
     /**
     * Metodo per la manipolazione degli attributi dell'oggetto Ordine
     */
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

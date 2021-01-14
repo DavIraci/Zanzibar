@@ -104,6 +104,56 @@
     </div>
     <!-- /Kitchen Response Message Modal -->
 
+    <!-- Order Detail Modal -->
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="orderDetailModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal" role="document">
+            <div class="modal-content" style="border: #518CC8 5px solid;">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="orderDetailMessageLabel"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="orderDetailMessageText">
+                    <div class="order-md-2 mb-4">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Dettagli ordine</span>
+                            <span class="badge badge-secondary badge-pill" id="orderProductsNumber">5(numero prodotti)</span>
+                        </h4>
+                        <ul class="list-group mb-3 sticky-top" id="orderProductsList">
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div class="mr-3">
+                                    <h6 class="my-0">Nome prodotto</h6>
+                                    <small class="text-muted">Note </small>
+                                </div>
+                                <span class="text-muted">x5(quantità)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div class="mr-3">
+                                    <h6 class="my-0">Nome prodotto</h6>
+                                    <small class="text-muted">Note </small>
+                                </div>
+                                <span class="text-muted">x5</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div class="mr-3">
+                                    <h6 class="my-0">Nome prodotto</h6>
+                                    <small class="text-muted">Note </small>
+                                </div>
+                                <span class="text-muted">x5</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer" id="orderDetailFooter">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Order Detail Modal -->
+
+
     <%@ include file="/WEB-INF/footer.jsp"%>
     </body>
 </html>

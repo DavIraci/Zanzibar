@@ -368,17 +368,13 @@ public class DataBase {
             statement.setInt(1, user_id);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
-                if(rs.getInt("id_Book")==last_bookid){
-                    assert book != null;
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
-                }else{
-                    if (last_bookid!=-1)
+                if(rs.getInt("id_Book")!=last_bookid){
+                    if(book!=null)
                         books.add(book);
-                    book=new Book(rs.getString("bookingPeriod"), user_id, rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-                    last_bookid=book.getBook_id();
+                    book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                 }
+                book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                last_bookid=book.getBook_id();
             }
             if (last_bookid!=-1)
                 books.add(book);
@@ -402,18 +398,13 @@ public class DataBase {
             statement.setInt(1, bookID);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
-                if(rs.getInt("id_Book")==last_bookid){
-                    assert book != null;
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
-                }else{
+                if (last_bookid==-1){
                     checkin=rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime();
                     checkout=rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime();
                     book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, checkin, checkout, rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-
-                    last_bookid=book.getBook_id();
                 }
+               book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                last_bookid=book.getBook_id();
             }
             rs.close();
             assert book != null;
@@ -633,17 +624,13 @@ public class DataBase {
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()) {
-                if(rs.getInt("id_Book")==last_bookid){
-                    assert book != null;
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-                    book.setExtra_chair(book.getExtra_chair()+rs.getInt("extraChair"));
-                }else{
-                    if (last_bookid!=-1)
+                if(rs.getInt("id_Book")!=last_bookid){
+                    if(book!=null)
                         books.add(book);
                     book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
-                    book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
-                    last_bookid=book.getBook_id();
                 }
+                book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
+                last_bookid=book.getBook_id();
             }
             if (last_bookid!=-1)
                 books.add(book);
@@ -702,16 +689,13 @@ public class DataBase {
             ResultSet rs = statement.executeQuery();
 
             while(rs.next()) { // Finchè ci sono nuovi record
-                if(rs.getInt("id_Order")==last_orderID){ // Se il record appartiene all'ordine precedente e lo aggiunge
-                    assert order != null;
-                    order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
-                }else{
-                    if (last_orderID!=-1)
+                if(rs.getInt("id_Order")!=last_orderID){
+                    if(order!=null)
                         orders.add(order);
-                    order=new Order(rs.getInt("id_Order"), LocalDate.parse(rs.getDate("date").toString()), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
-                    order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
-                    last_orderID=order.getOrderID();
+                    order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
                 }
+                order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
+                last_orderID=order.getOrderID();
             }
             if (last_orderID!=-1)
                 orders.add(order);
@@ -736,7 +720,7 @@ public class DataBase {
 
             while(rs.next()) { // Finchè ci sono nuovi record
                 if (last_orderID==-1)
-                    order=new Order(rs.getInt("id_Order"), LocalDate.parse(rs.getDate("date").toString()), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
+                    order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
                 order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
                 last_orderID=order.getOrderID();
             }

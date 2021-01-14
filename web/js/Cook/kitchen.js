@@ -37,12 +37,12 @@ function setOrders(){
         switch (val.status){
             case "A": {
                 status = "Ricevuto";
-                button='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="In lavorazione" onclick="changeStatusConfirm('+val.orderID+')">';
+                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="In lavorazione" onclick="changeStatusConfirm('+val.orderID+')">';
                 break;
             }
             case "W": {
                 status = "In lavorazione";
-                button='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="Pronto" onclick="changeStatusConfirm('+val.orderID+')">';
+                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="Pronto" onclick="changeStatusConfirm('+val.orderID+')">';
                 break;
             }
             case "T": {
@@ -63,18 +63,34 @@ function setOrders(){
             }
         }
 
+        let quantity=0;
+        $.each(val.products, function(key2, val2){
+            quantity+=parseInt(val2.quantity);
+        });
+
         var selUser=userByID(val.userID);
         text='<tr>'+
                 '<th scope="row">'+zeropadInt(val.orderID,6)+'</th>' +
                 '<td>'+ selUser.nome + " " + selUser.cognome+'</td>'+
-                '<td>'+zeropadInt(val.date.dayOfMonth,2) + '-' + zeropadInt(val.date.monthValue, 2) + '-' + val.date.year+'</td>'+
-                '<td class="text-center">'+val.products.length+'</td>'+
+                '<td>'+zeropadInt(val.date.hour,2) + ':' + zeropadInt(val.date.minute, 2) +'</td>'+
+                '<td class="text-center">'+quantity+'</td>'+
                 '<td>'+status+'</td>'+ // LISTA STATI
-                '<td class="text-center">'+button+'</td>'+ // BOTTONE CAMBIO STATO
-                '<td class="text-center"><input type="button" class="btn btn-info active" id="orderDetailBtn" value="Dettagli" onclick="orderDetails('+val.book_id+')"></td>'+ // BOTTONE DETTAGLI
+                '<td class="text-center">'+buttons+'</td>'+ // BOTTONE CAMBIO STATO
+                '<td class="text-center"><input type="button" class="btn btn-info active" id="orderDetailBtn" value="Dettagli" onclick="orderDetails('+val.orderID+')"></td>'+ // BOTTONE DETTAGLI
             '</tr>';
         $('#kitchenOrdersRow').append(text);
     });
+}
+
+function orderByID(id){
+    let i=0;
+    $.each(orders, function(key, val){
+        if(val.orderID===id) {
+            return false;
+        }
+        i++;
+    });
+    return orders[i];
 }
 
 function userByID(id){
@@ -90,7 +106,8 @@ function userByID(id){
 
 function changeStatusConfirm(id){
     $('#kitchenResponseMessageLabel').html("Conferma cambio stato");
-    $('#kitchenResponseMessageText').html("Confermi di voler cambiare lo stato dell'ordine?");
+    let order=orderByID(id);
+    $('#kitchenResponseMessageText').html("Confermi di voler cambiare lo stato dell'ordine in <b>"+order.status==="A"?"In lavorazione":"Pronto"+"</b>?");
     $('#changeStatusConfirm').removeClass('d-none');
     text='<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
          +'<button type="button" class="btn btn-primary" id="changeStatusBtn" onclick="changeStatus('+id+')">Conferma</button>';
@@ -124,4 +141,19 @@ function changeStatus(id){
             console.log(errorThrown);
         }
     });
+}
+
+function orderDetails(id){
+    let order=orderByID(id);
+    let quantity=0;
+    $('#orderProductsList').html("");
+    $.each(order.products, function(key, val){
+        let text='<li class="list-group-item d-flex justify-content-between lh-condensed"><div class="mr-3">' +
+            '<h6 class="my-0">'+val.name+'</h6><small class="text-muted">'+(val.note=="null"?"":val.note) +' </small>' +
+            '</div><span class="text-muted">x'+parseInt(val.quantity)+'</span></li>';
+        $('#orderProductsList').append(text);
+        quantity+=parseInt(val.quantity);
+    });
+    $('#orderProductsNumber').html(quantity);
+    $('#orderDetailModal').modal('show');
 }
