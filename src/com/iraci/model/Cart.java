@@ -10,7 +10,7 @@ import java.util.Map;
 public class Cart {
     // Mappa dei prodotti con le relative quantità e note che il cliente ha inserito nel carrello
     // (ogni prodotto è una chiave e la relativa quantità e le note sono il valore corrispondente a quella chiave).
-    private final Map<Product, Order> products;
+    private final Map<Product, Detail> products;
 
     /**
      * Costruttore della classe senza parametri.
@@ -23,14 +23,14 @@ public class Cart {
      * Costruttore della classe con parametri.
      * @param products prodotti
      */
-    public Cart(Map<Product, Order> products) {
+    public Cart(Map<Product, Detail> products) {
         this.products = products;
     }
 
     /**
      * Metodo get per accedere dall'esterno ai dati che caratterizzano un carrello.
      */
-    public Map<Product, Order> getProducts() {
+    public Map<Product, Detail> getProducts() {
         return products;
     }
 
@@ -43,18 +43,18 @@ public class Cart {
     public void addProduct(Product product, int quantity, String note) {
         Product p=searchProduct(product.getBarcode());
         if(p!=null) {
-            Order order=products.get(p);
+            Detail Detail=products.get(p);
             if(note!=null) {
-                if(order.getNote()==null) {
-                    order.setNote(note);
+                if(Detail.getNote()==null) {
+                    Detail.setNote(note);
                 }else {
-                    order.setNote(order.getNote()+"\n"+quantity+" "+note);
+                    Detail.setNote(Detail.getNote()+"\n"+quantity+" "+note);
                 }
 
             }
-            order.setQuantity(quantity+order.getQuantity());
+            Detail.setQuantity(quantity+Detail.getQuantity());
         }else
-            products.put(product, new Order(quantity,note));
+            products.put(product, new Detail(quantity,note));
     }
 
     /**
@@ -154,7 +154,7 @@ public class Cart {
     }
 
     /**
-     * Modifica la quantità di un'order.
+     * Modifica la quantità di un'Detail.
      * @param idProduct id prodotto
      * @param quantity quantità desiderata
      */
@@ -165,7 +165,7 @@ public class Cart {
     }
 
     /**
-     * Modifica la quantità di un'order.
+     * Modifica la quantità di un'Detail.
      * @param idProduct id prodotto
      */
     public int getQuantity(int idProduct) {

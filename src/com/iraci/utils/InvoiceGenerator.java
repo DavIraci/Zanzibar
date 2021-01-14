@@ -3,10 +3,7 @@ package com.iraci.utils;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
-import com.iraci.model.Invoice;
-import com.iraci.model.Order;
-import com.iraci.model.Postation;
-import com.iraci.model.Product;
+import com.iraci.model.*;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -116,7 +113,7 @@ public class InvoiceGenerator {
                 padding_max = 8;
                 qty = invoice.getOrder().getSize();
 
-                for (Map.Entry<Product, Order> entry : invoice.getOrder().getProducts().entrySet()) {
+                for (Map.Entry<Product, Detail> entry : invoice.getOrder().getProducts().entrySet()) {
                     billTable.addCell(getBillRowCell((i + 1) + ""));
                     billTable.addCell(getBillRowCell(entry.getKey().getName()));
                     billTable.addCell(getBillRowCell(entry.getKey().getCategory()));

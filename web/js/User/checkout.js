@@ -107,7 +107,3 @@ function checkValidation(){
         $('#payBtn').removeClass("active").addClass("disabled");
     }
 }
-
-function capitalletters(string){
-    return string[0].toUpperCase()+string.slice(1);
-}

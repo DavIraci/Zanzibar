@@ -10,48 +10,13 @@ $(document).ready(function () {
             el.parent().data('status', 'F');
 
             el.click(function(ev){
+                // Non deve fare niente
                 // Stati possibili: Prenotato - Checkin - Checkout - Free
-                /*let elem = el.parent();
-                let id = '#'+ elem.node.id;
-
-
-
-                if( elem.data('status')=='CO' || elem.data('status')=='F'){
-                    //CheckOut effettuato o Free
-
-                } else if( elem.data('status')=='S' ) {
-                    //Selezionata
-                    setFree(id, elem);
-                    posSelected.splice(posSelected.indexOf(id), 1);
-                    $('#postazioni .part_'+id.split("#")[1]).remove();
-                    if(posSelected.length==0)
-                        $('#checkBook').removeClass("active").addClass("disabled");
-                    if($('.qty').val()>=(2*posSelected.length)){
-                        $('.qty').val(2*posSelected.length);
-                        updateChair();
-                    }
-                    updateTotal();
-
-                } else if( elem.data('status')=='CI' ){
-                    //CheckIn effettuato
-
-                } else { //status B
-                    // Prenotata-CheckIn non effettuato
-                    setSelected(id, elem);
-                    posSelected.push(id);
-                    let text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
-                    $('#postazioni').append(text);
-                    $('#checkBook').removeClass("disabled").addClass("active");
-                    $('.part_'+id.split("#")[1]).val(elem.data('row3'));
-                    updateTotal();
-                }*/
             });
 
             el.mousemove(function(ev){
                 // when mouse is over the seat, system shows an informational tooltip
                 let elem = el.parent();
-
-                // Mettere le informazioni della prenotazione
 
                 if( elem.data('status')!=='F' ){
                     let text = '<p class="row1">'+elem.data('row1')+'</p>' //ID prenotazione,
@@ -74,7 +39,6 @@ $(document).ready(function () {
             });
 
         });
-
         s.append(f);
     });
 });
@@ -96,6 +60,7 @@ function load(){
                 'Period': period
             },
             success: function (data) {
+                reset();
                 if(data.RESPONSE === 'Confirm'){ //Dati ok
                     $('#bookNumber').val(data.BOOKED.length)
                     book=data.BOOKED;
@@ -110,7 +75,6 @@ function load(){
         });
 
         setInterval(function(){
-            reset();
             load();
         }, 60000);
     }else{
@@ -125,7 +89,6 @@ function setTable(BOOK, USERS){
         let decoration="class=\"bookedStatus\"";
         let checkout;
 
-        //let checkin='<i class="fas fa-file-invoice mr-1 actions" onclick="checkIN('+val.book_id+')">Check-in</i>';
         let checkin='<input type="button" class="btn btn-primary active" id="checkIn" value="Check In" onclick="checkIN('+val.book_id+')">';
 
         if(val.checkin!=null) {
@@ -323,9 +286,11 @@ function setDate(data){
 }
 
 function setFree(id, elem){
+    //console.log("id: " + id + ", elem: "+ elem);
     $(id+' ellipse[class^=\'st1\']').attr("class","").addClass("st1");
     $(id+' rect[class^=\'st2\']').attr("class","").addClass("st2");
     $(id+' path[class^=\'st3\']').attr("class","").addClass("st3");
+    $(id+' rect[id^=\'rect_\']').attr("disabled","");
 
     elem.data('status', 'F');
     elem.data('row1', '')
@@ -339,6 +304,7 @@ function setBooked(id, elem){
     $(id+' ellipse[class^=\'st1\']').attr("class","").addClass("st1-booked");
     $(id+' rect[class^=\'st2\']').attr("class","").addClass("st2-booked");
     $(id+' path[class^=\'st3\']').attr("class","").addClass("st3-booked");
+    $(id+' rect[id^=\'rect_\']').removeAttr("disabled","");
     elem.data('status', 'B');
 }
 
@@ -346,6 +312,7 @@ function setCheckIn(id, elem){
     $(id+' ellipse[class^=\'st1\']').attr("class","").addClass("st1-checkin");
     $(id+' rect[class^=\'st2\']').attr("class","").addClass("st2-checkin");
     $(id+' path[class^=\'st3\']').attr("class","").addClass("st3-checkin");
+    $(id+' rect[id^=\'rect_\']').removeAttr("disabled","");
     elem.data('status', 'CI');
 }
 
@@ -353,11 +320,6 @@ function setCheckOut(id, elem){
     $(id+' ellipse[class^=\'st1\']').attr("class","").addClass("st1-checkout");
     $(id+' rect[class^=\'st2\']').attr("class","").addClass("st2-checkout");
     $(id+' path[class^=\'st3\']').attr("class","").addClass("st3-checkout");
+    $(id+' rect[id^=\'rect_\']').removeAttr("disabled","");
     elem.data('status', 'CO');
-}
-
-function zeropadInt(num, padlen) {
-    let pad_char = '0';
-    let pad = new Array(1 + padlen).join(pad_char);
-    return (pad + num).slice(-pad.length);
 }

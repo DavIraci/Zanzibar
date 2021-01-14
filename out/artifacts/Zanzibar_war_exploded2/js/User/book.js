@@ -54,7 +54,6 @@ $(document).ready(function () {
                     updateTotal();
                 } else {
                     // the seat is free, the user wants to select it
-                    //check('S', ev.target.id);
                     setSelected(id, elem);
                     posSelected.push(id);
                     var text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
@@ -62,7 +61,6 @@ $(document).ready(function () {
                     $('#checkBook').removeClass("disabled").addClass("active");
                     $('.part_'+id.split("#")[1]).val(elem.data('row3'));
                     updateTotal();
-                    //updateTotal(elem.data('row3'), "+");
                 }
             });
 
@@ -260,14 +258,6 @@ function setLabel(price){
 function setExtraChairs(price){
     $('#extra-chair').html("Extra sdraio ("+(parseFloat(price)).toFixed(2)+"€ cad.):");
     $('#extra-chair').val((parseFloat(price)).toFixed(2));
-}
-
-function checkInput(val) {
-    if (val != null && val.trim() != "") {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 function setSelected(id, elem){

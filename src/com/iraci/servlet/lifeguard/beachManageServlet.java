@@ -132,10 +132,9 @@ public class beachManageServlet extends HttpServlet {
         // Prende i dati selezionati dal bagnino
         int bookID = Integer.parseInt(request.getParameter("BookID"));
 
-        if(!DataBase.insertCheckOut(bookID)){
+        if(!DataBase.insertCheckOut(bookID))
             return "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Non è stato possibile registrare il Check-out, riprovare!\"}";
-        }else {
+        else
             return "{\"RESPONSE\" : \"Confirm\", \"MESSAGE\" : \"Il Check-out è stato correttamente registrato\"}";
-        }
     }
 }

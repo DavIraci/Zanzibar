@@ -13,7 +13,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <title>Zanzibar Lido - Gestisci Prenotazioni</title>
+        <title>Zanzibar Lido - Cucina</title>
 
         <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
 
@@ -30,19 +30,18 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/Utils.js"></script>
-        <script src="/Zanzibar/js/User/manageBook.js"></script>
+        <script src="/Zanzibar/js/Cook/kitchen.js"></script>
 
         <style>
-            .canceled{
-                text-decoration: line-through;
-                background-color: rgb(255, 77, 77) !important;
-            }
-            .finished{
-                background-color: rgb(77, 255, 77) !important;
-            }
             .actions:hover{
                 color: grey;
                 cursor: pointer;
+            }
+            td div{
+                max-width: 9rem;
+            }
+            td div input{
+                line-height: 0.5rem !important;
             }
             .table td.fit,
             .table th.fit {
@@ -60,36 +59,51 @@
             <div class="marketing">
                 <section class="text-center">
                     <div class="row" style="justify-content: center">
-                        <h1>Gestisci Prenotazioni</h1>
+                        <h1>Ordini</h1>
                     </div>
 
-                    <div class="row" style="justify-content: center" id="message-alert"></div>
-                        <table class="table table-striped table-responsive">
-                            <thead class="thead-dark">
+                    <div class="row" style="justify-content: center" id="kitchen-message-alert"></div>
+                    <table class="table table-striped table-responsive">
+                        <thead class="thead-dark">
                             <tr>
                                 <th class="fit" scope="col">ID</th>
-                                <th class="fit" scope="col">Giorno</th>
-                                <th class="fit" scope="col">Fascia Oraria</th>
-                                <th class="fit" scope="col">Postazioni</th>
-                                <th class="fit" scope="col">Sdraio Extra</th>
-                                <th class="fit" scope="col">Cancellata</th>
-                                <th class="fit" scope="col">Check-in</th>
-                                <th class="fit" scope="col">Check-out</th>
-                                <th class="fit" scope="col">Costo</th>
-                                <th class="fit" scope="col">Azioni</th>
+                                <th class="fit" scope="col">Cliente</th>
+                                <th class="fit" scope="col">Data</th>
+                                <th class="fit" scope="col">N Prodotti</th>
+                                <th class="fit" scope="col">Stato</th>
+                                <th class="fit" scope="col"></th>
+                                <th class="fit" scope="col"></th>
                             </tr>
-                            </thead>
-                            <tbody id="booksRow">
-                            </tbody>
-                        </table>
+                        </thead>
+                        <tbody id="kitchenOrdersRow">
+                        </tbody>
+                    </table>
                 </section>
             </div>
         </div>
     </main>
 
-        <%@ include file="/WEB-INF/footer.jsp"%>
+    <!-- Kitchen Response Message Modal -->
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="kitchenResponseMessageModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal" role="document">
+            <div class="modal-content" style="border: #518CC8 5px solid;">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="kitchenResponseMessageLabel"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="kitchenResponseMessageText">
+                </div>
+                <div class="modal-footer d-none" id="changeStatusConfirm">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="changeStatusBtn" >Conferma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Kitchen Response Message Modal -->
 
-        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
-        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
+    <%@ include file="/WEB-INF/footer.jsp"%>
     </body>
 </html>

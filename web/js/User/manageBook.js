@@ -130,9 +130,3 @@ function resetManageBook(){
     $('#booksRow').html("");
     loadBook();
 }
-
-function zeropadInt(num, padlen) {
-    var pad_char = '0';
-    var pad = new Array(1 + padlen).join(pad_char);
-    return (pad + num).slice(-pad.length);
-}

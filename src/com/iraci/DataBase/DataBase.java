@@ -537,7 +537,7 @@ public class DataBase {
             if (rs.next()) {
                 order_id = rs.getInt(1);
                 rs.close();
-                for (Map.Entry<Product, Order> entry : cart.getProducts().entrySet()) {
+                for (Map.Entry<Product, Detail> entry : cart.getProducts().entrySet()) {
                     String query2 = "INSERT INTO iraci.order_has_product (order_has_product.Order_id_Order, order_has_product.Product_barcode, order_has_product.quantity, order_has_product.price, order_has_product.details) VALUES (?,?,?,?,?)";
                     try(PreparedStatement statement2 = connection.prepareStatement(query2)) {
                         statement2.setInt(1, order_id );
@@ -681,6 +681,81 @@ public class DataBase {
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
             statement.setInt(2, bookID);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
+    }
+
+    /**
+     * Metodo per la selezione di tutti gli ordini di ristorazione della data selezionata
+     * @param date data
+     * @return Lista degli ordini
+     * @throws SQLException SQLException
+     */
+    public static List<Order> getOrders(LocalDate date) throws SQLException {
+        List<Order> orders = new ArrayList();
+        int last_orderID=-1;
+        Order order = null;
+        String query= "SELECT * FROM iraci.order JOIN iraci.order_has_product ON iraci.order.id_Order=iraci.order_has_product.Order_id_Order WHERE DATE(iraci.order.date) = ? AND iraci.order.status != 'D' ORDER BY iraci.order.id_Order ASC";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(date));
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) { // Finchè ci sono nuovi record
+                if(rs.getInt("id_Order")==last_orderID){ // Se il record appartiene all'ordine precedente e lo aggiunge
+                    assert order != null;
+                    order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
+                }else{
+                    if (last_orderID!=-1)
+                        orders.add(order);
+                    order=new Order(rs.getInt("id_Order"), LocalDate.parse(rs.getDate("date").toString()), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
+                    order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
+                    last_orderID=order.getOrderID();
+                }
+            }
+            if (last_orderID!=-1)
+                orders.add(order);
+            rs.close();
+            return orders;
+        }
+    }
+
+    /**
+     * Metodo per la selezione di un ordine di ristorazione
+     * @param orderID orderID
+     * @return Ordine o null
+     * @throws SQLException SQLException
+     */
+    public static Order getOrder(int orderID) throws SQLException {
+        Order order = null;
+        int last_orderID=-1;
+        String query= "SELECT * FROM iraci.order JOIN iraci.order_has_product ON iraci.order.id_Order=iraci.order_has_product.Order_id_Order WHERE iraci.order.id_Order = ? ORDER BY iraci.order.id_Order ASC";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, orderID);
+            ResultSet rs = statement.executeQuery();
+
+            while(rs.next()) { // Finchè ci sono nuovi record
+                if (last_orderID==-1)
+                    order=new Order(rs.getInt("id_Order"), LocalDate.parse(rs.getDate("date").toString()), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
+                order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
+                last_orderID=order.getOrderID();
+            }
+            return order;
+        }
+    }
+
+    /**
+     * Effettua la modifica dello stato di un ordine del servizio di ristorazione
+     * @param orderID orderID
+     * @param newStatus nuovo stato da impostare
+     * @return true o false
+     * @throws SQLException
+     */
+    public static boolean updateOrderStatus(int orderID, String newStatus) throws SQLException {
+        String query = "UPDATE iraci.order SET iraci.order.status= ? WHERE iraci.order.id_Order = ?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, newStatus);
+            statement.setInt(2, orderID);
             int result = statement.executeUpdate();
             return  result > 0;
         }

@@ -1,53 +1,194 @@
 package com.iraci.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Questa classe è la rappresentazione dell'ordine del servizio ristorazione
  * @author Davide Iraci
  */
 public class Order {
-    private int quantity;
-    private String note;
+    private int orderID;
+    private LocalDate date;
+    private char status;
+    private boolean payed;
+    private int userID;
+    private String deliveryMethod;
+    private final Map<Product, Detail> products;
 
     /**
-     * Costruttore della classe senza parametri.
+     * Costruttore ordine senza prodotti
+     * @param date data ordine
+     * @param status stato
+     * @param payed pagato
+     * @param userID user ID
+     * @param deliveryMethod metodo di consegna
      */
-    public Order() {
-    }
-
-    public Order(int quantity, String note ) {
-        this.quantity = quantity;
-        this.setNote(note);
-    }
-
-    /**
-     * Metodo get per accedere dall'esterno ai dati che caratterizzano un'Order.
-     */
-    public String getNote() {
-        return note;
-    }
-
-    /**
-     * Metodo get per accedere dall'esterno ai dati che caratterizzano un'Order.
-     */
-    public int getQuantity() {
-        return quantity;
+    public Order(int orderID, LocalDate date, char status, boolean payed, int userID, String deliveryMethod) {
+        this.orderID = orderID;
+        this.date = date;
+        this.status = status;
+        this.payed = payed;
+        this.userID = userID;
+        this.deliveryMethod = deliveryMethod;
+        this.products = new LinkedHashMap<>();
     }
 
     /**
-     * Metodo set per modificare dall'esterno i dati che caratterizzano un'Order.
+     * Costruttore ordine
+     * @param date data ordine
+     * @param status stato
+     * @param payed pagato
+     * @param userID user ID
+     * @param deliveryMethod metodo di consegna
+     * @param products Mappa prodotti
      */
-    public void setNote(String note) {
-        if(note!=null && note.length()>0) {
-            this.note=note;
-        }else {
-            this.note=null;
+    public Order(int orderID, LocalDate date, char status, boolean payed, int userID, String deliveryMethod, Map<Product, Detail> products) {
+        this.orderID = orderID;
+        this.date = date;
+        this.status = status;
+        this.payed = payed;
+        this.userID = userID;
+        this.deliveryMethod = deliveryMethod;
+        this.products = products;
+    }
+
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+     */
+    public int getOrderID() {
+        return orderID;
+    }
+
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+     */
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public char getStatus() {
+        return status;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public void setStatus(char status) {
+        this.status = status;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public boolean isPayed() {
+        return payed;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public int getUserID() {
+        return userID;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public void setDeliveryMethod(String deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    /**
+    * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+    */
+    public Map<Product, Detail> getProducts() {
+        return products;
+    }
+
+    /**
+     * Metodo per la manipolazione degli attributi dell'oggetto Ordine
+     */
+    public void addProduct(Product product, int quantity, String note){
+        products.put(product, new Detail(quantity,note));
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID=" + orderID +
+                ", date=" + date +
+                ", status=" + status +
+                ", payed=" + payed +
+                ", userID=" + userID +
+                ", deliveryMethod='" + deliveryMethod + '\'' +
+                ", products=" + products +
+                '}';
+    }
+
+    /**
+     * Ritorna la stringa contenente l'array dei prodotti, formattati per essere inviati tramite JSON
+     * @return stringa JSON
+     */
+    public String productToAjaxString() {
+        StringBuilder order = new StringBuilder("[");
+        double tot = 0, quantity=0;
+        for (Product p : products.keySet()) {
+            order.append("{\"barcode\":").append(p.getBarcode()).append(",\"name\":\"").append(p.getName()).append("\",\"category\":\"").append(p.getCategory()).append("\",\"quantity\":").append(products.get(p).getQuantity()).append(", \"price\": ").append(p.getPrice()).append(",\"note\":\"").append(products.get(p).getNote()).append("\"}, ");
         }
+        return order.substring(0, order.length() - 2)+"] ";
     }
 
     /**
-     * Metodo set per modificare dall'esterno i dati che caratterizzano un'Order.
+     * Ritorna la stringa contenente l'array dei prodotti, formattati per essere inviati tramite JSON
+     * @return stringa JSON
+     * @throws JsonProcessingException JsonProcessingException
      */
-    public void setQuantity(int quantity) {
-        this.quantity=quantity;
+    public String toAjax() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return "{\"orderID\": " +this.orderID+ ", \"date\": " + mapper.writeValueAsString(this.date) + ", \"status\": \"" + this.status + "\", \"payed\": \"" + this.payed + "\", \"userID\": " + this.userID + ", \"deliveryMethod\": \"" + this.deliveryMethod + "\", \"products\": "+ this.productToAjaxString() + "}";
     }
 }

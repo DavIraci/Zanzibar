@@ -29,6 +29,7 @@
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
+        <script src="/Zanzibar/js/Utils.js"></script>
         <script src="/Zanzibar/js/snap.svg-min.js"></script>
         <script src="/Zanzibar/js/Lifeguard/beachManage.js"></script>
 
@@ -38,7 +39,7 @@
                 width: 100%;
                 height: 70%;
             }
-            rect:hover{
+            rect:hover:not([disabled]){
                 fill: #f6da9b;
                 opacity: 35%;
                 cursor: pointer;
@@ -138,12 +139,12 @@
                     <div class="row" style="text-align: center">
                         <div class="col-sm-4">
                             <label for="date">Data:</label>
-                            <input class="form-control" type="date" id="date" name="date" pattern="\d{2}/\d{2}/\d{4}" onchange="reset();load()">
+                            <input class="form-control" type="date" id="date" name="date" pattern="\d{2}/\d{2}/\d{4}" onchange="load()">
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="period">Fascia oraria:</label>
-                                <select class="form-control" id="period" name="period" onchange="reset();load()">
+                                <select class="form-control" id="period" name="period" onchange="load()">
                                     <option id="op_full" value="Full" selected="selected">Tutto il giorno </option>
                                     <option id="op_am" value="AM">Mattina (8:00-13:00)</option>
                                     <option id="op_pm" value="PM">Pomeriggio (14:00-19:00)</option>
