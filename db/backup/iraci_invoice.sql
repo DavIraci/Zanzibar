@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `invoice`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invoice` (
   `id_invoice` int NOT NULL AUTO_INCREMENT,
-  `id_book` int NOT NULL,
+  `id_book` int DEFAULT NULL,
   `name` varchar(45) NOT NULL,
   `surname` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
@@ -34,12 +34,13 @@ CREATE TABLE `invoice` (
   `province` varchar(4) NOT NULL,
   `city` varchar(45) NOT NULL,
   `CAP` varchar(5) NOT NULL,
-  `method` varchar(10) NOT NULL,
-  `cardno` varchar(4) NOT NULL,
+  `method` tinytext NOT NULL,
+  `cardno` mediumtext,
+  `id_order` int DEFAULT NULL,
   PRIMARY KEY (`id_invoice`),
   KEY `id_book_idx` (`id_book`),
   CONSTRAINT `id_book` FOREIGN KEY (`id_book`) REFERENCES `book` (`id_Book`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +49,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
-INSERT INTO `invoice` VALUES (1,6,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani, 27','sicilia','pa','Palermo','90143','Paypal',''),(2,7,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani, 27','Sicilia','PA','Palermo','90143','Paypal',''),(3,8,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani27','sicilia','PA','Palermo','90143','Paypal',''),(4,9,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani27','sicilia','pa','Palermo','90143','Paypal',''),(5,10,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal',''),(6,11,'Roberto','Manzo','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal',''),(7,12,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal',''),(8,13,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','');
+INSERT INTO `invoice` VALUES (1,6,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani, 27','sicilia','pa','Palermo','90143','Paypal','',NULL),(2,7,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani, 27','Sicilia','PA','Palermo','90143','Paypal','',NULL),(3,8,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani27','sicilia','PA','Palermo','90143','Paypal','',NULL),(4,9,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani27','sicilia','pa','Palermo','90143','Paypal','',NULL),(5,10,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',NULL),(6,11,'Roberto','Manzo','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',NULL),(7,12,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',NULL),(8,13,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',NULL),(9,NULL,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',2),(10,NULL,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','CreditCard','5228180097670546',3),(11,NULL,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','CreditCard','5228180097670546',1),(12,NULL,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','CreditCard','Sicilia',4),(13,15,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','CreditCard','Sicilia',NULL),(14,NULL,'Davide','Iraci','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Sicilia','PA','Palermo','90143','Paypal','',10),(15,16,'Roberto','Manzo','iraci.davide@gmail.com','RCIDVD97E15G273R','Via Saverio Scrofani 27','Siciali','PA','Palermo','90143','Paypal','',NULL);
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -61,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-06 16:29:03
+-- Dump completed on 2021-01-15 10:08:38

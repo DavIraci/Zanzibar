@@ -40,7 +40,7 @@ CREATE TABLE `book_has_umbrellastation` (
 
 LOCK TABLES `book_has_umbrellastation` WRITE;
 /*!40000 ALTER TABLE `book_has_umbrellastation` DISABLE KEYS */;
-INSERT INTO `book_has_umbrellastation` VALUES (1,27,0),(2,12,1),(2,32,0),(2,45,2),(4,15,1),(4,16,0),(5,17,2),(5,18,1),(6,25,2),(6,26,1),(7,16,1),(7,17,0),(8,15,2),(8,16,0),(8,17,0),(9,15,2),(9,26,2),(9,35,0),(10,16,2),(10,25,2),(10,36,0),(11,13,1),(11,14,0),(11,23,0),(12,17,1),(12,27,0),(12,37,0),(12,46,0),(12,56,0),(13,33,1),(13,43,0);
+INSERT INTO `book_has_umbrellastation` VALUES (1,27,0),(2,12,1),(2,32,0),(2,45,2),(4,15,1),(4,16,0),(5,17,2),(5,18,1),(6,25,2),(6,26,1),(7,16,1),(7,17,0),(8,15,2),(8,16,0),(8,17,0),(9,15,2),(9,26,2),(9,35,0),(10,16,2),(10,25,2),(10,36,0),(11,13,1),(11,14,0),(11,23,0),(12,17,1),(12,27,0),(12,37,0),(12,46,0),(12,56,0),(13,33,1),(13,43,0),(14,35,2),(14,36,1),(15,24,0),(16,34,0),(16,44,0);
 /*!40000 ALTER TABLE `book_has_umbrellastation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-06 16:29:03
+-- Dump completed on 2021-01-15 10:08:37

@@ -42,6 +42,7 @@ CREATE TABLE `order_has_product` (
 
 LOCK TABLES `order_has_product` WRITE;
 /*!40000 ALTER TABLE `order_has_product` DISABLE KEYS */;
+INSERT INTO `order_has_product` VALUES (1,'79',2,5.00,NULL),(2,'81',2,5.00,NULL),(3,'124',1,2.50,'Bello Freddo!'),(3,'46',2,15.00,NULL),(3,'79',2,5.00,NULL),(4,'39',1,10.00,NULL),(4,'42',1,14.00,'Non bruciate!'),(4,'46',1,15.00,NULL),(4,'55',1,4.00,NULL),(5,'109',1,7.00,NULL),(5,'81',1,5.00,NULL),(6,'115',1,1.00,NULL),(6,'39',1,10.00,'Buonee'),(7,'109',1,7.00,'Per Giovanni'),(7,'79',2,5.00,NULL),(8,'79',1,5.00,NULL),(9,'79',1,5.00,NULL),(10,'79',1,5.00,'MMMM');
 /*!40000 ALTER TABLE `order_has_product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-06 16:29:02
+-- Dump completed on 2021-01-15 10:08:37

@@ -34,7 +34,7 @@ CREATE TABLE `user` (
   `telephone` varchar(10) NOT NULL,
   PRIMARY KEY (`id_User`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Davide','Iraci','1997-05-15','iraci.davide@gmail.com','Admin','606e899c8cfd8285a9fe73f55a36d0f2d854e160fe9129cbb8ec897c35edcef9','3297788345','0916261873'),(2,'Marco','La Martina','1997-05-28','marcolamartina@hotmail.it','Bagnino','f3c6a505e2f2555fa36b7a78b1777eca83896eb2b26bf89c0927f80425bb5801','3272294014',''),(3,'Roberto','Manzo','1997-02-21','roberto.manzo01@community.unipa.it','User','5234fd45e6d67fe0a151cc25d8304623603a82d5f2b9f70daf46d7478d5013fc','3392063066',''),(4,'Andrea','Montemaggiore','1997-08-26','andrea.montemaggiore01@community.unipa.it','Cucina','3bb84cf266615e9f2db89ed1ef89ca764ec2afa51a9a7804500c2b7e504bcfe8','3279863539',''),(5,'Giovanni','Raccuglia','1996-12-24','giovy9674@gmail.com','Banco','03c809b539aa81f1c45b4ce1ddd0c355cfdc60a9f6bfb6e1eef17c3cb1c06b47','3273098779','');
+INSERT INTO `user` VALUES (1,'Davide','Iraci','1997-05-15','iraci.davide@gmail.com','Admin','606e899c8cfd8285a9fe73f55a36d0f2d854e160fe9129cbb8ec897c35edcef9','3297788345','0916261873'),(2,'Marco','La Martina','1997-05-28','marcolamartina@hotmail.it','Lifeguard','f3c6a505e2f2555fa36b7a78b1777eca83896eb2b26bf89c0927f80425bb5801','3272294014',''),(3,'Roberto','Manzo','1997-02-21','roberto.manzo01@community.unipa.it','User','5234fd45e6d67fe0a151cc25d8304623603a82d5f2b9f70daf46d7478d5013fc','3392063066',''),(4,'Andrea','Montemaggiore','1997-08-26','andrea.montemaggiore01@community.unipa.it','Cook','3bb84cf266615e9f2db89ed1ef89ca764ec2afa51a9a7804500c2b7e504bcfe8','3279863539',''),(5,'Giovanni','Raccuglia','1996-12-24','giovy9674@gmail.com','CashDesk','03c809b539aa81f1c45b4ce1ddd0c355cfdc60a9f6bfb6e1eef17c3cb1c06b47','3273098779',''),(6,'Simon Pietro','Romeo','1998-02-28','simonpietro.romeo@community.unipa.it','Cook','86e94ba57d6eeecd45ff7e6bd0bba7762fbc3c488131052483933d75312b2c98','3278360803','091111111');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-06 16:29:03
+-- Dump completed on 2021-01-15 10:08:37
