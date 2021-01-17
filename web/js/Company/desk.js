@@ -6,18 +6,26 @@ var orders;
 var users;
 
 function load(){
+    $('#desk-message-alert').html("");
     $.ajax({
-        url: './kitchen',
+        url: './desk',
         dataType: 'json',
         type: 'post',
         data: {
             'Type': 'GetOrders'
         },
         success: function (data) {
-            if(data.RESPONSE == 'Confirm'){ //Dati ok
+            if(data.RESPONSE === 'Confirm'){ //Dati ok
                 orders=data.ORDERS;
                 users=data.USERS;
-                setOrders();
+                if (orders.length==0){
+                    //Messaggio nessun ordine
+                    let text = '<div class="row" style="justify-content: center">' +
+                        '<div class="alert alert-info alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>Al momento non sono stati effettuati ordini</div></div>';
+                    $('#desk-message-alert').append(text);
+                }else
+                    setOrders();
             }
         },
         error: function (errorThrown) {
@@ -30,27 +38,37 @@ function load(){
 }
 
 function setOrders(){
-    $('#kitchenOrdersRow').html("");
+    $('#deskOrdersRow').html("");
 
     $.each(orders, function(key, val){
-        var status, buttons='';
+        var status;
+        var buttons, buttonvalue='';
         switch (val.status){
             case "A": {
                 status = "Ricevuto";
-                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="In lavorazione" onclick="changeStatusConfirm('+val.orderID+')">';
                 break;
             }
             case "W": {
                 status = "In lavorazione";
-                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="Pronto" onclick="changeStatusConfirm('+val.orderID+')">';
                 break;
             }
             case "T": {
                 status = "In consegna";
+                if (val.payed==="true")
+                    buttonvalue="Consegnato";
+                else
+                    buttonvalue="Pagato e consegnato";
                 break;
             }
             case "R": {
                 status = "Pronto";
+                if (val.deliveryMethod==="Bar"){
+                    if (val.payed==="true")
+                        buttonvalue="Ritirato";
+                    else
+                        buttonvalue="Pagato e ritirato";
+               }else
+                    buttonvalue="In consegna";
                 break;
             }
             case "D": {
@@ -62,6 +80,12 @@ function setOrders(){
                 break;
             }
         }
+
+        if(buttonvalue!=='') {
+            buttons = '<input type="button" class="btn btn-info active" id="changeStatusBtn" value="' + buttonvalue + '" onclick="changeStatusConfirm(' + val.orderID + ')">';
+            val.nextStatus=buttonvalue;
+        }else
+            buttons='';
 
         let quantity=0;
         $.each(val.products, function(key2, val2){
@@ -75,10 +99,11 @@ function setOrders(){
                 '<td>'+zeropadInt(val.date.hour,2) + ':' + zeropadInt(val.date.minute, 2) +'</td>'+
                 '<td class="text-center">'+quantity+'</td>'+
                 '<td>'+status+'</td>'+ // LISTA STATI
+                '<td>'+(val.payed==="true"?"Si":"No")+'</td>'+
                 '<td class="text-center">'+buttons+'</td>'+ // BOTTONE CAMBIO STATO
                 '<td class="text-center"><input type="button" class="btn btn-info active" id="orderDetailBtn" value="Dettagli" onclick="orderDetails('+val.orderID+')"></td>'+ // BOTTONE DETTAGLI
             '</tr>';
-        $('#kitchenOrdersRow').append(text);
+        $('#deskOrdersRow').append(text);
     });
 }
 
@@ -105,21 +130,21 @@ function userByID(id){
 }
 
 function changeStatusConfirm(id){
-    $('#kitchenResponseMessageLabel').html("Conferma cambio stato");
+    $('#deskResponseMessageLabel').html("Conferma cambio stato");
     let order=orderByID(id);
-    $('#kitchenResponseMessageText').html("Confermi di voler cambiare lo stato dell'ordine in <b>"+order.status==="A"?"In lavorazione":"Pronto"+"</b>?");
-    $('#changeStatusConfirm').removeClass('d-none');
+    text = 'Confermi di voler cambiare lo stato dell\'ordine in <br><b>'+order.nextStatus+'</b>?';
+    $('#deskResponseMessageText').html(text);
     text='<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
          +'<button type="button" class="btn btn-primary" id="changeStatusBtn" onclick="changeStatus('+id+')">Conferma</button>';
 
-    $('#changeStatusConfirm').html(text);
-    $('#kitchenResponseMessageModal').modal('show');
+    $('#changeStatusConfirm').removeClass('d-none').html(text);
+    $('#deskResponseMessageModal').modal('show');
 }
 
 function changeStatus(id){
     $('#changeStatusConfirm').addClass('d-none');
     $.ajax({
-        url: './kitchen',
+        url: './desk',
         dataType: 'json',
         type: 'post',
         data: {
@@ -128,13 +153,13 @@ function changeStatus(id){
         },
         success: function (data) {
             if(data.RESPONSE === 'Confirm') //Dati ok
-                $('#kitchenResponseMessageLabel').html("Conferma");
+                $('#deskResponseMessageLabel').html("Conferma");
             else
-                $('#kitchenResponseMessageLabel').html("Errore");
-            $('#kitchenResponseMessageText').html(data.MESSAGE);
+                $('#deskResponseMessageLabel').html("Errore");
+            $('#deskResponseMessageText').html(data.MESSAGE);
             $('#changeStatusConfirm').addClass('d-none');
-            $('#kitchenResponseMessageModal').modal('show');
-            setTimeout(function(){ $('#kitchenResponseMessageModal').modal('hide'); }, 1500);
+            $('#deskResponseMessageModal').modal('show');
+            setTimeout(function(){ $('#deskResponseMessageModal').modal('hide'); }, 1500);
             load();
         },
         error: function (errorThrown) {
@@ -149,7 +174,7 @@ function orderDetails(id){
     $('#orderProductsList').html("");
     $.each(order.products, function(key, val){
         let text='<li class="list-group-item d-flex justify-content-between lh-condensed"><div class="mr-3">' +
-            '<h6 class="my-0">'+val.name+'</h6><small class="text-muted">'+(val.note=="null"?"":val.note) +' </small>' +
+            '<h6 class="my-0">'+val.name+'</h6><small class="text-muted">'+(val.note==="null"?"":val.note) +' </small>' +
             '</div><span class="text-muted">x'+parseInt(val.quantity)+'</span></li>';
         $('#orderProductsList').append(text);
         quantity+=parseInt(val.quantity);

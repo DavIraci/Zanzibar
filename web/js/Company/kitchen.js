@@ -6,6 +6,7 @@ var orders;
 var users;
 
 function load(){
+    $('#kitchen-message-alert').html("");
     $.ajax({
         url: './kitchen',
         dataType: 'json',
@@ -14,10 +15,17 @@ function load(){
             'Type': 'GetOrders'
         },
         success: function (data) {
-            if(data.RESPONSE == 'Confirm'){ //Dati ok
+            if(data.RESPONSE === 'Confirm'){ //Dati ok
                 orders=data.ORDERS;
                 users=data.USERS;
-                setOrders();
+                if (orders.length==0){
+                    //Messaggio nessun ordine
+                    let text = '<div class="row" style="justify-content: center">' +
+                        '<div class="alert alert-info alert-dismissible" role="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert">&times;</button>Al momento non sono stati effettuati ordini</div></div>';
+                    $('#kitchen-message-alert').append(text);
+                }else
+                    setOrders();
             }
         },
         error: function (errorThrown) {
@@ -33,16 +41,21 @@ function setOrders(){
     $('#kitchenOrdersRow').html("");
 
     $.each(orders, function(key, val){
-        var status, buttons='';
+        var status;
+        var buttons, buttonvalue='';
         switch (val.status){
             case "A": {
                 status = "Ricevuto";
-                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="In lavorazione" onclick="changeStatusConfirm('+val.orderID+')">';
+                buttonvalue="In lavorazione";
+                val.nextStatus=buttonvalue;
                 break;
             }
             case "W": {
                 status = "In lavorazione";
-                buttons='<input type="button" class="btn btn-info active" id="changeStatusBtn" value="Pronto" onclick="changeStatusConfirm('+val.orderID+')">';
+                buttonvalue="Pronto";
+                val.nextStatus=buttonvalue;
+                if (val.deliveryMethod!=="Bar")
+                    val.nextStatus="In consegna";
                 break;
             }
             case "T": {
@@ -62,6 +75,11 @@ function setOrders(){
                 break;
             }
         }
+
+        if(buttonvalue!=='')
+            buttons = '<input type="button" class="btn btn-info active" id="changeStatusBtn" value="' + buttonvalue + '" onclick="changeStatusConfirm(' + val.orderID + ')">';
+        else
+            buttons='';
 
         let quantity=0;
         $.each(val.products, function(key2, val2){
@@ -107,12 +125,12 @@ function userByID(id){
 function changeStatusConfirm(id){
     $('#kitchenResponseMessageLabel').html("Conferma cambio stato");
     let order=orderByID(id);
-    $('#kitchenResponseMessageText').html("Confermi di voler cambiare lo stato dell'ordine in <b>"+order.status==="A"?"In lavorazione":"Pronto"+"</b>?");
-    $('#changeStatusConfirm').removeClass('d-none');
+    text = 'Confermi di voler cambiare lo stato dell\'ordine in <br><b>'+order.nextStatus+'</b>?';
+    $('#kitchenResponseMessageText').html(text);
     text='<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>'
          +'<button type="button" class="btn btn-primary" id="changeStatusBtn" onclick="changeStatus('+id+')">Conferma</button>';
 
-    $('#changeStatusConfirm').html(text);
+    $('#changeStatusConfirm').removeClass('d-none').html(text);
     $('#kitchenResponseMessageModal').modal('show');
 }
 
@@ -149,7 +167,7 @@ function orderDetails(id){
     $('#orderProductsList').html("");
     $.each(order.products, function(key, val){
         let text='<li class="list-group-item d-flex justify-content-between lh-condensed"><div class="mr-3">' +
-            '<h6 class="my-0">'+val.name+'</h6><small class="text-muted">'+(val.note=="null"?"":val.note) +' </small>' +
+            '<h6 class="my-0">'+val.name+'</h6><small class="text-muted">'+(val.note==="null"?"":val.note) +' </small>' +
             '</div><span class="text-muted">x'+parseInt(val.quantity)+'</span></li>';
         $('#orderProductsList').append(text);
         quantity+=parseInt(val.quantity);
