@@ -10,7 +10,6 @@ $(document).ready(function () {
             el.parent().data('status', 'F');
 
             el.click(function(ev){
-                // Non deve fare niente
                 // Stati possibili: Prenotato - Checkin - Checkout - Free
             });
 
@@ -66,7 +65,7 @@ function load(){
                     book=data.BOOKED;
                     user=data.USERS;
                     setPostazioni(data.BOOKED);
-                    setTable(data.BOOKED, data.USERS);
+                    setTable(data.BOOKED);
                 }
             },
             error: function (errorThrown) {
@@ -82,7 +81,7 @@ function load(){
     }
 }
 
-function setTable(BOOK, USERS){
+function setTable(BOOK){
     $('#booksRow').html("");
 
     $.each(BOOK, function(key, val){

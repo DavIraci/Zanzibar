@@ -13,9 +13,9 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <title>Zanzibar Lido - Cucina</title>
+        <title>Zanzibar Lido - Cassa</title>
 
-        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
+        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico"/>
 
         <!-- CSS, includes Bootstrap (off-line)-->
         <link href="/Zanzibar/css/styles.css" rel="stylesheet">
@@ -30,7 +30,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/Utils.js"></script>
-        <script src="/Zanzibar/js/Cook/kitchen.js"></script>
+        <script src="/Zanzibar/js/Company/desk.js"></script>
 
         <style>
             .actions:hover{
@@ -62,7 +62,7 @@
                         <h1>Ordini</h1>
                     </div>
 
-                    <div class="row" style="justify-content: center" id="kitchen-message-alert"></div>
+                    <div class="row" style="justify-content: center" id="desk-message-alert"></div>
                     <table class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
@@ -71,11 +71,12 @@
                                 <th class="fit" scope="col">Data</th>
                                 <th class="fit" scope="col">N Prodotti</th>
                                 <th class="fit" scope="col">Stato</th>
+                                <th class="fit" scope="col">Pagato</th>
                                 <th class="fit" scope="col"></th>
                                 <th class="fit" scope="col"></th>
                             </tr>
                         </thead>
-                        <tbody id="kitchenOrdersRow">
+                        <tbody id="deskOrdersRow">
                         </tbody>
                     </table>
                 </section>
@@ -84,16 +85,16 @@
     </main>
 
     <!-- Kitchen Response Message Modal -->
-    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="kitchenResponseMessageModal" aria-hidden="true">
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="deskResponseMessageModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal" role="document">
             <div class="modal-content" style="border: #518CC8 5px solid;">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="kitchenResponseMessageLabel"></h4>
+                    <h4 class="modal-title" id="deskResponseMessageLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="kitchenResponseMessageText">
+                <div class="modal-body" id="deskResponseMessageText">
                 </div>
                 <div class="modal-footer d-none" id="changeStatusConfirm">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -121,27 +122,6 @@
                             <span class="badge badge-secondary badge-pill" id="orderProductsNumber">5(numero prodotti)</span>
                         </h4>
                         <ul class="list-group mb-3 sticky-top" id="orderProductsList">
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div class="mr-3">
-                                    <h6 class="my-0">Nome prodotto</h6>
-                                    <small class="text-muted">Note </small>
-                                </div>
-                                <span class="text-muted">x5(quantità)</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div class="mr-3">
-                                    <h6 class="my-0">Nome prodotto</h6>
-                                    <small class="text-muted">Note </small>
-                                </div>
-                                <span class="text-muted">x5</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                <div class="mr-3">
-                                    <h6 class="my-0">Nome prodotto</h6>
-                                    <small class="text-muted">Note </small>
-                                </div>
-                                <span class="text-muted">x5</span>
-                            </li>
                         </ul>
                     </div>
                 </div>

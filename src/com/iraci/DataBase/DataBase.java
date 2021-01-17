@@ -373,6 +373,7 @@ public class DataBase {
                         books.add(book);
                     book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                 }
+                assert book != null;
                 book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
                 last_bookid=book.getBook_id();
             }
@@ -605,7 +606,7 @@ public class DataBase {
      * @param date data
      * @param period slot temporale
      * @return lista di prenotazioni
-     * @throws SQLException
+     * @throws SQLException SQLException
      */
     public static List<Book> takeBooks(LocalDate date, String period) throws SQLException {
         List<Book> books = new ArrayList<>();
@@ -629,6 +630,7 @@ public class DataBase {
                         books.add(book);
                     book=new Book(rs.getString("bookingPeriod"), rs.getInt("User_id_User"), rs.getInt("id_Book"), rs.getDouble("cost"), rs.getInt("canceled") != 0, rs.getTimestamp("checkIn")==null?null:rs.getTimestamp("checkIn").toLocalDateTime(), rs.getTimestamp("checkOut")==null?null:rs.getTimestamp("checkOut").toLocalDateTime(), rs.getInt("extraChair"), LocalDate.parse(rs.getDate("date").toString()), LocalDate.parse(rs.getDate("bookingDate").toString()));
                 }
+                assert book != null;
                 book.addPostation(new Postation(rs.getInt("UmbrellaStation_id_UmbrellaStation")));
                 last_bookid=book.getBook_id();
             }
@@ -644,7 +646,7 @@ public class DataBase {
      * @param bookID bookID
      * @param guests ospiti
      * @return true o false
-     * @throws SQLException
+     * @throws SQLException SQLException
      */
     public static boolean insertCheckIn(int bookID, String guests) throws SQLException {
         String query = "UPDATE iraci.book SET guests = ?, checkIn = ? WHERE id_Book = ? AND book.checkIn IS NULL";
@@ -661,7 +663,7 @@ public class DataBase {
      * Effettua l'inserimento del Timestamp attuale per il check-out del cliente
      * @param bookID bookID
      * @return true o false
-     * @throws SQLException
+     * @throws SQLException SQLException
      */
     public static boolean insertCheckOut(int bookID) throws SQLException {
         String query = "UPDATE iraci.book SET checkOut = ? WHERE id_Book = ? AND book.checkIn IS NOT NULL";
@@ -679,29 +681,51 @@ public class DataBase {
      * @return Lista degli ordini
      * @throws SQLException SQLException
      */
-    public static List<Order> getOrders(LocalDate date) throws SQLException {
-        List<Order> orders = new ArrayList();
-        int last_orderID=-1;
-        Order order = null;
-        String query= "SELECT * FROM iraci.order JOIN iraci.order_has_product ON iraci.order.id_Order=iraci.order_has_product.Order_id_Order WHERE DATE(iraci.order.date) = ? AND iraci.order.status != 'D' ORDER BY iraci.order.id_Order ASC";
+    public static List<Order> getOrdersKitchen(LocalDate date) throws SQLException {
+        String query= "SELECT * FROM iraci.order JOIN iraci.order_has_product ON iraci.order.id_Order=iraci.order_has_product.Order_id_Order WHERE DATE(iraci.order.date) = ? AND ( iraci.order.status LIKE 'A' OR iraci.order.status LIKE 'W' ) ORDER BY iraci.order.id_Order ASC";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDate(1, Date.valueOf(date));
             ResultSet rs = statement.executeQuery();
 
-            while(rs.next()) { // Finchè ci sono nuovi record
-                if(rs.getInt("id_Order")!=last_orderID){
-                    if(order!=null)
-                        orders.add(order);
-                    order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
-                }
-                order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
-                last_orderID=order.getOrderID();
-            }
-            if (last_orderID!=-1)
-                orders.add(order);
-            rs.close();
-            return orders;
+            return extractOrders(rs);
         }
+    }
+
+    /**
+     * Metodo per la selezione di tutti gli ordini di ristorazione della data selezionata
+     * @param date data
+     * @return Lista degli ordini
+     * @throws SQLException SQLException
+     */
+    public static List<Order> getOrdersDesk(LocalDate date) throws SQLException {
+        String query= "SELECT * FROM iraci.order JOIN iraci.order_has_product ON iraci.order.id_Order=iraci.order_has_product.Order_id_Order WHERE DATE(iraci.order.date) = ? ORDER BY iraci.order.id_Order ASC";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(date));
+            ResultSet rs = statement.executeQuery();
+
+            return extractOrders(rs);
+        }
+    }
+
+    public static List<Order> extractOrders(ResultSet rs) throws SQLException {
+        List<Order> orders = new ArrayList();
+        int last_orderID=-1;
+        Order order = null;
+
+        while(rs.next()) { // Finchè ci sono nuovi record
+            if(rs.getInt("id_Order")!=last_orderID){
+                if(order!=null)
+                    orders.add(order);
+                order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed") == 1, rs.getInt("User_id_User"), rs.getString("delivery_method"));
+            }
+            assert order != null;
+            order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
+            last_orderID=order.getOrderID();
+        }
+        if (last_orderID!=-1)
+            orders.add(order);
+        rs.close();
+        return orders;
     }
 
     /**
@@ -720,7 +744,7 @@ public class DataBase {
 
             while(rs.next()) { // Finchè ci sono nuovi record
                 if (last_orderID==-1)
-                    order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed")==1?true:false, rs.getInt("User_id_User"), rs.getString("delivery_method"));
+                    order=new Order(rs.getInt("id_Order"), rs.getTimestamp("date").toLocalDateTime(), rs.getString("status").charAt(0), rs.getInt("payed") == 1, rs.getInt("User_id_User"), rs.getString("delivery_method"));
                 order.addProduct(DataBase.getProduct(rs.getInt("Product_barcode")),rs.getInt("quantity") , rs.getString("details"));
                 last_orderID=order.getOrderID();
             }
@@ -733,12 +757,28 @@ public class DataBase {
      * @param orderID orderID
      * @param newStatus nuovo stato da impostare
      * @return true o false
-     * @throws SQLException
+     * @throws SQLException SQLException
      */
     public static boolean updateOrderStatus(int orderID, String newStatus) throws SQLException {
         String query = "UPDATE iraci.order SET iraci.order.status= ? WHERE iraci.order.id_Order = ?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, newStatus);
+            statement.setInt(2, orderID);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
+    }
+
+    /**
+     * Inserisce la conferma di pagamento di un ordine
+     * @param orderID orderID
+     * @return true o false
+     * @throws SQLException SQLException
+     */
+    public static boolean payOrder(int orderID) throws SQLException {
+        String query = "UPDATE iraci.order SET iraci.order.payed= ? WHERE iraci.order.id_Order = ?";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, 1);
             statement.setInt(2, orderID);
             int result = statement.executeUpdate();
             return  result > 0;

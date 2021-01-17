@@ -1,4 +1,4 @@
-package com.iraci.servlet.lifeguard;
+package com.iraci.servlet.company;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iraci.DataBase.DataBase;
@@ -22,7 +22,7 @@ import java.util.List;
  * Questa classe si occupa della gestione della spiaggia da parte del bagnino
  * @author Davide Iraci
  */
-@WebServlet(name = "beachManageServlet", urlPatterns={"/lifeguard/beachManage"})
+@WebServlet(name = "beachManageServlet", urlPatterns={"/company/beachManage"})
 public class beachManageServlet extends HttpServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -67,7 +67,7 @@ public class beachManageServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Lifeguard/beachManage.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Company/beachManage.jsp");
         dispatcher.forward(request, response);
     }
 

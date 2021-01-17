@@ -41,18 +41,8 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Admin</web-resource-name>
-            <url-pattern>/admin/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>Admin</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-        <web-resource-collection>
             <web-resource-name>Lifeguard</web-resource-name>
-            <url-pattern>/lifeguard/*</url-pattern>
+            <url-pattern>/company/beachManage</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>Lifeguard</role-name>
@@ -62,7 +52,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>CashDesk</web-resource-name>
-            <url-pattern>/cashdesk/*</url-pattern>
+            <url-pattern>/company/desk</url-pattern>
+            <url-pattern>/company/beachManage</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>CashDesk</role-name>
@@ -72,10 +63,20 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Cook</web-resource-name>
-            <url-pattern>/cook/*</url-pattern>
+            <url-pattern>/company/kitchen</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>Cook</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Admin</web-resource-name>
+            <url-pattern>/company/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
 

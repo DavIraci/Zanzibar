@@ -31,7 +31,7 @@
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/Utils.js"></script>
         <script src="/Zanzibar/js/snap.svg-min.js"></script>
-        <script src="/Zanzibar/js/Lifeguard/beachManage.js"></script>
+        <script src="/Zanzibar/js/Company/beachManage.js"></script>
 
         <!--SNAP-->
         <style>

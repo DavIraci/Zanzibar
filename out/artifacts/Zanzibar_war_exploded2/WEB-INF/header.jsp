@@ -124,7 +124,7 @@
                                         <a ><i class="fas fa-life-ring"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/lifeguard/beachManage"><i class="fas fa-umbrella-beach"></i> Gestisci spiaggia</a>
+                                        <a href="${pageContext.request.contextPath}/company/beachManage"><i class="fas fa-umbrella-beach"></i> Gestisci spiaggia</a>
                                     </li>
                                     <li>
                                         <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
@@ -139,20 +139,13 @@
                                     <a ><i class="fas fa-user-alt"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                 </li>
                                 <li>
+                                    <a href="${pageContext.request.contextPath}/company/desk"><i class="fas fa-cash-register"></i> Gestisci cassa</a>
+                                </li>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/company/beachManage"><i class="fas fa-umbrella-beach"></i> Gestisci spiaggia</a>
+                                </li>
+                                <li>
                                     <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/user/book"><i class="fas fa-calendar-plus"></i> Prenota</a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/user/managebook"><i class="fas fa-calendar-alt"></i> Gestisci prenotazioni</a>
-                                </li>
-                                <li>
-                                    <a href="#" data-toggle="modal" data-target="#productsModal" onclick="$('#allGroup button').click();"><i class="fas fa-utensils" ></i> Prodotti</a>
-                                </li>
-                                <li>
-                                    <a href="${pageContext.request.contextPath}/user/cartManage"><span class="badge badge-pill" id="spanCart"><%if(((Cart) request.getSession().getAttribute("CART"))!=null && ((Cart) request.getSession().getAttribute("CART")).getSize()>0 ){%><%=((Cart) request.getSession().getAttribute("CART")).getSize() %><%}%></span><i class="fas fa-shopping-cart"></i> Carello
-                                    </a>
                                 </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
@@ -164,7 +157,7 @@
                                     <a ><i class="fas fa-utensils"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
                                 </li>
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/cook/kitchen"><i class="fas fa-utensils"></i> Cucina</a>
+                                    <a href="${pageContext.request.contextPath}/company/kitchen"><i class="fas fa-utensils"></i> Cucina</a>
                                 </li>
                                 <li>
                                     <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>

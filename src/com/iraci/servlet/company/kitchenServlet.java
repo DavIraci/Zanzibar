@@ -1,4 +1,4 @@
-package com.iraci.servlet.cook;
+package com.iraci.servlet.company;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,7 @@ import java.util.List;
  * Questa classe gestisce la preparazione degli ordini del servizio ristorazione
  * @author Davide Iraci
  */
-@WebServlet(name = "kitchenServlet", urlPatterns={"/cook/kitchen"})
+@WebServlet(name = "kitchenServlet", urlPatterns={"/company/kitchen"})
 public class kitchenServlet extends HttpServlet {
     /**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -62,7 +62,7 @@ public class kitchenServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Cook/kitchen.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Company/kitchen.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -75,8 +75,8 @@ public class kitchenServlet extends HttpServlet {
      */
     protected String getOrders(HttpServletRequest request, HttpServletResponse response) throws SQLException, JsonProcessingException {
         // Prende gli ordini del giorno attuale non ancora completati
-        //List<Order> orders = DataBase.getOrders(LocalDate.parse("2021-01-11"));
-        List<Order> orders = DataBase.getOrders(LocalDate.now());
+        //List<Order> orders = DataBase.getOrdersKitchen(LocalDate.parse("2021-01-11"));
+        List<Order> orders = DataBase.getOrdersKitchen(LocalDate.now());
         List<User> users=new ArrayList();
         String ajaxOrders="[";
 
@@ -91,7 +91,10 @@ public class kitchenServlet extends HttpServlet {
 
         // Prepara il necessario per la risposta JSON
         ObjectMapper mapper = new ObjectMapper();
-        ajaxOrders=ajaxOrders.substring(0, ajaxOrders.length() - 2)+"] ";
+        if (orders.isEmpty())
+            ajaxOrders+="] ";
+        else
+            ajaxOrders=ajaxOrders.substring(0, ajaxOrders.length() - 2)+"] ";
 
         return  "{\"RESPONSE\" : \"Confirm\", \"ORDERS\" : "+ ajaxOrders +", \"USERS\" : "+ mapper.writeValueAsString(users) +"}";
     }
@@ -123,13 +126,12 @@ public class kitchenServlet extends HttpServlet {
                     break;
                 }
                 case "W": {
-                    if (order.getDeliveryMethod().equals("Bar")){
-                        newStatus = "R".charAt(0);
+                    if (order.getDeliveryMethod().equals("Bar"))
                         status="pronto per il ritiro! Ti aspettiamo al banco!";
-                    }else {
-                        newStatus = "T".charAt(0);
-                        status = "in consegna! A breve ti verrà portato all'ombrellone!";
-                    }
+                    else
+                        status = "pronto! A breve ti verrà notificata la consegna all'ombrellone!";
+
+                    newStatus = "R".charAt(0);
                     if(order.isPayed())
                         status+="<br>Ti ricordiamo che hai già pagato il tuo ordine!";
                     else
@@ -149,7 +151,7 @@ public class kitchenServlet extends HttpServlet {
 
             // Aggiorna il record nel DB e in caso di errore lo comunica
             if(!DataBase.updateOrderStatus(orderID, newStatus+""))
-                return  "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Si è verificato un errore, riprovare3!\" }";
+                return  "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Si è verificato un errore, riprovare!\" }";
             else {
                 // Conferma al cliente il cambio di stato e manda la risposta al Client
                 User user=DataBase.takeUser(order.getUserID());
@@ -160,7 +162,7 @@ public class kitchenServlet extends HttpServlet {
                         + "<br>Ti auguriamo una buona permanenza nel nostro lido! <br><br>"
                         + "Lo staff del lido</p>";
 
-                Mailer mailer = new Mailer(user.getEmail(), "Lido Zanzibar - Modifica stato ordine", messaggio);
+                Mailer mailer = new Mailer(user.getEmail(), "Lido Zanzibar - Modifica stato ordine N°"+String.format("%08d", orderID), messaggio);
                 Thread thread = new Thread(mailer);
                 thread.start();
 
