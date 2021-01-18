@@ -68,7 +68,7 @@ public class deskServlet extends HttpServlet {
     }
 
     /**
-     * Metodo che restituisce la lista degli ordini attualmente non completati
+     * Metodo che restituisce la lista degli ordini
      * @param request Servelt request del metodo invocante
      * @param response Servelt response del metodo invocante
      * @return Stringa formattata per la risposta AJAX
@@ -85,7 +85,7 @@ public class deskServlet extends HttpServlet {
         // inoltre crea la concatenazione degli ordini formati per la risposta AJAX
         for ( Order order : orders ){
             ajaxOrders+=order.toAjax() + ", ";
-            User user = DataBase.takeUser(order.getUserID());
+            User user = DataBase.getUser(order.getUserID());
             if(!users.contains(user))
                 users.add(user);
         }
@@ -169,7 +169,7 @@ public class deskServlet extends HttpServlet {
                 return  "{\"RESPONSE\" : \"Error\", \"MESSAGE\" : \"Si è verificato un errore, riprovare!\" }";
             else {
                 // Conferma al cliente il cambio di stato e manda la risposta al Client
-                User user=DataBase.takeUser(order.getUserID());
+                User user=DataBase.getUser(order.getUserID());
 
                 String messaggio = "<p>Ciao " + user.getNome() + " " + user.getCognome() + ", <br>"
                         + "Ti avvisiamo che lo stato del tuo ordine è cambiato in: <br> "+ status +"!<br><br>"

@@ -74,28 +74,8 @@
 
                      <!-- Register Modal body -->
                     <div class="modal-body">
-                        <% if(request.getSession().getAttribute("SignInError")!=null ){ %>
-                                <script> $('#registerModal').modal('show') </script>
-                                <div class="alert alert-danger alert-dismissible" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                   <%= request.getSession().getAttribute("SignInError") %>
-                                </div>
-                        <%      request.getSession().removeAttribute("SignInError");
-                            }
-                            if(request.getSession().getAttribute("SignIn")!=null ){ %>
-                                <script> $('#registerModal').modal('show') </script>
-                        <%      if(! request.getSession().getAttribute("SignIn").equals("")){ %>
-                                    <div class="alert alert-success alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <%=             request.getSession().getAttribute("SignIn") %>
-                                    </div>
-                        <%      }
-                                request.getSession().removeAttribute("SignIn");
-                            } %>
-
-
-
-                        <form action="${pageContext.request.contextPath}/signin" method="POST" class="was-validated">
+                        <div id="response"></div>
+                        <form method="POST" class="was-validated" id="registerForm">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -156,7 +136,7 @@
 
                             <!-- Register Modal footer -->
                             <div class="modal-footer">
-                                <button type="submit"  class="btn btn-primary">Registrati</button>
+                                <button type="submit" class="btn btn-primary">Registrati</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                             </div>
                         </form>
@@ -164,36 +144,6 @@
                 </div>
             </div>
         </div>
-
-        <% if(session.getAttribute("name")!=null){ %>
-                <script>$("#name").val("<%= session.getAttribute("name").toString()%>")</script>
-        <% 	    session.removeAttribute("name");
-            } %>
-
-        <% if(session.getAttribute("surname")!=null){ %>
-                <script>$("#surname").val("<%= session.getAttribute("surname").toString()%>")</script>
-        <% 	    session.removeAttribute("surname");
-            } %>
-
-        <% if(session.getAttribute("email")!=null){ %>
-                <script>$("#email").val("<%= session.getAttribute("email").toString()%>")</script>
-        <% 	    session.removeAttribute("email");
-            } %>
-
-        <% if(session.getAttribute("mobile")!=null){ %>
-                <script>$("#mobile").val("<%= session.getAttribute("mobile").toString()%>")</script>
-        <% 	    session.removeAttribute("phone");
-            } %>
-
-        <% if(session.getAttribute("birth")!=null){ %>
-                <script>$("#birth").val("<%= session.getAttribute("birth").toString()%>")</script>
-        <% 	    session.removeAttribute("birth");
-            } %>
-
-        <% if(session.getAttribute("telephone")!=null){ %>
-                <script>$("#telephone").val("<%= session.getAttribute("telephone").toString()%>")</script>
-        <% 	    session.removeAttribute("tel");
-            } %>
         <!-- Register Modal -->
 
         <!-- ResetPassword Modal -->
@@ -209,22 +159,8 @@
 
                     <!-- ResetPassword Modal body -->
                     <div class="modal-body">
-                        <% if(request.getSession().getAttribute("ResetPwd")!=null ){ %>
-                                <script> $('#resetPasswordModal').modal('show') </script>
-                        <%      if(request.getSession().getAttribute("ResetPwd").equals("ERROR")){ %>
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        Nessun account associato a questo indirizzo email!
-                                    </div>
-                        <%      }else if(request.getSession().getAttribute("ResetPwd").equals("SUCCESS")){ %>
-                                    <div class="alert alert-success alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        E' stata inviata una mail contenete le indicazioni su come procedere!
-                                    </div>
-                        <%      }
-                                request.getSession().removeAttribute("ResetPwd");
-                        } %>
-                        <form action="${pageContext.request.contextPath}/resetpwd" method="POST" class="was-validated">
+                        <div id="responseResetPwd"></div>
+                        <form method="POST" class="was-validated" id="resetPwdForm">
                             <div class="form-group">
                                 <label for="resetmail">Indirizzo email associato:</label>
                                 <input title="Scrivi un indirizzo mail valido!" type="text" class="form-control" id="resetmail" placeholder="Inserisci username" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
@@ -234,7 +170,7 @@
 
                             <!-- ResetPassword Modal footer -->
                             <div class="modal-footer">
-                                <button type="submit"  class="btn btn-primary">Reimposta Password</button>
+                                <button type="submit" class="btn btn-primary">Reimposta Password</button>
                             </div>
                         </form>
                     </div>

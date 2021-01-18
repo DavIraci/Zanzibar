@@ -20,9 +20,9 @@
         <link href="/Zanzibar/css/heading.css" rel="stylesheet">
         <link href="/Zanzibar/css/body.css" rel="stylesheet">
         <link href="/Zanzibar/css/carousel.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
         <!-- Script -->
+        <script src="https://kit.fontawesome.com/5a20e58df2.js" crossorigin="anonymous"></script>
         <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>

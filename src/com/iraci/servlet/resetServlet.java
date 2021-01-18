@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
@@ -26,9 +27,14 @@ public class resetServlet extends HttpServlet {
                 // Riceve i dati dal form
                 String email = request.getParameter("email"), password = DataBase.resetPassword(email);
 
+                // Prepara il necessario per la risposta JSON
+                PrintWriter pr = response.getWriter();
+                response.setContentType("application/json");
+                String status;
+
                 if (password == null){
                     // Verifica se l'email esiste nel DB e se ci sono stati errori nel resettare
-                    request.getSession().setAttribute("ResetPwd", "ERROR");
+                    status = "{\"RESPONSE\" : \"Error\", \"TYPE\" : \"Reset Passsword Error\",\"MESSAGE\" : \"E' stato riscontrato un problema o l'email non è associata a nessun account!\"}";
                 }else{
                     // Invia la mail con la nuova password all'utente
                     String messaggio = "<p>Salve,<br> è stata effettuata la richiesta per il reset della password. La tua nuova password "
@@ -39,14 +45,15 @@ public class resetServlet extends HttpServlet {
                     Thread thread = new Thread(mailer);
                     thread.start();
 
-                    request.getSession().setAttribute("ResetPwd", "SUCCESS");
+                    status = "{\"RESPONSE\" : \"Confirm\", \"TYPE\" : \"Reset Passsword succes\",\"MESSAGE\" : \"E' stata impostata una password temporanea ed è stata inviata per email!\"}";
                 }
+
+                pr.write(status);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 response.sendError(400);
             }
         }
-        response.sendRedirect(request.getContextPath()+ "/");
     }
 
     /**

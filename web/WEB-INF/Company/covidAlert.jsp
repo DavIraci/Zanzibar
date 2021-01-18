@@ -13,9 +13,9 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <title>Zanzibar Lido - Carrello</title>
+        <title>Zanzibar Lido - Contagio Covid19</title>
 
-        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
+        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico"/>
 
         <!-- CSS, includes Bootstrap (off-line)-->
         <link href="/Zanzibar/css/styles.css" rel="stylesheet">
@@ -30,7 +30,7 @@
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
         <script src="/Zanzibar/js/scripts.js"></script>
         <script src="/Zanzibar/js/Utils.js"></script>
-        <script src="/Zanzibar/js/User/cart.js"></script>
+        <script src="/Zanzibar/js/Company/covidAlert.js"></script>
 
         <style>
             .actions:hover{
@@ -51,7 +51,6 @@
         </style>
 
         <%@ include file="/WEB-INF/header.jsp"%>
-        <%@ include file="/WEB-INF/User/orderCheckout.jsp"%>
     </head>
 
     <body id="page-top">
@@ -60,30 +59,25 @@
             <div class="marketing">
                 <section class="text-center">
                     <div class="row" style="justify-content: center">
-                        <h1>Carrello</h1>
+                        <h1>Segnalazione Covid</h1>
                     </div>
-
-                    <div class="row" style="justify-content: center" id="cart-message-alert"></div>
-                    <table class="table table-striped table-responsive">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th class="fit" scope="col">ID</th>
-                            <th class="fit" scope="col">Nome Prodotto</th>
-                            <th class="fit" scope="col">Categoria</th>
-                            <th class="fit" scope="col">Quantità</th>
-                            <th class="fit" scope="col">Prezzo</th>
-                            <th class="fit" scope="col">Note</th>
-                        </tr>
-                        </thead>
-                        <tbody id="productsRow">
-                        </tbody>
-                    </table>
+                    <div class="row" style="text-align: center">
+                        <div class="col-sm-6">
+                            <label for="date">Data:</label>
+                            <input class="form-control" type="date" id="date" name="date" pattern="\d{2}/\d{2}/\d{4}" onchange="load()">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="customersSelect">Cliente risultato positivo:</label>
+                                <select class="form-control" id="customersSelect" name="customersSelect" onchange="$('#covidAlertConfirmBtn').removeAttr('disabled').removeClass('disabled');">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="justify-content: center" id="covidAlert-message-alert"></div>
                     <div>
                         <div class="text-right">
-                            <div id="subTotal">
-                            </div>
-                            <div id="payOrder">
-                            </div>
+                            <input type="button" class="btn btn-info float-right" value="Avverti" id="covidAlertConfirmBtn" data-toggle="modal" data-target="#covidAlertResponseMessageModal">
                         </div>
                     </div>
                 </section>
@@ -91,26 +85,28 @@
         </div>
     </main>
 
-    <!-- Order Message Modal -->
-    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="orderMessageModal" aria-hidden="true">
+    <!-- Covid Alert Response Message Modal -->
+    <div class="modal fade bd-example-modal" tabindex="-1" role="dialog" id="covidAlertResponseMessageModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal" role="document">
             <div class="modal-content" style="border: #518CC8 5px solid;">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="orderMessageLabel"></h4>
+                    <h4 class="modal-title" id="covidAlertResponseMessageLabel"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="orderMessageText">
+                <div class="modal-body" id="covidAlertResponseMessageText">
+                </div>
+                <div class="modal-footer d-none" id="covidAlertStatusConfirm">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="covidAlertBtn" >Conferma</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /Order Message Modal -->
+    <!-- /Covid Alert Response Message Modal -->
 
-        <%@ include file="/WEB-INF/footer.jsp"%>
 
-        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
-        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up" style="line-height: 3.1rem;"></i></a></div>
+    <%@ include file="/WEB-INF/footer.jsp"%>
     </body>
 </html>

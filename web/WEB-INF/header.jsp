@@ -24,7 +24,7 @@
     <body>
         <% if(request.getUserPrincipal() != null && request.getSession().getAttribute("USER") == null){
                 try {
-                    User user = DataBase.takeUser(request.getUserPrincipal().getName());
+                    User user = DataBase.getUser(request.getUserPrincipal().getName());
                     if (user == null) {
                         response.sendError(400);
                     }
@@ -85,6 +85,21 @@
                                 <% } else if(((User) request.getSession().getAttribute("USER")).getRuolo().equals("Admin")){ %>
                                     <li class="eborder-top">
                                         <a ><i class="fas fa-crown"> <%= ((User) request.getSession().getAttribute("USER")).getRuolo() %></i> <%= ((User) request.getSession().getAttribute("USER")).getCognome() %></a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/company/covidAlert"><i class="fas fa-virus"></i> Positivo Covid</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/company/beachManage"><i class="fas fa-umbrella-beach"></i> Gestisci spiaggia</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/company/desk"><i class="fas fa-cash-register"></i> Gestisci cassa</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/company/kitchen"><i class="fas fa-utensils"></i> Cucina</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/company/employeesManage"><i class="fas fa-users-cog"></i> Gestisci impiegati</a>
                                     </li>
                                     <li>
                                         <a href="${pageContext.request.contextPath}/common/manageprofile"><i class="fas fa-user-cog"></i> Dati profilo</a>

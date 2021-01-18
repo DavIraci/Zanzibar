@@ -6,7 +6,6 @@ package com.iraci.model;
  */
 public class Product {
     private String name;
-    private int quantity;
     private String description;
     private double price;
     private int barcode;
@@ -15,15 +14,13 @@ public class Product {
     /**
      * Costruttore classe
      * @param name nome
-     * @param quantity quantità
      * @param description descrizione
      * @param price prezzo
      * @param barcode codice prodotto
      * @param category categoria
      */
-    public Product(String name, int quantity, String description, double price, int barcode, String category) {
+    public Product(String name, String description, double price, int barcode, String category) {
         this.name = name;
-        this.quantity=quantity;
         this.description = description;
         this.price = price;
         this.barcode = barcode;
@@ -42,20 +39,6 @@ public class Product {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Metodo per la manipolazione degli attributi dell'oggetto Prodotto
-     */
-    public int getQuantity() {
-        return quantity;
-    }
-
-    /**
-     * Metodo per la manipolazione degli attributi dell'oggetto Prodotto
-     */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     /**

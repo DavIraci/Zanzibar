@@ -89,7 +89,7 @@ public class beachManageServlet extends HttpServlet {
 
             // Per ogni prenotazione prende e i dati dell'utente e li inserisce nella lista a meno che non siano già presenti
             for ( Book book : booked ){
-                User user = DataBase.takeUser(book.getUser_id());
+                User user = DataBase.getUser(book.getUser_id());
                 if(!users.contains(user))
                     users.add(user);
             }

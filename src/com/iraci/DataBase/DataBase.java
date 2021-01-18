@@ -44,7 +44,7 @@ public class DataBase {
      * @return Oggetto User inizializzato o null se non esiste!
      * @throws SQLException SQLException
      */
-    public static User takeUser(String email) throws SQLException{
+    public static User getUser(String email) throws SQLException{
         String query = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.email=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
@@ -64,7 +64,7 @@ public class DataBase {
      * @return Oggetto User inizializzato o null se non esiste!
      * @throws SQLException SQLException
      */
-    public static User takeUser(int userID) throws SQLException{
+    public static User getUser(int userID) throws SQLException{
         String query = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.id_User=?";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
@@ -86,9 +86,10 @@ public class DataBase {
      * @param cellulare cellulare
      * @param datanascita datanascita
      * @param password password
+     * @return true o false
      * @throws SQLException SQLException
      */
-    public static void userSignIn(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password) throws SQLException{
+    public static boolean userSignIn(String nome, String cognome, String email, String cellulare, String telefono, LocalDate datanascita, String password, String role) throws SQLException{
         String query = "INSERT INTO iraci.user (name, surname, email, password, mobile, telephone, birthday, role) " +
                 "VALUES (?, ?, ?, SHA2(?, 256), ?, ?, ?, ?)";
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
@@ -99,8 +100,9 @@ public class DataBase {
             statement.setString(5, cellulare);
             statement.setString(6, telefono);
             statement.setDate(7, Date.valueOf(datanascita));
-            statement.setString(8, "User");
-            statement.executeUpdate();
+            statement.setString(8, role);
+            int result = statement.executeUpdate();
+            return  result > 0;
         }
     }
 
@@ -461,7 +463,7 @@ public class DataBase {
             statement.setString(1, category.equals("All")?"1":category);
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
-                products.add(new Product(rs.getString("name"), rs.getInt("quantity"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category")));
+                products.add(new Product(rs.getString("name"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category")));
             }
             rs.close();
             return products;
@@ -480,7 +482,7 @@ public class DataBase {
             statement.setInt(1, barcode);
             ResultSet rs = statement.executeQuery();
             if (rs.next())
-                return new Product(rs.getString("name"), rs.getInt("quantity"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category"));
+                return new Product(rs.getString("name"), rs.getString("description"), rs.getDouble("price"), rs.getInt("barcode"), rs.getString("category"));
             rs.close();
             return null;
         }
@@ -708,7 +710,7 @@ public class DataBase {
     }
 
     public static List<Order> extractOrders(ResultSet rs) throws SQLException {
-        List<Order> orders = new ArrayList();
+        List<Order> orders = new ArrayList<>();
         int last_orderID=-1;
         Order order = null;
 
@@ -782,6 +784,73 @@ public class DataBase {
             statement.setInt(2, orderID);
             int result = statement.executeUpdate();
             return  result > 0;
+        }
+    }
+
+    /**
+     * Prende dal DB i dati di tutti gli utenti che lavorano nell'azienda
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
+     */
+    public static List<User> getEmployees() throws SQLException {
+        List<User> employees = new ArrayList<>();
+
+        String query = "SELECT U.id_User, U.name, U.surname, U.role, U.email, U.telephone, U.mobile, U.birthday FROM iraci.user AS U WHERE U.role!='User'";
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) { // Finchè ci sono nuovi record
+                employees.add(new User(rs.getInt("id_User"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("mobile"), rs.getString("telephone"), rs.getString("role"), LocalDate.parse(rs.getDate("birthday").toString())));
+            }
+            return employees;
+        }
+    }
+
+    /**
+     * Cambia il ruolo dell'impiegato selezionato
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
+     */
+    public static boolean updateEmployeesRole(int id, String role) throws SQLException {
+        String query = "UPDATE iraci.user SET role = ? WHERE (id_User = ?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, role);
+            statement.setInt(2, id);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
+    }
+
+    /**
+     * Elimina l'impiegato selezionato
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
+     */
+    public static boolean removeEmployees(int id) throws SQLException {
+        String query = "DELETE FROM iraci.user WHERE (id_User = ?)";
+        try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            int result = statement.executeUpdate();
+            return  result > 0;
+        }
+    }
+
+    /**
+     * Prende dal DB tutti i clienti che il giorno selezionato erano nel lido
+     * @return Oggetto User inizializzato o null se non esiste!
+     * @throws SQLException SQLException
+     */
+    public static List<User> getCustomersInDate(LocalDate date) throws SQLException {
+        List<User> customers = new ArrayList<>();
+        String query = "SELECT DISTINCT iraci.user.* FROM iraci.user JOIN iraci.book ON user.id_User=book.User_id_User WHERE book.date=? and book.checkIn IS NOT NULL";
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, Date.valueOf(date));
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) { // Finchè ci sono nuovi record
+                customers.add(new User(rs.getInt("id_User"), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("mobile"), rs.getString("telephone"), rs.getString("role"), LocalDate.parse(rs.getDate("birthday").toString())));
+            }
+            return customers;
         }
     }
 }

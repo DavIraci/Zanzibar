@@ -86,9 +86,12 @@ function setTable(BOOK){
 
     $.each(BOOK, function(key, val){
         let decoration="class=\"bookedStatus\"";
-        let checkout;
+        let checkout, checkin;
 
-        let checkin='<input type="button" class="btn btn-primary active" id="checkIn" value="Check In" onclick="checkIN('+val.book_id+')">';
+        if (val.period==="PM" && new Date().getHours()<14 )
+            checkin='<input type="button" class="btn btn-primary disabled" id="checkIn" value="Check In" onclick="checkIN('+val.book_id+')" disabled>';
+        else
+            checkin='<input type="button" class="btn btn-primary active" id="checkIn" value="Check In" onclick="checkIN('+val.book_id+')">';
 
         if(val.checkin!=null) {
             checkin = zeropadInt(val.checkin.hour,2) + ':' + zeropadInt(val.checkin.minute, 2);
