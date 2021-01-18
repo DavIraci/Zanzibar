@@ -1,8 +1,9 @@
 $(document).ready(function () {
 
     fixDate(new Date());
-    var s = Snap('#map');
+    let s = Snap('#map');
 
+    // Aumenta la selezione delle sdraio extra se possibile
     $('#bookQtyPlus').click(function(){
         if($('#bookQty').val()<(2*posSelected.length)) {
             $('#bookQty').val(parseInt($('#bookQty').val()) + 1);
@@ -10,6 +11,7 @@ $(document).ready(function () {
         }
     });
 
+    // Diminuisce la selezione delle sdraio extra se possibile
     $('#bookQtyMinus').click(function(){
         if($('#bookQty').val()>0) {
             $('#bookQty').val(parseInt($('#bookQty').val()) - 1);
@@ -17,12 +19,14 @@ $(document).ready(function () {
         }
     });
 
+    // Se sono state selezionate delle postazioni va alla fase successiva dell'ordinazione
     $('#checkBook').click(function () {
         if(posSelected.length>0){
             checkBook();
         }
     });
 
+    // Carica la mappa SVG inizializzando le funzionalità di hover del mouse e di selezione/deselezione
     Snap.load("/Zanzibar/image/mapALL.svg", function(f){
         load();
 
@@ -32,15 +36,14 @@ $(document).ready(function () {
 
             el.click(function(ev){
 
-                var elem = el.parent();
-                var id = '#'+ elem.node.id;
+                let elem = el.parent();
+                let id = '#'+ elem.node.id;
 
                 if( elem.data('status')=='O' ){
                     //Occupato
                 }
                 else if( elem.data('status')=='S' ) {
                     // The seat is already selected, the user wants to deselect it
-                    //check('D', ev.target.id);
                     setFree(id, elem);
                     posSelected.splice(posSelected.indexOf(id), 1);
                     $('#postazioni .part_'+id.split("#")[1]).remove();
@@ -56,7 +59,7 @@ $(document).ready(function () {
                     // the seat is free, the user wants to select it
                     setSelected(id, elem);
                     posSelected.push(id);
-                    var text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
+                    let text = '<p class="part_'+id.split("#")[1]+'">Postazione '+ elem.data('row1') +' '+ elem.data('row2') +' <b>'+ elem.data('row3') +   '€</b></p>';
                     $('#postazioni').append(text);
                     $('#checkBook').removeClass("disabled").addClass("active");
                     $('.part_'+id.split("#")[1]).val(elem.data('row3'));
@@ -66,11 +69,11 @@ $(document).ready(function () {
 
             el.mousemove(function(ev){
                 // when mouse is over the seat, system shows an informational tooltip
-                var elem = el.parent();
-                var id = '#'+ elem.node.id;
+                let elem = el.parent();
+                let id = '#'+ elem.node.id;
 
                 if( elem.data('status')!='O' ){
-                    var text = '<p class="row1">'+elem.data('row1')+'</p>'
+                    let text = '<p class="row1">'+elem.data('row1')+'</p>'
                         + '<p class="row2">'+elem.data('row2')+'</p>'
                         + '<p class="row3">Prezzo €'+elem.data('row3')+'</p>';
 
@@ -93,10 +96,12 @@ $(document).ready(function () {
     });
 });
 
+// Variabili globali per la gestione dell'ordine
 var order;
 var posNotAvailable = [];
 var posSelected = [];
 
+// Aggiorna il prezzo mostrato nella preview
 function updateTotal(){
     let total=parseFloat(($('#extra-chair').val())*(parseInt($('.qty').val())).toFixed(2));
     $.each($('#postazioni p'), function(key, val){
@@ -110,8 +115,9 @@ function updateTotal(){
     $('#totale').val(total);
 }
 
+// Aggiorna il numero di sdraio extra in relazione al numero di postazioni
 function updateChair(){
-    var text="<p>N°"+parseInt($('.qty').val())+" Sdraio extra  <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
+    let text="<p>N°"+parseInt($('.qty').val())+" Sdraio extra  <b>"+ (($('#extra-chair').val())*(parseInt($('.qty').val()))).toFixed(2)+"€</b></p>";
     $('#sdraio').html(text);
     if(parseInt($('.qty').val())==0){
         $('#sdraio').html("");
@@ -119,25 +125,27 @@ function updateChair(){
     updateTotal();
 }
 
+// Imposta il datepicker per la selezione del giorno
 function setDate(data){
-    var month = data.getMonth() + 1;
-    var day = data.getDate();
-    var year = data.getFullYear();
+    let month = data.getMonth() + 1;
+    let day = data.getDate();
+    let year = data.getFullYear();
     if(month < 10)
         month = '0' + month.toString();
     if(day < 10)
         day = '0' + day.toString();
 
-    var minDate= year + '-' + month + '-' + day;
+    let minDate= year + '-' + month + '-' + day;
     $('#date').val(minDate);
     $('#date').attr('min', minDate);
 }
 
+// Verifica che l'orario della richiesta rientri nei limiti della prenotazione del giorno viceversa imposta l'indomani
 function fixDate(data){
     $('#period option').removeAttr("disabled");
     $('#period option').removeAttr("selected");
 
-    var today = new Date();
+    let today = new Date();
     if(today.getDay()==data.getDay() && today.getMonth()==data.getMonth() && today.getFullYear()==data.getFullYear()) {
         if (today.getHours() > 8 && today.getHours() < 14) {
             $('#op_am').attr("disabled", "disabled");
@@ -150,6 +158,7 @@ function fixDate(data){
     }
 }
 
+// Carica le informazioni dal DB circa le prenotazioni e i prezzi del giorno e della fascia selezionata
 function load(){
     let date = $('#date').val();
     let period = $('#period').val();
@@ -178,6 +187,7 @@ function load(){
     }
 }
 
+// Verifica che le postazioni selezionate siano ancora disponibili all'acquisto
 function checkBook(){
     let date = $('#date').val();
     let period = $('#period').val();
@@ -216,6 +226,7 @@ function checkBook(){
     }
 }
 
+// Reimposta i valori della pagina
 function reset(){
     let id;
     $('.qty').val(0);
@@ -224,7 +235,7 @@ function reset(){
         setFree(id, Snap.select(id));
     }
 
-    var date=$('#date').val().split("-");
+    let date=$('#date').val().split("-");
     fixDate(new Date(date[0],date[1]-1,date[2]));
     $('#postazioni').html("");
     $('#totale').html("");
@@ -233,6 +244,7 @@ function reset(){
     posNotAvailable=[];
 }
 
+// Imposta le postazioni occupate
 function setPostazioni(booked){
     $.each(booked, function (key, val) {
         let id="#pos_"+ val.id;
@@ -241,6 +253,7 @@ function setPostazioni(booked){
     });
 }
 
+// Imposta i label che appariranno con il mouse Hover
 function setLabel(price){
     let elem;
     for (let i = 10; i < 60; i++) {
@@ -255,24 +268,29 @@ function setLabel(price){
     }
 }
 
+// Aggiunge le sdraio extra nella preview
 function setExtraChairs(price){
     $('#extra-chair').html("Extra sdraio ("+(parseFloat(price)).toFixed(2)+"€ cad.):");
     $('#extra-chair').val((parseFloat(price)).toFixed(2));
 }
 
+// Imposta la postazione come selezionata
 function setSelected(id, elem){
     $(id+' ellipse.st1').removeClass("st1 st1-occupied st1-selected").addClass("st1-selected");
     $(id+' rect.st2').removeClass("st2 st2-occupied st2-selected").addClass("st2-selected");
     $(id+' path.st3').removeClass("st3 st3-occupied st3-selected").addClass("st3-selected");
     elem.data('status', 'S');
-
 }
+
+// Imposta la postazione come occupata
 function setOccupied(id, elem){
     $(id+' ellipse.st1').removeClass("st1 st1-occupied st1-selected").addClass("st1-occupied");
     $(id+' rect.st2').removeClass("st2 st2-occupied st2-selected").addClass("st2-occupied");
     $(id+' path.st3').removeClass("st3 st3-occupied st3-selected").addClass("st3-occupied");
     elem.data('status', 'O');
 }
+
+// Imposta la postazione come libera
 function setFree(id, elem){
     $(id+' ellipse.st1-selected').removeClass("st1 st1-occupied st1-selected").addClass("st1");
     $(id+' rect.st2-selected').removeClass("st2 st2-occupied st2-selected").addClass("st2");

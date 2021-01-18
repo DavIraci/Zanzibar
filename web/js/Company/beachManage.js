@@ -154,7 +154,6 @@ function reset(){
 }
 
 function checkIN(bookID){
-    console.log("Wanna do check-in for book: " + bookID)
     let selBook=bookByID(bookID);
     let selUser=userByID(selBook.user_id);
     $('#guestsCheckInAdv').html("Check-in prenotazione <b>"+bookID+"</b> di <b>" + selUser.nome + " " + selUser.cognome + "</b>");
@@ -163,8 +162,6 @@ function checkIN(bookID){
 }
 
 function checkOUT(bookID){
-    console.log("Wanna do check-out for book: " + bookID)
-
     $.ajax({
         url: './beachManage',
         dataType: 'json',
@@ -288,7 +285,6 @@ function setDate(data){
 }
 
 function setFree(id, elem){
-    //console.log("id: " + id + ", elem: "+ elem);
     $(id+' ellipse[class^=\'st1\']').attr("class","").addClass("st1");
     $(id+' rect[class^=\'st2\']').attr("class","").addClass("st2");
     $(id+' path[class^=\'st3\']').attr("class","").addClass("st3");

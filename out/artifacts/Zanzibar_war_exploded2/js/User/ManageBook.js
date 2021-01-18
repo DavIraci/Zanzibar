@@ -2,12 +2,11 @@ $(document).ready(function () {
     loadBook();
 });
 
+// Carica dal DB tutte le prenotazioni
 function loadBook(){
     $.ajax({
         url: './managebook',
-        dataType: 'json',
         type: 'post',
-        data: {},
         success: function (data) {
             if(data.BOOK==null){
                 let text = '<div class="row" style="justify-content: center">' +
@@ -23,19 +22,20 @@ function loadBook(){
     });
 }
 
+// Inserisce tutte le prenotazioni nella tabella
 function setBook(data){
     $.each(data.BOOK, function(key, val){
-        var checkin = "-";
+        let checkin = "-";
         if(val.checkin!=null)
             checkin=val.checkin.hour + ':' + zeropadInt(val.checkin.minute,2) + ':' + val.checkin.second;
 
-        var checkout = "-";
-        var decoration="";
+        let checkout = "-";
+        let decoration="";
         if(val.checkout!=null) {
             checkout=val.checkout.hour + ':' + zeropadInt(val.checkout.minute,2) + ':' + val.checkout.second;
 
         }
-        var period;
+        let period;
         if(val.period == "Full" || val.period == "AM" )
             period="8:00";
         else
@@ -46,22 +46,22 @@ function setBook(data){
         else
             period+="-13:00";
 
-        var invoice='<i class="fas fa-file-invoice mr-1 actions" onclick="takeInvoice('+val.book_id+')"></i>';
-        var canc='<i class="far fa-calendar-times actions" onclick="cancOrder('+val.book_id+')"></i>'
+        let invoice='<i class="fas fa-file-invoice mr-1 actions" onclick="takeInvoice('+val.book_id+')"></i>';
+        let canc='<i class="far fa-calendar-times actions" onclick="cancOrder('+val.book_id+')"></i>'
         if (val.canceled==true) {
             decoration = "class=\"canceled\"";
             canc=invoice='';
         }
 
-        var date= new Date(val.date.year, (val.date.monthValue-1), val.date.dayOfMonth);
-        var today = new Date();
+        let date= new Date(val.date.year, (val.date.monthValue-1), val.date.dayOfMonth);
+        let today = new Date();
 
         if (date<= today && val.canceled==false){
             decoration="class=\"finished\"";
             canc='';
         }
 
-        var postations="";
+        let postations="";
         $.each(val.postations, function(key, val2){
             postations+="F"+val2.row+"P"+val2.number+", ";
         });
@@ -84,6 +84,7 @@ function setBook(data){
     });
 }
 
+// Invia la richiesta al server di generazione e invio della fattura
 function takeInvoice(id){
     $.ajax({
         url: './managebook',
@@ -94,7 +95,7 @@ function takeInvoice(id){
             'BookID': id
         },
         success: function (data) {
-            var typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
+            let typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
             let text='<div class="row" style="justify-content: center">' +
                 '<div class="alert '+typemessage+' alert-dismissible" role="alert">' +
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
@@ -107,13 +108,14 @@ function takeInvoice(id){
     });
 }
 
+// Invia la richiesta al server di cancellazione di una prenotazione
 function cancOrder(id){
     $.ajax({
         url: './managebook?BookID='+id,
         dataType: 'json',
         type: 'DELETE',
         success: function (data) {
-            var typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
+            let typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
             let text='<div class="row" style="justify-content: center">' +
                 '<div class="alert '+typemessage+' alert-dismissible" role="alert">' +
                 '<button type="button" class="close" data-dismiss="alert">&times;</button>'+ data.MESSAGE +'</div> </div>';
@@ -126,6 +128,7 @@ function cancOrder(id){
     });
 }
 
+// Reimposta i dati
 function resetManageBook(){
     $('#booksRow').html("");
     loadBook();

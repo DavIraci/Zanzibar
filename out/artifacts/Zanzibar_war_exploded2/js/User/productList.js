@@ -1,16 +1,19 @@
 $(document).ready(function () {
+    // Cattura il cambio di categoria e invoca il caricamento dei prodotti richiesti
     $('#categoryBtn button').on('click', function() {
         $('#categoryBtn button').removeClass('active');
         $(this).addClass('active');
         loadProduct();
     });
 
+    // Aumenta la quantità del prodotto selezionato
     $('#productQtyPlus').click(function(){
         if($('#productQty').val()<(10)) {
             $('#productQty').val(parseInt($('#productQty').val()) + 1);
         }
     });
 
+    // Diminuisce la quantità del prodotto selezionato
     $('#productQtyMinus').click(function(){
         if($('#productQty').val()>0) {
             $('#productQty').val(parseInt($('#productQty').val()) - 1);
@@ -26,8 +29,10 @@ $(document).ready(function () {
     });
 });
 
-var dati;
+// Variabile globale dei prodotti
+var products;
 
+// Carica i prodotti dal DB della categoria selezionata
 function loadProduct(){
     let cat = $('#categoryBtn .active').val();
     $.ajax({
@@ -38,10 +43,10 @@ function loadProduct(){
             'Category': cat
         },
         success: function (data) {
-            dati=data.PRODUCTS;
-            setProducts(dati.slice(0,15));
+            products=data.PRODUCTS;
+            setProducts(products.slice(0,15));
             setPages();
-            if(dati.length>15){
+            if(products.length>15){
                 $('#pageNGroup button').first().addClass("active");
             }
         },
@@ -51,6 +56,7 @@ function loadProduct(){
     });
 }
 
+//Imposta il riquadro per ogni prodotto e lo posiziona in griglia
 function setProducts(data){
     $('#productRowList').html("");
     $.each(data, function(key, val){
@@ -71,6 +77,7 @@ function setProducts(data){
     });
 }
 
+// Invia al server la richiesta di inserimento del prodotto al carrello
 function addToCart(barcode){
     let prod = productByID(barcode);
     $.ajax({
@@ -95,6 +102,7 @@ function addToCart(barcode){
     });
 }
 
+// Richiede al server la dimensione del carrello
 function updateCart(){
     $.ajax({
         url: '/Zanzibar/user/cartManage',
@@ -104,7 +112,7 @@ function updateCart(){
             'Type': "CartSize"
         },
         success: function (data) {
-            if(data.RESPONSE=="Confirm")
+            if(data.RESPONSE==="Confirm")
                 $('#spanCart').html(parseInt(data.SIZE)>0?parseInt(data.SIZE):"");
             else
                 console.log("Errore!");
@@ -115,10 +123,11 @@ function updateCart(){
     });
 }
 
+//Imposta i bottoni che effettuano il cambio di pagina
 function setPages(){
-    if(dati.length>15){
+    if(products.length>15){
         $('#pageNGroup').html("");
-        for(let i=1; i<((dati.length/15)+1); i++){
+        for(let i=1; i<((products.length/15)+1); i++){
             $('#pageDivGroup').addClass("pt-4");
             text='<button id="pageN'+i+'" type="button" onclick="updatePageN('+i+')" class="btn btn-primary" value="'+i+'">'+i+'</button>'
             $('#pageNGroup').append(text);
@@ -129,13 +138,15 @@ function setPages(){
     }
 }
 
+//Effettua il cambio di bottone attivato in corrispondenza della pagina attiva
 function updatePageN(n){
     let btn=$('#pageN'+n);
     $('#pageNGroup button').removeClass('active');
     btn.addClass('active');
-    setProducts(dati.slice(15*(btn.val()-1),15*(btn.val())));
+    setProducts(products.slice(15*(btn.val()-1),15*(btn.val())));
 }
 
+//Mostra il modal per la scelta della quantità del prodotto da aggiungere al carrello insieme ad eventuali note
 function setQuantity(barcode){
     let prod = productByID(barcode);
     $('#addToCartName').html(prod.name);
@@ -146,13 +157,14 @@ function setQuantity(barcode){
     $('#addToCartModal').modal('show');
 }
 
+//Dato un determinato ID restituisce il prodotto presente nella variabile globale
 function productByID(barcode){
     let i=0;
-    $.each(dati, function(key, val){
-       if(val.barcode==barcode) {
+    $.each(products, function(key, val){
+       if(val.barcode===barcode) {
            return false;
        }
        i++;
     });
-    return dati[i];
+    return products[i];
 }

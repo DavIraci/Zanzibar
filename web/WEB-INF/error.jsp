@@ -31,7 +31,7 @@
     </head>
 
     <body id="page-top">
-        <main role="main" class="masthead">
+        <main role="main" class="masthead" style="min-height: 80%">
             <div class="container marketing">
                 <h1>Error ${errorCode}</h1>
 

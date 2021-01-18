@@ -1,14 +1,17 @@
 $(document).ready(function () {
     load();
 
+    // al click del tasto per inserire un nuovo impiegato verifica se il form è valido
     $('#addNewEmployeeBtn').click(function() {
         if($('form#newEmployeeForm')[0].checkValidity())
             registerNewEmployee();
     });
 });
 
+// Impiegati restituiti dal server
 var employees;
 
+// carica tutti gli impiegati
 function load(){
     $('#employees-message-alert').html("");
     $.ajax({
@@ -37,9 +40,9 @@ function load(){
     });
 }
 
+// Mette le righe nella tabella per ogni impiegato
 function setEmployees(){
     $('#employeesRow').html("");
-
     $.each(employees, function(key, val){
         text='<tr>'+
                 '<th scope="row">'+zeropadInt(val.idUtente,4)+'</th>' +
@@ -53,6 +56,7 @@ function setEmployees(){
     });
 }
 
+// Dato l'ID restituisce l'impiegato salvato nella variabile locale
 function employeesByID(id){
     let i=0;
     $.each(employees, function(key, val){
@@ -64,6 +68,7 @@ function employeesByID(id){
     return employees[i];
 }
 
+// Mostra il modal per la scelta del ruolo e la conferma
 function changeRoleConfirm(id){
     $('#employeesResponseMessageLabel').html("Conferma cambio ruolo");
     let user=employeesByID(id);
@@ -83,6 +88,7 @@ function changeRoleConfirm(id){
     $('#employeesResponseMessageModal').modal('show');
 }
 
+// Abilita il pulsante per il cambio ruolo
 function checkNewRole(){
     if($('#newRoleSelect').val()!=null){
         $('#changeRoleConfirmBtn').removeAttr("disabled").removeClass("disabled");
@@ -91,6 +97,7 @@ function checkNewRole(){
     }
 }
 
+// Richiesta al server per il cambio del ruolo con messaggio di risultato
 function changeRole(id){
     let newRole = $('#newRoleSelect').val();
     $.ajax({
@@ -119,6 +126,7 @@ function changeRole(id){
     });
 }
 
+// Mostra il modal per la conferma della cancellazione dell'utenza
 function disableUserConfirm(id) {
     $('#employeesResponseMessageLabel').html("Conferma disattivazione impiegato");
     let user = employeesByID(id);
@@ -133,6 +141,7 @@ function disableUserConfirm(id) {
     setTimeout(function(){ $('#disableUserConfirmBtn').removeAttr("disabled").removeClass("disabled"); }, 1500);
 }
 
+// Richiesta al server di disattivazione utenza con messaggio di risultato
 function disableUser(id){
     $.ajax({
         url: './employeesManage',
@@ -159,6 +168,7 @@ function disableUser(id){
     });
 }
 
+// Richiesta server per la registrazione di un nuovo impiegato con messaggio di risultato
 function registerNewEmployee(){
     $('#registerEmployeeModal').modal('hide');
     let nome = $('#name').val();
@@ -202,6 +212,7 @@ function registerNewEmployee(){
     });
 }
 
+// Svuota i campi input text
 function resetNewEmployee(){
     $('#name').val("");
     $('#surname').val("");

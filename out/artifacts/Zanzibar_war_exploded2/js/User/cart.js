@@ -5,6 +5,7 @@ $(document).ready(function () {
         loadCart();
     });
 
+    // Cattura l'invio del form di ordine e ne verifica la validità
     $('#OrderCOform').submit(function (e) {
         e.preventDefault();
         if ($('#OrderCOform')[0].checkValidity()) {
@@ -17,6 +18,7 @@ $(document).ready(function () {
     });
 });
 
+// Carica il carrello dal server
 function loadCart(){
     $.ajax({
         url: '/Zanzibar/user/cartManage',
@@ -37,6 +39,7 @@ function loadCart(){
     updateCart();
 }
 
+// Imposta i dati del carrello nella tabella
 function setCart(data) {
     if (data.CART == null) {
         //Messaggio carrello vuoto
@@ -49,10 +52,10 @@ function setCart(data) {
     } else {
         $('#subTotal').html('<p>Numero prodotti: '+parseInt(data.PRODUCTNUMBER)+'</p>' +
             '<h2>Totale:     '+ parseInt(data.TOTAL).toFixed(2) + '€</h2>');
-        var onclickaction=data.INSITE===true?"initializeOrderCheckout()":"notInSite()";
+        let onclickaction=data.INSITE===true?"initializeOrderCheckout()":"notInSite()";
         $('#payOrder').html("<input type=\"button\" class=\"btn-lg btn-primary\" id=\"orderCheckout\" onclick=\""+onclickaction+"\" value=\"Conferma e ordina\">");
         $.each(data.CART, function(key, val){
-            var note=val.note==="null"?"":val.note;
+            let note=val.note==="null"?"":val.note;
             text='<tr>'+
                 '<th scope="row">'+zeropadInt(val.barcode,3)+'</th>' +
                 '<td>'+val.name+'</td>'+
@@ -65,12 +68,12 @@ function setCart(data) {
                 '<td>'+parseInt(val.price).toFixed(2)+'€</td>'+
                 '<td>'+note+'</td>'+
                 '</tr>';
-            //metodo di pagamento, azioni (fattura eliminare)
             $('#productsRow').append(text);
         });
     }
 }
 
+// Mostra il modal per la compilazione dei dati ulteriori per il piazzamento dell'ordine
 function initializeOrderCheckout(){
     $.ajax({
         url: '/Zanzibar/user/cartManage',
@@ -102,8 +105,9 @@ function initializeOrderCheckout(){
     });
 }
 
+// Prende i dati inseriti dall'utente e invia la prenotazione al server
 function Order(){
-    var method;
+    let method;
     if($('#creditOrderCO')[0].checked)
         method="CreditCard";
     else if($('#cashOrderCO')[0].checked)
@@ -111,19 +115,18 @@ function Order(){
     else
         method="Paypal";
 
-    var delivery=$('#onPostationDeliberyOrderCO')[0].checked?"Umbrella":"Bar";
+    let delivery=$('#onPostationDeliberyOrderCO')[0].checked?"Umbrella":"Bar";
 
-    var name = capitalletters($('#nameOrderCO').val());
-    var surname = capitalletters($('#surnameOrderCO').val());
-    var email = $('#emailOrderCO').val();
-    var fiscal = $('#fiscalcodeOrderCO').val().toUpperCase();
-    var address = $('#addressOrderCO').val() + " " + $('#address2OrderCO').val();
-    var region = capitalletters($('#regionOrderCO').val());
-    var province = $('#provinceOrderCO').val().toUpperCase();
-    var city = capitalletters($('#cityOrderCO').val());
-    var cap = $('#capOrderCO').val();
-
-    var cardno =method=="CreditCard"?$('#regionOrderCO').val():null;
+    let name = capitalletters($('#nameOrderCO').val());
+    let surname = capitalletters($('#surnameOrderCO').val());
+    let email = $('#emailOrderCO').val();
+    let fiscal = $('#fiscalcodeOrderCO').val().toUpperCase();
+    let address = $('#addressOrderCO').val() + " " + $('#address2OrderCO').val();
+    let region = capitalletters($('#regionOrderCO').val());
+    let province = $('#provinceOrderCO').val().toUpperCase();
+    let city = capitalletters($('#cityOrderCO').val());
+    let cap = $('#capOrderCO').val();
+    let cardno =method=="CreditCard"?$('#regionOrderCO').val():null;
 
     $.ajax({
         url: '/Zanzibar/user/cartManage',
@@ -158,6 +161,7 @@ function Order(){
     });
 }
 
+// Mostra un errore nel caso in cui si voglia fare un ordine mentre non si è attualmente al lido
 function notInSite(){
     let text='<div class="row" style="justify-content: center">' +
         '<div class="alert alert-danger alert-dismissible" role="alert">' +
@@ -165,6 +169,7 @@ function notInSite(){
     $('#cart-message-alert').html(text);
 }
 
+// Abilita o disabilita alcuni campi in base al metodo di pagamento inserito
 function updateOrderPaymentMethod(){
     if($('#creditOrderCO')[0].checked){
         $('#invoiceDateOrderCO').removeClass("d-none");
@@ -185,6 +190,7 @@ function updateOrderPaymentMethod(){
     checkOrderValidation();
 }
 
+// Controlla se il form è valido e abilita il tasto di pagamento
 function checkOrderValidation(){
     if($('#OrderCOform')[0].checkValidity()){
         $('#payBtnOrderCO').removeClass("disabled").addClass("active");
@@ -193,23 +199,27 @@ function checkOrderValidation(){
     }
 }
 
+// Ripristina tutti i campi
 function resetOrderCheckout(){
     $('#cartProducts').html("");
     $('#payBtnOrderCO').removeClass("active").addClass("disabled");
 }
 
+// Aumenta la quantità di un prodotto nel carrello
 function quantityPlus(id){
     if($('#productQty'+id).val()<10) {
         updateQuantityCart(id, (parseInt($('#productQty'+id).val()) + 1));
     }
 }
 
+// Diminuisce la quantità di un prodotto nel carrello
 function quantityMinus(id){
     if($('#productQty'+id).val()>0) {
         updateQuantityCart(id, (parseInt($('#productQty'+id).val()) - 1));
     }
 }
 
+// Invia una richiesta al server per variare la quantità di un oggetto nel carrello
 function updateQuantityCart(id, quantity){
     $.ajax({
         url: '/Zanzibar/user/cartManage',

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+    // Cattura l'invio del form di CheckOut e verifica se i dati immessi sono validi
     $('#COform').submit(function (e) {
         e.preventDefault();
         if($('#COform')[0].checkValidity()){
@@ -7,14 +9,16 @@ $(document).ready(function () {
     });
 });
 
+// Variabile globare dell'ordine
 var order;
 
+// Mostra il modal per l'inserimento dei dati ulteriori per la prenotazione
 function initializeCheckout(data){
     $('#checkoutModal').modal('show');
     resetCheckout();
-    var elnum = parseInt(data.POSTATION.length)+parseInt(data.EXTRA_CHAIR);
-    var total = parseFloat(data.TOTAL_PRICE).toFixed(2);
-    var price=0;
+    let elnum = parseInt(data.POSTATION.length)+parseInt(data.EXTRA_CHAIR);
+    let total = parseFloat(data.TOTAL_PRICE).toFixed(2);
+    let price=0;
 
     $('#element-number').html(elnum);
     $.each(data.POSTATION, function (key, val) {
@@ -36,12 +40,14 @@ function initializeCheckout(data){
     order=data;
 }
 
+// Reimposta i dati
 function resetCheckout(){
     order=null;
     $('#selectedProducts').html("");
     $('#payBtn').removeClass("active").addClass("disabled");
 }
 
+// Aggiorna il metodo di pagamento abilitando o disabilitando sezioni
 function updatePaymentMethod(){
     if($('#credit')[0].checked){
         $('#credit-card-method').removeClass("d-none");
@@ -52,18 +58,19 @@ function updatePaymentMethod(){
     }
 }
 
+// Invia la richiesta di ordine al server prendendo i dati immessi dall'utente
 function payOrder(){
-    var method = $('#credit')[0].checked?"CreditCard":"Paypal";
-    var name = capitalletters($('#nameCO').val());
-    var surname = capitalletters($('#surnameCO').val());
-    var email = $('#emailCO').val();
-    var fiscal = $('#fiscalcodeCO').val().toUpperCase();
-    var address = $('#addressCO').val() + " " + $('#address2CO').val();
-    var region = capitalletters($('#regionCO').val());
-    var province = $('#provinceCO').val().toUpperCase();
-    var city = capitalletters($('#cityCO').val());
-    var cap = $('#capCO').val();
-    var cardno =method=="CreditCard"?$('#regionCO').val():null;
+    let method = $('#credit')[0].checked?"CreditCard":"Paypal";
+    let name = capitalletters($('#nameCO').val());
+    let surname = capitalletters($('#surnameCO').val());
+    let email = $('#emailCO').val();
+    let fiscal = $('#fiscalcodeCO').val().toUpperCase();
+    let address = $('#addressCO').val() + " " + $('#address2CO').val();
+    let region = capitalletters($('#regionCO').val());
+    let province = $('#provinceCO').val().toUpperCase();
+    let city = capitalletters($('#cityCO').val());
+    let cap = $('#capCO').val();
+    let cardno =method=="CreditCard"?$('#regionCO').val():null;
 
     $.ajax({
         url: './placeBook',
@@ -84,7 +91,7 @@ function payOrder(){
             'CardNO' : cardno
         },
         success: function (data) {
-            var typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
+            let typemessage = data.RESPONSE == 'Confirm'?"alert-success":"alert-danger";
             // Prenotazione Effettuata o errore con messaggio
             $('#checkoutModal').modal('hide');
             reset();
@@ -100,6 +107,7 @@ function payOrder(){
     });
 }
 
+// Verifica se il form è valido e abilita il bottone di pagamento
 function checkValidation(){
     if($('#COform')[0].checkValidity()){
         $('#payBtn').removeClass("disabled").addClass("active");

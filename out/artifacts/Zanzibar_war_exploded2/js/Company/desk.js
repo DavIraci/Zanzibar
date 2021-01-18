@@ -2,9 +2,11 @@ $(document).ready(function () {
     load();
 });
 
+//Variabili globali per il salvataggio degli ordini inviati dal server
 var orders;
 var users;
 
+// Carica gli ordini effettuati per quel giorno
 function load(){
     $('#desk-message-alert').html("");
     $.ajax({
@@ -18,7 +20,7 @@ function load(){
             if(data.RESPONSE === 'Confirm'){ //Dati ok
                 orders=data.ORDERS;
                 users=data.USERS;
-                if (orders.length==0){
+                if (orders.length===0){
                     //Messaggio nessun ordine
                     let text = '<div class="row" style="justify-content: center">' +
                         '<div class="alert alert-info alert-dismissible" role="alert">' +
@@ -32,17 +34,21 @@ function load(){
             console.log(errorThrown);
         }
     });
+    //Ricarica le risorse ogni 60 secondi per mostrarne i nuovi
     setInterval(function(){
         load();
     }, 60000);
 }
 
+//Per ogni ordine presente inserisce una riga popolandola con i dati dell'ordine
 function setOrders(){
     $('#deskOrdersRow').html("");
 
     $.each(orders, function(key, val){
-        var status;
-        var buttons, buttonvalue='';
+        let status;
+        let buttons, buttonvalue='';
+
+        // Verifica lo stato attuale e calcola il prossimo
         switch (val.status){
             case "A": {
                 status = "Ricevuto";
@@ -92,7 +98,7 @@ function setOrders(){
             quantity+=parseInt(val2.quantity);
         });
 
-        var selUser=userByID(val.userID);
+        let selUser=userByID(val.userID);
         text='<tr>'+
                 '<th scope="row">'+zeropadInt(val.orderID,6)+'</th>' +
                 '<td>'+ selUser.nome + " " + selUser.cognome+'</td>'+
@@ -107,6 +113,7 @@ function setOrders(){
     });
 }
 
+//Dato un ID ritorna l'ordine corrispondente contenuto nella variabile globale
 function orderByID(id){
     let i=0;
     $.each(orders, function(key, val){
@@ -118,6 +125,7 @@ function orderByID(id){
     return orders[i];
 }
 
+//Dato un ID ritorna l'user corrispondente contenuto nella variabile globale
 function userByID(id){
     let i=0;
     $.each(users, function(key, val){
@@ -129,6 +137,7 @@ function userByID(id){
     return users[i];
 }
 
+//Mostra un modal per la conferma del cambiamento di stato dell'ordine
 function changeStatusConfirm(id){
     $('#deskResponseMessageLabel').html("Conferma cambio stato");
     let order=orderByID(id);
@@ -141,6 +150,7 @@ function changeStatusConfirm(id){
     $('#deskResponseMessageModal').modal('show');
 }
 
+//Invia al server la richiesta per cambiare lo stato dell'ordine
 function changeStatus(id){
     $('#changeStatusConfirm').addClass('d-none');
     $.ajax({
@@ -168,6 +178,7 @@ function changeStatus(id){
     });
 }
 
+//Mostra un modal contenente i dettagli dell'ordine scelto
 function orderDetails(id){
     let order=orderByID(id);
     let quantity=0;

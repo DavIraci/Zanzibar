@@ -54,7 +54,7 @@
     </head>
 
     <body id="page-top">
-    <main role="main" class="masthead">
+    <main role="main" class="masthead" style="min-height: 80%">
         <div class="container">
             <div class="marketing">
                 <section class="text-center">

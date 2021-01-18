@@ -3,8 +3,7 @@
   User: Davide Iraci
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.iraci.model.User" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -35,32 +34,6 @@
                     padding:0;
                     max-width:none;
                 }
-            }
-
-            .prenota{
-                text-align: center;
-                margin-bottom: 20px;
-                background: #000;
-                position: relative;
-            }
-
-            .prenota-info{
-                visibility: hidden;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                position: absolute;
-                bottom: 0;
-                top: 0;
-                left: 0;
-                right: 0;
-                transition: 0.2s;
-            }
-
-            .prenota:hover .prenota-info {
-                background: rgba(0, 0, 0, 0.7);
-                visibility: visible;
-                transition: 0.4s;
             }
         </style>
 
@@ -99,11 +72,7 @@
             </div>
             <!-- Carousel -->
 
-
-
             <div class="container marketing">
-
-
                 <!-- Services -->
                 <section class="page-section portfolio" id="service">
                     <div class="row" style="text-align: center">
@@ -120,29 +89,25 @@
                     </div>
                 </section>
                 <!-- Services -->
-
-                <!-- Beach >
-                <section class="page-section portfolio" id="beach">
-                    <iframe src="/Zanzibar/image/mapALL.svg" frameborder="0" style="width: 100%;height: 100%;"></iframe>
-                </section>
-                 Beach -->
             </div>
 
             <!-- Beach -->
-            <section class="page-section portfolio" id="beach">
+            <section class="pb-3" id="beach">
+                <div class="text-center">
+                    <h2 class="page-section-heading d-inline-block">LA SPIAGGIA</h2>
+                </div>
                 <a href="${pageContext.request.contextPath}/user/book">
                     <img alt="Beach" src="/Zanzibar/image/mapALL.svg" style="width: 100%;height: 70%;">
                 </a>
             </section>
-
-            <!-- Beach -->
+            <!-- /Beach -->
 
             <!-- About -->
             <section class="page-section bg-primary text-white mb-0" id="about">
                 <div class="container">
                     <!-- About Section Heading-->
                     <div class="text-center">
-                        <h2 class="page-section-heading d-inline-block text-white">ABOUT</h2>
+                        <h2 class="page-section-heading d-inline-block text-white">SU DI NOI</h2>
                     </div>
                     <!-- Icon Divider-->
                     <div class="divider-custom divider-light">
@@ -153,15 +118,15 @@
                     <!-- About Section Content-->
                     <div class="row">
                         <div class="col-lg-4 ml-auto">
-                            <p class="pre-wrap lead">Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional SASS stylesheets for easy customization.</p>
+                            <p class="pre-wrap lead">Siamo un'azienda nata da poco, grazie all'amore per il lavoro e per la propria terra di 4 ragazzi. Abbiamo voluto creare questo luogo che si adatta alle esigenze di tutte le età.</p>
                         </div>
                         <div class="col-lg-4 mr-auto">
-                            <p class="pre-wrap lead">You can create your own custom avatar for the masthead, change the icon in the dividers, and add your email address to the contact form to make it fully functional!</p>
+                            <p class="pre-wrap lead">Di giorno un'esclusivo lido, ricco di ogni comfort possibile, con un servizio ristorazione da far invidia a tutti! Di notte un centro di ritrovo per i più giovani, con musica e tanto alcool!</p>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- About -->
+            <!-- /About -->
 
         </main>
         <%@ include file="/WEB-INF/footer.jsp"%>

@@ -43,6 +43,7 @@ function updateInfoAccount() {
             } else if (data.RESPONSE == 'Success' && data.TYPE == 'Account info updated') {
                 $('#response').html('<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + data.MESSAGE + '</div>').show();
             }
+            $('html,body').animate({scrollTop: $('#page-top').offset().top},'slow');
             $('#pwd1').val('');
             $('#pwd2').val('');
             $('#pwd3').val('');
