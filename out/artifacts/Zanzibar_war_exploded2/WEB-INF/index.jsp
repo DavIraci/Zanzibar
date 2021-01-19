@@ -12,21 +12,21 @@
         <meta name="author" content="">
         <title>Zanzibar Lido - Summer 2020</title>
 
-        <link rel="shortcut icon" href="/Zanzibar/image/favicon.ico" />
+        <link rel="shortcut icon" href="./image/favicon.ico" />
 
         <!-- CSS, includes Bootstrap (off-line)-->
-        <link href="/Zanzibar/css/styles.css" rel="stylesheet">
-        <link href="/Zanzibar/css/heading.css" rel="stylesheet">
-        <link href="/Zanzibar/css/body.css" rel="stylesheet">
-        <link href="/Zanzibar/css/carousel.css" rel="stylesheet">
+        <link href="./css/styles.css" rel="stylesheet">
+        <link href="./css/heading.css" rel="stylesheet">
+        <link href="./css/body.css" rel="stylesheet">
+        <link href="./css/carousel.css" rel="stylesheet">
 
         <!-- Script -->
         <script src="https://kit.fontawesome.com/5a20e58df2.js" crossorigin="anonymous"></script>
-        <script src="/Zanzibar/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-        <script src="/Zanzibar/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="./js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script src="./js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js'></script>
-        <script src="/Zanzibar/js/scripts.js"></script>
-        <script src="/Zanzibar/js/Utils.js"></script>
+        <script src="./js/scripts.js"></script>
+        <script src="./js/Utils.js"></script>
 
         <style>
             @media (max-width: 992px){
@@ -97,7 +97,7 @@
                     <h2 class="page-section-heading d-inline-block">LA SPIAGGIA</h2>
                 </div>
                 <a href="${pageContext.request.contextPath}/user/book">
-                    <img alt="Beach" src="/Zanzibar/image/mapALL.svg" style="width: 100%;height: 70%;">
+                    <img alt="Beach" src="./image/mapALL.svg" style="width: 100%;height: 70%;">
                 </a>
             </section>
             <!-- /Beach -->

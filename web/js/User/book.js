@@ -27,7 +27,7 @@ $(document).ready(function () {
     });
 
     // Carica la mappa SVG inizializzando le funzionalità di hover del mouse e di selezione/deselezione
-    Snap.load("./Zanzibar/image/mapALL.svg", function(f){
+    Snap.load("../image/mapALL.svg", function(f){
         load();
 
         f.selectAll('[id^="rect_"]').forEach(function(el){

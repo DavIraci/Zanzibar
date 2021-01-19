@@ -2,7 +2,7 @@ $(document).ready(function () {
     setDate(new Date())
     let s = Snap('#map');
 
-    Snap.load("/Zanzibar/image/mapALL.svg", function(f){
+    Snap.load("./image/mapALL.svg", function(f){
         load();
 
         f.selectAll('[id^="rect_"]').forEach(function(el){

@@ -36,7 +36,7 @@ var products;
 function loadProduct(){
     let cat = $('#categoryBtn .active').val();
     $.ajax({
-        url: '/Zanzibar/productList',
+        url: './productList',
         dataType: 'json',
         type: 'post',
         data: {
@@ -63,7 +63,7 @@ function setProducts(data){
         text='<div class="col-md-4 mb-4">'
             +'<div class="">'
                 +'<div class="view zoom overlay z-depth-2 rounded">'
-                    +'<a><img class="img-fluid w-100" src="/Zanzibar/image/Product/'+val.category.replace(/\s/g, '%20')+'.png" alt="Sample"></a> </div>'
+                    +'<a><img class="img-fluid w-100" src="./image/Product/'+val.category.replace(/\s/g, '%20')+'.png" alt="Sample"></a> </div>'
                 +'<div class="text-center pt-4">'
                     +'<h5>'+val.name+'</h5>'
                     +'<p class="mb-2 text-muted text-uppercase small">'+val.category+'</p><hr>'
@@ -81,7 +81,7 @@ function setProducts(data){
 function addToCart(barcode){
     let prod = productByID(barcode);
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         type: 'post',
         data: {
             'Type': 'AddProduct',
@@ -105,7 +105,7 @@ function addToCart(barcode){
 // Richiede al server la dimensione del carrello
 function updateCart(){
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         dataType: 'json',
         type: 'post',
         data: {

@@ -21,7 +21,7 @@ $(document).ready(function () {
 // Carica il carrello dal server
 function loadCart(){
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         dataType: 'json',
         type: 'post',
         data: {
@@ -76,7 +76,7 @@ function setCart(data) {
 // Mostra il modal per la compilazione dei dati ulteriori per il piazzamento dell'ordine
 function initializeOrderCheckout(){
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         dataType: 'json',
         type: 'post',
         data: {
@@ -129,7 +129,7 @@ function Order(){
     let cardno =method=="CreditCard"?$('#regionOrderCO').val():null;
 
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         dataType: 'json',
         type: 'post',
         data: {
@@ -222,7 +222,7 @@ function quantityMinus(id){
 // Invia una richiesta al server per variare la quantità di un oggetto nel carrello
 function updateQuantityCart(id, quantity){
     $.ajax({
-        url: '/Zanzibar/user/cartManage',
+        url: './user/cartManage',
         dataType: 'json',
         type: 'post',
         data: {

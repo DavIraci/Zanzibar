@@ -7,7 +7,7 @@
 <%@ page import="com.iraci.model.User" %>
 <html>
 <head>
-    <script src="/Zanzibar/js/User/checkout.js"></script>
+    <script src="./js/User/checkout.js"></script>
     <style>
         .lh-condensed { line-height: 1.25; }
     </style>

@@ -10,7 +10,7 @@
 <%@ page import="java.sql.SQLException" %>
 <html>
     <head>
-        <script src="/Zanzibar/js/header.js"></script>
+        <script src="./js/header.js"></script>
         <style>
             .badge.badge-pill{
                 background-color: #5fbfcd;
@@ -42,7 +42,7 @@
         <!-- NavBar -->
         <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
             <div class="container">
-                <% if(request.getRequestURI().equals("/Zanzibar/WEB-INF/index.jsp")){ %>
+                <% if(request.getRequestURI().equals("./WEB-INF/index.jsp")){ %>
                     <a class="navbar-brand js-scroll-trigger" href="#page-top">ZanziBar</a>
                 <% } else{ %>
                     <a class="navbar-brand js-scroll-trigger" href="${pageContext.request.contextPath}">ZanziBar</a>
@@ -50,7 +50,7 @@
                 <button class="navbar-toggler navbar-toggler-right font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <% if(request.getRequestURI().equals("/Zanzibar/WEB-INF/index.jsp")){ %>
+                        <% if(request.getRequestURI().equals("./WEB-INF/index.jsp")){ %>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#service">SERVIZI</a>
                             </li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#beach">SPIAGGIA</a>
