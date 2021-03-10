@@ -10,7 +10,7 @@
 <%@ page import="java.sql.SQLException" %>
 <html>
     <head>
-        <script src="./js/header.js"></script>
+        <script src="/Zanzibar/js/header.js"></script>
         <style>
             .badge.badge-pill{
                 background-color: #5fbfcd;

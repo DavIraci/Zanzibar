@@ -36,7 +36,7 @@ var products;
 function loadProduct(){
     let cat = $('#categoryBtn .active').val();
     $.ajax({
-        url: './productList',
+        url: '/productList',
         dataType: 'json',
         type: 'post',
         data: {
