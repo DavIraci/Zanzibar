@@ -175,7 +175,7 @@ public class DataBase {
      * @throws SQLException SQLException
      */
     public static boolean checkPassword(String email, String checkPassword) throws SQLException {
-        String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=? AND u.password=?";
+        String query = "SELECT U.email FROM iraci.user AS U WHERE u.email=? AND u.password=SHA2(?, 256)";
         boolean res=false;
         try(Connection connection=dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, email);
